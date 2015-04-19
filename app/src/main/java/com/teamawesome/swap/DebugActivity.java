@@ -8,6 +8,10 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
+import android.content.Intent;
+import android.util.Log;
+
+import java.io.Console;
 
 public class DebugActivity extends ListActivity {
 
@@ -52,15 +56,11 @@ public class DebugActivity extends ListActivity {
         String item = (String) getListAdapter().getItem(position);
         Toast.makeText(this, item + " selected", Toast.LENGTH_LONG).show();
 
-        switch(item) {
-            case "UI":
-                break;
-            case "Server":
-                new PostRequestTask(this).execute(rawCard);
-                break;
-            case "Bluetooth":
-                break;
-            default:
+        if (id == 0) {  //UI
+            Intent homeIntent = new Intent(this, HomeActivity.class);
+            startActivity(homeIntent);
+        } else if (id == 1) { //Server
+            new PostRequestTask(this).execute(rawCard);
         }
     }
 

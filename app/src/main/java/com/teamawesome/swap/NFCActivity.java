@@ -68,6 +68,5 @@ public class NFCActivity extends ListActivity implements NfcAdapter.CreateNdefMe
         return msg;
     }
 
-
 }
 

@@ -14,6 +14,10 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.content.Intent;
+import android.util.Log;
+
+import java.io.Console;
 
 public class DebugActivity extends ListActivity {
 
@@ -39,6 +43,10 @@ public class DebugActivity extends ListActivity {
     protected void onListItemClick(ListView l, View v, int position, long id) {
         String item = (String) getListAdapter().getItem(position);
         Toast.makeText(this, item + " selected", Toast.LENGTH_LONG).show();
+        if (id == 0) {
+            Intent homeIntent = new Intent(this, HomeActivity.class);
+            startActivity(homeIntent);
+        }
     }
 
     @Override

@@ -1,4 +1,4 @@
-package com.teamawesome.swap;
+package com.teamawesome.swap.adapter.debug;
 
 import android.app.Activity;
 import android.content.Context;
@@ -9,6 +9,9 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextClock;
 import android.widget.TextView;
+
+import com.teamawesome.swap.R;
+import com.teamawesome.swap.object.debug.CardSimplified;
 
 public class CardSimplifiedAdaptor extends ArrayAdapter<CardSimplified> {
     Context context;

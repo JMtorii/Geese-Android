@@ -1,9 +1,7 @@
-package com.teamawesome.swap;
+package com.teamawesome.swap.task.debug;
 
 import android.app.Activity;
-import android.content.Context;
 import android.os.AsyncTask;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import org.apache.commons.io.IOUtils;

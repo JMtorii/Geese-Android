@@ -1,4 +1,4 @@
-package com.teamawesome.swap;
+package com.teamawesome.swap.activity.debug;
 
 import android.app.ListActivity;
 import android.content.Intent;
@@ -10,14 +10,16 @@ import android.os.Bundle;
 import android.os.Parcelable;
 import android.widget.Toast;
 
-public class NFCActivity extends ListActivity implements NfcAdapter.CreateNdefMessageCallback {
+import com.teamawesome.swap.R;
+
+public class DebugNFCActivity extends ListActivity implements NfcAdapter.CreateNdefMessageCallback {
 
     NfcAdapter mNfcAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_nfc);
+        setContentView(R.layout.debug_activity_nfc);
 //        TextView textView = (TextView) findViewById(R.id.text_id);
 
         mNfcAdapter = NfcAdapter.getDefaultAdapter(this);

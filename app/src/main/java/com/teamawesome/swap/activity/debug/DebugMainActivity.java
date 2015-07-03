@@ -1,4 +1,4 @@
-package com.teamawesome.swap;
+package com.teamawesome.swap.activity.debug;
 
 import android.app.ListActivity;
 import android.content.Intent;
@@ -8,14 +8,14 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
-import android.content.Intent;
-import android.util.Log;
 
-import java.io.Console;
+import com.teamawesome.swap.activity.GooseActivity;
+import com.teamawesome.swap.task.debug.PostRequestTask;
+import com.teamawesome.swap.R;
 
-public class DebugActivity extends ListActivity {
+public class DebugMainActivity extends ListActivity {
 
-    String[] values = new String[] { "UI", "Server", "Bluetooth" };
+    String[] values = new String[] { "Actual Application", "UI", "Server" };
     String rawCard = "{ " +
             "'card': {" +
                 "'templateId': 1, " +
@@ -56,11 +56,17 @@ public class DebugActivity extends ListActivity {
         String item = (String) getListAdapter().getItem(position);
         Toast.makeText(this, item + " selected", Toast.LENGTH_LONG).show();
 
-        if (id == 0) {  //UI
-            Intent homeIntent = new Intent(this, HomeActivity.class);
+        if (id == 0) {  //Actual app
+            Intent i = new Intent(this, GooseActivity.class);
+            startActivity(i);
+
+        } else if (id == 1) {  //UI
+            Intent homeIntent = new Intent(this, DebugHomeActivity.class);
             startActivity(homeIntent);
-        } else if (id == 1) { //Server
+
+        } else if (id == 2) { //Server
             new PostRequestTask(this).execute(rawCard);
+
         }
     }
 

@@ -1,4 +1,4 @@
-package com.teamawesome.swap;
+package com.teamawesome.swap.activity.debug;
 
 import android.app.ListActivity;
 import android.os.Bundle;
@@ -7,17 +7,21 @@ import android.view.Menu;
 import android.view.View;
 import android.widget.ListView;
 
+import com.teamawesome.swap.object.debug.CardSimplified;
+import com.teamawesome.swap.adapter.debug.CardSimplifiedAdaptor;
+import com.teamawesome.swap.R;
+
 import java.util.GregorianCalendar;
 
 
-public class HomeActivity extends ListActivity {
+public class DebugHomeActivity extends ListActivity {
 
     ListView listview;
     String[] values = { "hello", "world" };
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_home);
+        setContentView(R.layout.debug_activity_home);
         /*ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
                 android.R.layout.simple_list_item_1, values);
         setListAdapter(adapter);*/
@@ -30,7 +34,7 @@ public class HomeActivity extends ListActivity {
           new CardSimplified(R.drawable.abc_ab_share_pack_mtrl_alpha, "HELLO4", "WORLD4", new GregorianCalendar(2015, 1, 21))
         };
 
-        CardSimplifiedAdaptor adapter = new CardSimplifiedAdaptor(this, R.layout.card_simplified, card_data);
+        CardSimplifiedAdaptor adapter = new CardSimplifiedAdaptor(this, R.layout.debug_card_simplified, card_data);
         setListAdapter(adapter);
     }
 

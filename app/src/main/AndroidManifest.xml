@@ -54,6 +54,14 @@
             android:name=".activity.MainActivity"
             android:label="@string/title_activity_main" >
         </activity>
+        <activity
+            android:name=".activity.debug.DebugChatActivity"
+            android:label="@string/title_activity_debug_chat" >
+        </activity>
+        <activity
+            android:name=".activity.debug.DebugUserProfileActivity"
+            android:label="@string/title_activity_debug_user_profile" >
+        </activity>
     </application>
 
 </manifest>

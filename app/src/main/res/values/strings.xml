@@ -7,4 +7,6 @@
     <string name="title_activity_goose">GooseActivity</string>
     <string name="title_activity_login">LoginActivity</string>
     <string name="title_activity_main">MainActivity</string>
+    <string name="title_activity_debug_chat">DebugChatActivity</string>
+    <string name="title_activity_debug_user_profile">DebugUserProfileActivity</string>
 </resources>

@@ -1,4 +1,4 @@
-package com.teamawesome.swap.activity;
+package com.teamawesome.swap.activity.debug;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -8,9 +8,9 @@ import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 
 import com.teamawesome.swap.R;
-import com.teamawesome.swap.fragment.LoginIntroFragment;
+import com.teamawesome.swap.fragment.debug.DebugLoginIntroFragment;
 
-public class LoginActivity extends FragmentActivity {
+public class DebugLoginActivity extends FragmentActivity {
 
     private static final int NUM_PAGES = 4;
     private ViewPager mPager;
@@ -19,7 +19,7 @@ public class LoginActivity extends FragmentActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login);
+        setContentView(R.layout.debug_activity_login);
 
         // Instantiate a ViewPager and a PagerAdapter.
         mPager = (ViewPager) findViewById(R.id.pager);
@@ -44,7 +44,7 @@ public class LoginActivity extends FragmentActivity {
 
         @Override
         public Fragment getItem(int position) {
-            return LoginIntroFragment.create(position);
+            return DebugLoginIntroFragment.create(position);
         }
 
         @Override

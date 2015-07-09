@@ -67,6 +67,10 @@ public class DebugMainActivity extends ListActivity {
         } else if (id == 2) { //Server
             new PostRequestTask(this).execute(rawCard);
 
+        } else if (id == 3) {  // ViewPager
+            Intent i = new Intent( this, DebugLoginActivity.class);
+            startActivity(i);
+
         }
     }
 

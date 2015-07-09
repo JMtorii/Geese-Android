@@ -47,7 +47,7 @@
             android:label="@string/title_activity_goose" >
         </activity>
         <activity
-            android:name=".activity.LoginActivity"
+            android:name=".activity.debug.LoginActivity"
             android:label="@string/title_activity_login" >
         </activity>
         <activity

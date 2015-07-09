@@ -1,4 +1,4 @@
-package com.teamawesome.swap.fragment;
+package com.teamawesome.swap.fragment.debug;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -12,20 +12,20 @@ import com.teamawesome.swap.R;
 /**
  * Created by JMtorii on 15-07-04.
  */
-public class LoginIntroFragment extends Fragment {
+public class DebugLoginIntroFragment extends Fragment {
 
     public static final String ARG_PAGE = "page";
     private int mPageNumber;
 
-    public static LoginIntroFragment create(int pageNumber) {
-        LoginIntroFragment fragment = new LoginIntroFragment();
+    public static DebugLoginIntroFragment create(int pageNumber) {
+        DebugLoginIntroFragment fragment = new DebugLoginIntroFragment();
         Bundle args = new Bundle();
         args.putInt(ARG_PAGE, pageNumber);
         fragment.setArguments(args);
         return fragment;
     }
 
-    public LoginIntroFragment() {
+    public DebugLoginIntroFragment() {
     }
 
     @Override
@@ -39,7 +39,7 @@ public class LoginIntroFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout containing a title and body text.
         ViewGroup rootView = (ViewGroup) inflater
-                .inflate(R.layout.fragment_login_intro, container, false);
+                .inflate(R.layout.debug_fragment_login_intro, container, false);
 
         // Set the title view to show the page number.
         ((TextView) rootView.findViewById(android.R.id.text1)).setText(

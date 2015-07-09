@@ -1,13 +1,15 @@
 package com.teamawesome.swap.activity;
 
 import android.app.Activity;
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
 
 import com.teamawesome.swap.R;
 
+
+/*
+ * MainActivity is responsible for holding all fragments and managing them through
+ * FragmentTransaction. The Toolbar and side bar should also be set up throguh this Activity
+ */
 public class MainActivity extends Activity {
 
     @Override

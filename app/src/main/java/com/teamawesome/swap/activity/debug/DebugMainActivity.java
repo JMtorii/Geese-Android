@@ -47,7 +47,7 @@ public class DebugMainActivity extends ListActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_main, menu);
+        getMenuInflater().inflate(R.menu.debug_menu_home, menu);
         return true;
     }
 

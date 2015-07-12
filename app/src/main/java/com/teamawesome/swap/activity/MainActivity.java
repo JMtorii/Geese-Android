@@ -10,7 +10,6 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -35,8 +34,8 @@ public class MainActivity extends AppCompatActivity {
     private ListView mDrawerList;
     private ActionBarDrawerToggle mDrawerToggle;
 
-    private CharSequence mDrawerTitle;
-    private CharSequence mTitle;
+    private String mDrawerTitle;                    // used when nav drawer opens
+    private String mTitle;                          // modify this value every fragment change
     private String[] mPlanetTitles;
 
     @Override
@@ -48,7 +47,7 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        mTitle = mDrawerTitle = getTitle();
+        mTitle = mDrawerTitle = getTitle().toString();
         mPlanetTitles = getResources().getStringArray(R.array.planets_array);
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         mDrawerList = (ListView) findViewById(R.id.left_drawer);
@@ -58,10 +57,6 @@ public class MainActivity extends AppCompatActivity {
         // set up the drawer's list view with items and click listener
         mDrawerList.setAdapter(new ArrayAdapter<String>(this, R.layout.drawer_list_item, mPlanetTitles));
         mDrawerList.setOnItemClickListener(new DrawerItemClickListener());
-
-        // enable ActionBar app icon to behave as action to toggle nav drawer
-//        getActionBar().setDisplayHomeAsUpEnabled(true);
-//        getActionBar().setHomeButtonEnabled(true);
 
         // ActionBarDrawerToggle ties together the the proper interactions
         // between the sliding drawer and the action bar app icon
@@ -73,12 +68,10 @@ public class MainActivity extends AppCompatActivity {
                 R.string.drawer_close  /* "close drawer" description for accessibility */
         ) {
             public void onDrawerClosed(View view) {
-                setTitle(mTitle);
                 invalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
             }
 
             public void onDrawerOpened(View drawerView) {
-                setTitle(mDrawerTitle);
                 invalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
             }
         };
@@ -89,32 +82,25 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * When using the ActionBarDrawerToggle, you must call it during
+     * onPostCreate() and onConfigurationChanged()...
+     */
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // The action bar home/up action should open or close the drawer.
-        // ActionBarDrawerToggle will take care of this.
-        if (mDrawerToggle.onOptionsItemSelected(item)) {
-            return true;
-        }
-//        // Handle action buttons
-//        switch(item.getItemId()) {
-//            case R.id.action_websearch:
-//                // create intent to perform web search for this planet
-//                Intent intent = new Intent(Intent.ACTION_WEB_SEARCH);
-//                intent.putExtra(SearchManager.QUERY, getActionBar().getTitle());
-//                // catch event that there's no activity to handle intent
-//                if (intent.resolveActivity(getPackageManager()) != null) {
-//                    startActivity(intent);
-//                } else {
-//                    Toast.makeText(this, R.string.app_not_available, Toast.LENGTH_LONG).show();
-//                }
-//                return true;
-//            default:
-//                return super.onOptionsItemSelected(item);
-//        }
-        return true;
+    protected void onPostCreate(Bundle savedInstanceState) {
+        super.onPostCreate(savedInstanceState);
+        // Sync the toggle state after onRestoreInstanceState has occurred.
+        mDrawerToggle.syncState();
     }
 
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        // Pass any configuration change to the drawer toggls
+        mDrawerToggle.onConfigurationChanged(newConfig);
+    }
+
+    // TODO: possibly move listener and selectItem to a separate class
     /* The click listener for ListView in the navigation drawer */
     private class DrawerItemClickListener implements ListView.OnItemClickListener {
         @Override
@@ -137,31 +123,6 @@ public class MainActivity extends AppCompatActivity {
         mDrawerList.setItemChecked(position, true);
         setTitle(mPlanetTitles[position]);
         mDrawerLayout.closeDrawer(mDrawerList);
-    }
-
-//    @Override
-//    public void setTitle(CharSequence title) {
-//        mTitle = title;
-//        setTitle(mTitle);
-//    }
-
-    /**
-     * When using the ActionBarDrawerToggle, you must call it during
-     * onPostCreate() and onConfigurationChanged()...
-     */
-
-    @Override
-    protected void onPostCreate(Bundle savedInstanceState) {
-        super.onPostCreate(savedInstanceState);
-        // Sync the toggle state after onRestoreInstanceState has occurred.
-        mDrawerToggle.syncState();
-    }
-
-    @Override
-    public void onConfigurationChanged(Configuration newConfig) {
-        super.onConfigurationChanged(newConfig);
-        // Pass any configuration change to the drawer toggls
-        mDrawerToggle.onConfigurationChanged(newConfig);
     }
 
     /**

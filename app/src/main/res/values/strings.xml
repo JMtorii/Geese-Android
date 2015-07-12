@@ -10,6 +10,7 @@
     <string name="title_activity_debug_chat">DebugChatActivity</string>
     <string name="title_activity_debug_user_profile">DebugUserProfileActivity</string>
 
+
     <string-array name="planets_array">
         <item>Mercury</item>
         <item>Venus</item>

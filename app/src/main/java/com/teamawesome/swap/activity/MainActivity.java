@@ -1,8 +1,8 @@
 package com.teamawesome.swap.activity;
 
-import android.app.Activity;
 import android.os.Bundle;
-import android.widget.Toolbar;
+import android.support.v7.app.ActionBarActivity;
+import android.support.v7.widget.Toolbar;
 
 import com.teamawesome.swap.R;
 
@@ -14,7 +14,7 @@ import com.teamawesome.swap.R;
  * We should ActionBarActivity to support Android 4. Otherwise, we have to make the minimum
  * version to 5
  */
-public class MainActivity extends Activity {
+public class MainActivity extends ActionBarActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,6 +23,6 @@ public class MainActivity extends Activity {
         setTitle("Main Activity");
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setActionBar(toolbar);
+        setSupportActionBar(toolbar);
     }
 }

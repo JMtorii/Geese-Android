@@ -38,8 +38,6 @@ public class MainActivity extends AppCompatActivity {
     private ListView mDrawerList;
     private ActionBarDrawerToggle mDrawerToggle;
 
-    private String mDrawerTitle;                    // used when nav drawer opens
-    private String mTitle;                          // modify this value every fragment change
     private String[] mPlanetTitles;
 
     @Override
@@ -65,7 +63,6 @@ public class MainActivity extends AppCompatActivity {
         });
 
 
-        mTitle = mDrawerTitle = getTitle().toString();
         mPlanetTitles = getResources().getStringArray(R.array.planets_array);
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         mDrawerList = (ListView) findViewById(R.id.left_drawer);

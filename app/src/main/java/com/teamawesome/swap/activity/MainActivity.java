@@ -20,6 +20,7 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.teamawesome.swap.R;
+import com.teamawesome.swap.fragment.SettingsMainFragment;
 
 import java.util.Locale;
 
@@ -51,17 +52,18 @@ public class MainActivity extends AppCompatActivity {
         mToolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem menuItem) {
-
                 switch (menuItem.getItemId()) {
                     case R.id.action_settings:
-                        Toast.makeText(MainActivity.this, "Settings", Toast.LENGTH_SHORT).show();
+                        // TODO: add custom animation
+                        Fragment fragment = new SettingsMainFragment();
+                        FragmentManager fragmentManager = getSupportFragmentManager();
+                        fragmentManager.beginTransaction().add(R.id.content_frame, fragment).commit();
                         return true;
                 }
 
                 return false;
             }
         });
-
 
         mPlanetTitles = getResources().getStringArray(R.array.planets_array);
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);

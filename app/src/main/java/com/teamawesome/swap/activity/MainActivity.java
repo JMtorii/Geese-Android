@@ -132,7 +132,7 @@ public class MainActivity extends AppCompatActivity {
         // update the main content by replacing fragments
         Fragment fragment;
 
-        switch(position) {
+        switch (position) {
             case 0:         // Home
                 fragment = new HomeFragment();
                 break;
@@ -142,7 +142,7 @@ public class MainActivity extends AppCompatActivity {
             case 2:         // Settings
                 fragment = new SettingsMainFragment();
                 break;
-            default:
+            default:        // this should never happen
                 fragment = null;
                 break;
         }

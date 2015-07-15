@@ -10,16 +10,10 @@
     <string name="title_activity_debug_chat">DebugChatActivity</string>
     <string name="title_activity_debug_user_profile">DebugUserProfileActivity</string>
 
-
-    <string-array name="planets_array">
-        <item>Mercury</item>
-        <item>Venus</item>
-        <item>Earth</item>
-        <item>Mars</item>
-        <item>Jupiter</item>
-        <item>Saturn</item>
-        <item>Uranus</item>
-        <item>Neptune</item>
+    <string-array name="nav_drawer_array">
+        <item>Home</item>
+        <item>Nearby</item>
+        <item>Settings</item>
     </string-array>
 
     <string name="drawer_open">Open navigation drawer</string>

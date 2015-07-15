@@ -1,10 +1,9 @@
 package com.teamawesome.swap.fragment;
 
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.ListFragment;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
@@ -45,6 +44,9 @@ public class HomeFragment extends ListFragment {
     @Override
     public void onListItemClick(ListView l, View v, int position, long id) {
         // TODO implement some logic
+        // use Bundle and fragment.setArguments if required to pass additional data
+        Fragment fragment = new FlockProfileFragment();
+        getActivity().getSupportFragmentManager().beginTransaction().add(R.id.content_frame, fragment).commit();
     }
 
 }

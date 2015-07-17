@@ -3,7 +3,7 @@ package com.teamawesome.swap.activity;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -150,8 +150,9 @@ public class MainActivity extends AppCompatActivity {
         }
 
         if (fragment != null) {
-            FragmentManager fragmentManager = getSupportFragmentManager();
-            fragmentManager.beginTransaction().add(R.id.content_frame, fragment, tag)
+            FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+            ft.setCustomAnimations(R.anim.fragment_slide_in_left, R.anim.fragment_slide_out_right);
+            ft.add(R.id.content_frame, fragment, tag)
                     .addToBackStack(tag).commit();
 
             // update selected item and title, then close the drawer

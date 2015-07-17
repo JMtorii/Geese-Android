@@ -2,6 +2,7 @@ package com.teamawesome.swap.fragment;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.ListFragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -49,8 +50,9 @@ public class HomeFragment extends ListFragment {
         // TODO implement some logic
         // use Bundle and fragment.setArguments if required to pass additional data
         Fragment fragment = new FlockProfileFragment();
-        getActivity().getSupportFragmentManager().beginTransaction()
-                .add(R.id.content_frame, fragment, Constants.FLOCK_PROFILE_FRAGMENT_TAG)
+        FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
+        ft.setCustomAnimations(R.anim.fragment_slide_in_left, R.anim.fragment_slide_out_right);
+        ft.add(R.id.content_frame, fragment, Constants.FLOCK_PROFILE_FRAGMENT_TAG)
                 .addToBackStack(Constants.FLOCK_PROFILE_FRAGMENT_TAG).commit();
     }
 

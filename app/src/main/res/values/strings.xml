@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">Swap</string>
 
+    <!-- TODO: delete this -->
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
     <string name="title_activity_home">HomeActivity</string>

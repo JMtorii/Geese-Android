@@ -8,4 +8,7 @@ public final class Constants {
     // shared preference
     public static final String PREF_SETTINGS = "PREF_SETTINGS";
     public static final String PREF_ID = "PREF_ID";
+
+    public static final String HOME_FRAGMENT_TAG = "HOME_FRAGMENT";
+    public static final String FLOCK_PROFILE_FRAGMENT_TAG = "FLOCK_PROFILE_FRAGMENT";
 }

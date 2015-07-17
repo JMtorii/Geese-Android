@@ -7,11 +7,14 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.teamawesome.swap.R;
+import com.teamawesome.swap.util.Constants;
 
 /**
  * Created by JMtorii on 15-07-14.
  */
 public class FlockProfileFragment extends Fragment {
+    private final static String TAG_FRAGMENT = Constants.FLOCK_PROFILE_FRAGMENT_TAG;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

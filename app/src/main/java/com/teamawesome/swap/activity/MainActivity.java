@@ -9,20 +9,16 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.ImageView;
 import android.widget.ListView;
 
 import com.teamawesome.swap.R;
 import com.teamawesome.swap.fragment.HomeFragment;
 import com.teamawesome.swap.fragment.SettingsMainFragment;
-
-import java.util.Locale;
+import com.teamawesome.swap.util.Constants;
 
 
 /*
@@ -131,25 +127,31 @@ public class MainActivity extends AppCompatActivity {
     private void selectItem(int position) {
         // update the main content by replacing fragments
         Fragment fragment;
+        String tag;
 
         switch (position) {
             case 0:         // Home
                 fragment = new HomeFragment();
+                tag = Constants.HOME_FRAGMENT_TAG;
                 break;
             case 1:         // Nearby but Home for now
                 fragment = new HomeFragment();
+                tag = "";
                 break;
             case 2:         // Settings
                 fragment = new SettingsMainFragment();
+                tag = "";
                 break;
             default:        // this should never happen
                 fragment = null;
+                tag = "";
                 break;
         }
 
         if (fragment != null) {
             FragmentManager fragmentManager = getSupportFragmentManager();
-            fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit();
+            fragmentManager.beginTransaction().add(R.id.content_frame, fragment, tag)
+                    .addToBackStack(tag).commit();
 
             // update selected item and title, then close the drawer
             mDrawerList.setItemChecked(position, true);
@@ -157,5 +159,13 @@ public class MainActivity extends AppCompatActivity {
             mDrawerLayout.closeDrawer(mDrawerList);
         }
 
+    }
+
+    @Override
+    public void onBackPressed() {
+        Fragment f = getSupportFragmentManager().findFragmentById(R.id.content_frame);
+        if (!f.getTag().equals(Constants.HOME_FRAGMENT_TAG)) {
+            super.onBackPressed();
+        }
     }
 }

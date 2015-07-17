@@ -10,11 +10,14 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import com.teamawesome.swap.R;
+import com.teamawesome.swap.util.Constants;
 
 /**
  * Created by JMtorii on 15-07-14.
  */
 public class HomeFragment extends ListFragment {
+    private final static String TAG_FRAGMENT = Constants.HOME_FRAGMENT_TAG;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,7 +49,9 @@ public class HomeFragment extends ListFragment {
         // TODO implement some logic
         // use Bundle and fragment.setArguments if required to pass additional data
         Fragment fragment = new FlockProfileFragment();
-        getActivity().getSupportFragmentManager().beginTransaction().add(R.id.content_frame, fragment).commit();
+        getActivity().getSupportFragmentManager().beginTransaction()
+                .add(R.id.content_frame, fragment, Constants.FLOCK_PROFILE_FRAGMENT_TAG)
+                .addToBackStack(Constants.FLOCK_PROFILE_FRAGMENT_TAG).commit();
     }
 
 }

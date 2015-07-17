@@ -50,14 +50,15 @@ public class MainActivity extends AppCompatActivity {
         mToolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem menuItem) {
-                switch (menuItem.getItemId()) {
-                    case R.id.action_settings:
-                        // TODO: add custom animation
-                        Fragment fragment = new SettingsMainFragment();
-                        FragmentManager fragmentManager = getSupportFragmentManager();
-                        fragmentManager.beginTransaction().add(R.id.content_frame, fragment).commit();
-                        return true;
-                }
+                // TODO: add appropriate menu items
+//                switch (menuItem.getItemId()) {
+//                    case R.id.action_settings:
+//                        // TODO: add custom animation
+//                        Fragment fragment = new SettingsMainFragment();
+//                        FragmentManager fragmentManager = getSupportFragmentManager();
+//                        fragmentManager.beginTransaction().add(R.id.content_frame, fragment).commit();
+//                        return true;
+//                }
 
                 return false;
             }

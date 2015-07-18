@@ -54,7 +54,7 @@ public class HomeFragment extends ListFragment {
 
         Flock[] flocks = new Flock[] {
                 new Flock.FlockBuilder().name("Hearthstone").description("Welcome to the Hearthstone flock").members(100).privacy("Invite Only").build(),
-                new Flock.FlockBuilder().name("Pokemon").description("Welcome to the Pokemanz flock").members(50).privacy("Public").build()
+                new Flock.FlockBuilder().name("Pokemon").description("Welcome to the Pokemanz flock").members(50).privacy("Public").latitude(43.6413496).longitude(-79.3874165).build()
         };
         FlockProfileFragment fragment = new FlockProfileFragment();
         fragment.setFlock(flocks[(int)(Math.random() * flocks.length)]);

@@ -6,7 +6,7 @@ I still need to do the following:
 * add tabs to the flock sections 
 * finalize colours and styles
 * finalize font style
-* add content to the settings page (sharing, rating, social media, help, contact us, rules and info, terms of service, and privacy policy
+* add content to the settings page (sharing, rating, social media, help, contact us, rules and info, terms of service, and privacy policy)
 * create text version of our Goose logo
 
 Leo

@@ -25,6 +25,8 @@ public class FlockProfileFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_flock_profile, container, false);
+        //TODO: can grab an image from google given a latitude and longitude
+        //http://maps.google.com/maps/api/staticmap?center=48.858235,2.294571&zoom=15&size=1000x200&sensor=false
     }
 
     @Override

@@ -17,7 +17,7 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:text="Profile"
-            android:id="@+id/radioButton"
+            android:id="@+id/flock_profile_button"
             android:textColor="#000000"
             android:layout_weight="1" />
 
@@ -25,7 +25,7 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:text="Activity"
-            android:id="@+id/radioButton2"
+            android:id="@+id/flock_activity_button"
             android:textColor="#000000"
             android:layout_weight="1" />
 
@@ -33,7 +33,7 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:text="Chat"
-            android:id="@+id/radioButton3"
+            android:id="@+id/flock_chat_button"
             android:textColor="#000000"
             android:layout_weight="1" />
 
@@ -50,12 +50,67 @@
             android:layout_height="wrap_content">
 
             <TextView
+                android:layout_width="match_parent"
+                android:layout_height="100dp"
+                android:background="#000000"
+                android:text = "TODO: get the google MapView in here"
+                android:textColor="#FFFFFF"/>
+            <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:layout_marginBottom="5dp"
                 android:textAppearance="?android:attr/textAppearanceLarge"
-                android:text="Welcome to some random flock"
-                android:id="@+id/textView"
+                android:text="Welcome to some random flock. This is the main page of the flock that should have all the information about the flock"
+                android:id="@+id/flock_profile_description"
                 android:textAlignment="center" />
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="#666666" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="5dp"
+                android:id="@+id/flock_profile_info_layout">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Created: May 1st 2015"
+                    android:id="@+id/flock_profile_info1"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Privacy: Anonymous"
+                    android:id="@+id/flock_profile_info2"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Members: 100"
+                    android:id="@+id/flock_profile_info3"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    />
+            </LinearLayout>
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="#666666" />
+            <Button
+                android:layout_width="fill_parent"
+                android:layout_height="50dp"
+                android:layout_weight="0.5"
+                android:text="Join Flock"
+                android:textColor="#FFFFFF"
+                android:id="@+id/join_flock_button"/>
+
         </LinearLayout>
     </ScrollView>
 </LinearLayout>

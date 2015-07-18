@@ -11,6 +11,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import com.teamawesome.swap.R;
+import com.teamawesome.swap.activity.MainActivity;
 import com.teamawesome.swap.util.Constants;
 
 /**
@@ -50,10 +51,16 @@ public class HomeFragment extends ListFragment {
         // TODO implement some logic
         // use Bundle and fragment.setArguments if required to pass additional data
         Fragment fragment = new FlockProfileFragment();
-        FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
-        ft.setCustomAnimations(R.anim.fragment_slide_in_left, R.anim.fragment_slide_out_right);
-        ft.add(R.id.content_frame, fragment, Constants.FLOCK_PROFILE_FRAGMENT_TAG)
-                .addToBackStack(Constants.FLOCK_PROFILE_FRAGMENT_TAG).commit();
+        MainActivity mainActivity = (MainActivity)getActivity();
+        mainActivity.switchFragment(
+                fragment,
+                R.anim.fragment_slide_in_left,
+                R.anim.fragment_slide_out_right,
+                Constants.FLOCK_PROFILE_FRAGMENT_TAG,
+                false,
+                false,
+                true
+        );
     }
 
 }

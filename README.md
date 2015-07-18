@@ -1,6 +1,13 @@
 # Swap-Android
 
-I still need to add better animations and tabs for the flock. 
+Mark
+------
+I still need to do the following:
+* add tabs to the flock sections 
+* finalize colours and styles
+* finalize font style
+* add content to the settings page (sharing, rating, social media, help, contact us, rules and info, terms of service, and privacy policy
+* create text version of our Goose logo
 
 Leo
 -------

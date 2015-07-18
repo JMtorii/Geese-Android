@@ -5,11 +5,13 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Button;
 
 import com.teamawesome.swap.R;
 import com.teamawesome.swap.object.Flock;
+import com.teamawesome.swap.task.URLImageLoader;
 import com.teamawesome.swap.util.Constants;
 
 /**
@@ -20,7 +22,7 @@ public class FlockProfileFragment extends Fragment {
 
     private Flock mFlock;
 
-    private View mMapView;
+    private ImageView mMapView;
     private TextView mFlockDescription;
     private TextView mFlockInfo1;
     private TextView mFlockInfo2;
@@ -58,8 +60,11 @@ public class FlockProfileFragment extends Fragment {
                 //TODO: join flock plz
             }
         });
-        mMapView = v.findViewById(R.id.flock_profile_map);
-        //TODO: can grab an image from google given a latitude and longitude
+        mMapView = (ImageView)v.findViewById(R.id.flock_profile_map);
+
+        URLImageLoader imageLoader = new URLImageLoader(mMapView);
+        imageLoader.execute("http://maps.google.com/maps/api/staticmap?center=" + mFlock.latitude + "," + mFlock.longitude + "&zoom=15&size=1000x200&sensor=false");
+        //grab static image of map based on location
         //http://maps.google.com/maps/api/staticmap?center=48.858235,2.294571&zoom=15&size=1000x200&sensor=false
         return v;
     }

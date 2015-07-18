@@ -49,12 +49,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <TextView
+            <ImageView
                 android:layout_width="match_parent"
                 android:layout_height="100dp"
-                android:background="#000000"
-                android:text = "TODO: get the google MapView in here"
-                android:textColor="#FFFFFF"
                 android:id="@+id/flock_profile_map"/>
             <TextView
                 android:layout_width="wrap_content"

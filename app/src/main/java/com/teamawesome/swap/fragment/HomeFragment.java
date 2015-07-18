@@ -12,6 +12,7 @@ import android.widget.ListView;
 
 import com.teamawesome.swap.R;
 import com.teamawesome.swap.activity.MainActivity;
+import com.teamawesome.swap.object.Flock;
 import com.teamawesome.swap.util.Constants;
 
 /**
@@ -50,7 +51,13 @@ public class HomeFragment extends ListFragment {
     public void onListItemClick(ListView l, View v, int position, long id) {
         // TODO implement some logic
         // use Bundle and fragment.setArguments if required to pass additional data
-        Fragment fragment = new FlockProfileFragment();
+
+        Flock[] flocks = new Flock[] {
+                new Flock.FlockBuilder().name("Hearthstone").description("Welcome to the Hearthstone flock").members(100).privacy("Invite Only").build(),
+                new Flock.FlockBuilder().name("Pokemon").description("Welcome to the Pokemanz flock").members(50).privacy("Public").build()
+        };
+        FlockProfileFragment fragment = new FlockProfileFragment();
+        fragment.setFlock(flocks[(int)(Math.random() * flocks.length)]);
         MainActivity mainActivity = (MainActivity)getActivity();
         mainActivity.switchFragment(
                 fragment,

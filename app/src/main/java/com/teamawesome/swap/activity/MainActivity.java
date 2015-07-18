@@ -3,12 +3,14 @@ package com.teamawesome.swap.activity;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
@@ -29,13 +31,17 @@ import com.teamawesome.swap.util.Constants;
  * version to 5
  */
 public class MainActivity extends AppCompatActivity {
+    // Toolbar
     private Toolbar mToolbar;
 
+    // Navigation drawer
     private DrawerLayout mDrawerLayout;
     private ListView mDrawerList;
     private ActionBarDrawerToggle mDrawerToggle;
-
     private String[] mNavDrawerTitles;
+
+    // Fragment manager
+    private String curFragmentTag = Constants.HOME_FRAGMENT_TAG;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -94,7 +100,7 @@ public class MainActivity extends AppCompatActivity {
         mDrawerLayout.setDrawerListener(mDrawerToggle);
 
         if (savedInstanceState == null) {
-            selectItem(0);
+            selectDrawerItem(0);
         }
     }
 
@@ -121,11 +127,11 @@ public class MainActivity extends AppCompatActivity {
     private class DrawerItemClickListener implements ListView.OnItemClickListener {
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-            selectItem(position);
+            selectDrawerItem(position);
         }
     }
 
-    private void selectItem(int position) {
+    private void selectDrawerItem(int position) {
         // update the main content by replacing fragments
         Fragment fragment;
         String tag;
@@ -139,9 +145,9 @@ public class MainActivity extends AppCompatActivity {
                 fragment = new HomeFragment();
                 tag = "";
                 break;
-            case 2:         // Settings
+            case 2:         // Setting
                 fragment = new SettingsMainFragment();
-                tag = "";
+                tag = Constants.SETTINGS_MAIN_FRAGMENT_TAG;
                 break;
             default:        // this should never happen
                 fragment = null;
@@ -150,10 +156,15 @@ public class MainActivity extends AppCompatActivity {
         }
 
         if (fragment != null) {
-            FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-            ft.setCustomAnimations(R.anim.fragment_slide_in_left, R.anim.fragment_slide_out_right);
-            ft.add(R.id.content_frame, fragment, tag)
-                    .addToBackStack(tag).commit();
+            switchFragment(
+                    fragment,
+                    R.anim.fragment_slide_in_left,
+                    R.anim.fragment_slide_out_right,
+                    tag,
+                    true,
+                    true,
+                    true
+            );
 
             // update selected item and title, then close the drawer
             mDrawerList.setItemChecked(position, true);
@@ -165,9 +176,35 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        Fragment f = getSupportFragmentManager().findFragmentById(R.id.content_frame);
+        Fragment f = getSupportFragmentManager().findFragmentByTag(curFragmentTag);
+        Log.v("test", f.getTag());
         if (!f.getTag().equals(Constants.HOME_FRAGMENT_TAG)) {
             super.onBackPressed();
         }
+    }
+
+    public void switchFragment(Fragment fragment, int enterAnim, int exitAnim, String tag,
+                               boolean isReplace, boolean clearBackStack, boolean isAddedToBackStack) {
+        FragmentManager fm = getSupportFragmentManager();
+
+        if (clearBackStack) {
+            fm.popBackStack(curFragmentTag, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+        }
+
+        FragmentTransaction ft = fm.beginTransaction();
+        ft.setCustomAnimations(enterAnim, exitAnim);
+
+        if (isReplace) {
+            ft.replace(R.id.content_frame, fragment, tag);
+        } else {
+            ft.add(R.id.content_frame, fragment, tag);
+        }
+
+        if (isAddedToBackStack) {
+            ft.addToBackStack(tag);
+        }
+
+        ft.commit();
+        curFragmentTag = tag;
     }
 }

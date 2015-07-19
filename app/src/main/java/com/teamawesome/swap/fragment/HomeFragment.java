@@ -12,14 +12,32 @@ import android.widget.ListView;
 
 import com.teamawesome.swap.R;
 import com.teamawesome.swap.activity.MainActivity;
+import com.teamawesome.swap.adapter.FlockAdapter;
 import com.teamawesome.swap.object.Flock;
 import com.teamawesome.swap.util.Constants;
+
+import java.util.ArrayList;
 
 /**
  * Created by JMtorii on 15-07-14.
  */
 public class HomeFragment extends ListFragment {
     private final static String TAG_FRAGMENT = Constants.HOME_FRAGMENT_TAG;
+
+    private ArrayList<Flock> flocks = new ArrayList<Flock>();
+
+    public HomeFragment() {
+        //set up initial flocks for now
+        flocks.add(new Flock.FlockBuilder().name("Hearthstone").description("Welcome to the Hearthstone flock").members(100).privacy("Invite Only").build());
+        flocks.add(new Flock.FlockBuilder().name("Pokemon").description("Welcome to the Pokemon flock").members(50).privacy("Public").latitude(43.6413496).longitude(-79.3874165).build());
+        flocks.add(new Flock.FlockBuilder().name("Android").description("Welcome to the Android flock").members(200).privacy("Public").build());
+        flocks.add(new Flock.FlockBuilder().name("iOS").description("Welcome to the iOS flock").members(200).privacy("Public").latitude(43.6413496).longitude(-79.3874165).build());
+        flocks.add(new Flock.FlockBuilder().name("League of Legends").description("Welcome to the LoL flock").members(200).privacy("Public").latitude(43.6413496).longitude(-79.3874165).build());
+        flocks.add(new Flock.FlockBuilder().name("UWaterloo").description("Welcome to the UW flock").members(200).privacy("Public").build());
+        for (int i = 0; i < 10; i++) {
+            flocks.add(new Flock.FlockBuilder().name("Filler").description("filler").members(200).privacy("Public").build());
+        }
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -36,14 +54,7 @@ public class HomeFragment extends ListFragment {
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        String[] values = new String[] { "Android", "iPhone", "WindowsMobile",
-                "Blackberry", "WebOS", "Ubuntu", "Windows7", "Max OS X",
-                "Linux", "OS/2", "test", "test", "test", "test" };
-
-        // TODO: use a custom adapter and view
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(),
-                android.R.layout.simple_list_item_1, values);
-
+        ArrayAdapter<Flock> adapter = new FlockAdapter(getActivity(), flocks);
         setListAdapter(adapter);
     }
 
@@ -52,12 +63,8 @@ public class HomeFragment extends ListFragment {
         // TODO implement some logic
         // use Bundle and fragment.setArguments if required to pass additional data
 
-        Flock[] flocks = new Flock[] {
-                new Flock.FlockBuilder().name("Hearthstone").description("Welcome to the Hearthstone flock").members(100).privacy("Invite Only").build(),
-                new Flock.FlockBuilder().name("Pokemon").description("Welcome to the Pokemanz flock").members(50).privacy("Public").latitude(43.6413496).longitude(-79.3874165).build()
-        };
         FlockProfileFragment fragment = new FlockProfileFragment();
-        fragment.setFlock(flocks[(int)(Math.random() * flocks.length)]);
+        fragment.setFlock(flocks.get(position));
         MainActivity mainActivity = (MainActivity)getActivity();
         mainActivity.switchFragment(
                 fragment,

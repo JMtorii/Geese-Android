@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:layout_alignParentLeft="true"
+        android:id="@+id/flock_list_item_text_container"
+        android:layout_toLeftOf="@+id/flock_list_item_map_image"
+        android:layout_toStartOf="@+id/flock_list_item_map_image">
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="Name"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:id="@+id/flock_list_item_name"/>
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="Description"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:id="@+id/flock_list_item_description"/>
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Members: 100"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:id="@+id/flock_list_item_members"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:text="Privacy: Public"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:id="@+id/flock_list_item_privacy"/>
+        </LinearLayout>
+    </LinearLayout>
+    <ImageView
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_alignParentRight="true"
+        android:id="@+id/flock_list_item_map_image"/>
+
+</RelativeLayout>

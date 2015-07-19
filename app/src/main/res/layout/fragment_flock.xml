@@ -11,6 +11,7 @@
         android:layout_height="50dp"
         android:layout_gravity="center_horizontal|top"
         android:weightSum="3"
+        android:id="@+id/flock_radio_group"
         android:orientation="horizontal">
 
         <RadioButton

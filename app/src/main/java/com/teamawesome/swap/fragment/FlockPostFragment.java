@@ -11,13 +11,13 @@ import com.teamawesome.swap.R;
 /**
  * Created by MichaelQ on 2015-07-18.
  */
-public class FlockActivityFragment extends Fragment {
+public class FlockPostFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View v = inflater.inflate(R.layout.fragment_flock_activity, container, false);
+        View v = inflater.inflate(R.layout.fragment_post_activity, container, false);
         return v;
     }
 }

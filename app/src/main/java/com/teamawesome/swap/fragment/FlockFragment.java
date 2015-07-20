@@ -2,21 +2,14 @@ package com.teamawesome.swap.fragment;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.RadioButton;
 import android.widget.RadioGroup;
-import android.widget.TextView;
-import android.widget.Button;
 
 import com.teamawesome.swap.R;
 import com.teamawesome.swap.object.Flock;
-import com.teamawesome.swap.task.URLImageLoader;
 import com.teamawesome.swap.util.Constants;
 
 /**
@@ -57,7 +50,7 @@ public class FlockFragment extends Fragment {
                         break;
                     }
                     case R.id.flock_activity_button: {
-                        FlockActivityFragment activityFragment = new FlockActivityFragment();
+                        FlockPostFragment activityFragment = new FlockPostFragment();
                         fragment = activityFragment;
                         fragmentTag = Constants.FLOCK_ACTIVITY_FRAGMENT_TAG;
                         break;

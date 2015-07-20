@@ -1,8 +1,6 @@
 package com.teamawesome.swap.fragment;
 
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.ListFragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -62,15 +60,14 @@ public class HomeFragment extends ListFragment {
     public void onListItemClick(ListView l, View v, int position, long id) {
         // TODO implement some logic
         // use Bundle and fragment.setArguments if required to pass additional data
-
-        FlockProfileFragment fragment = new FlockProfileFragment();
+        FlockFragment fragment = new FlockFragment();
         fragment.setFlock(flocks.get(position));
         MainActivity mainActivity = (MainActivity)getActivity();
         mainActivity.switchFragment(
                 fragment,
                 R.anim.fragment_slide_in_left,
                 R.anim.fragment_slide_out_right,
-                Constants.FLOCK_PROFILE_FRAGMENT_TAG,
+                Constants.FLOCK_FRAGMENT_TAG,
                 false,
                 false,
                 true

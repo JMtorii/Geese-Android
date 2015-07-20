@@ -12,10 +12,16 @@ import java.io.InputStream;
  * Created by MichaelQ on 2015-07-18.
  */
 public class URLImageLoader extends AsyncTask<String, Void, Bitmap> {
-    ImageView mImageView;
+    private ImageView mImageView;
+    private OnImageLoaded mImageLoadedCallback;
+
 
     public URLImageLoader(ImageView imageView) {
         mImageView = imageView;
+    }
+
+    public URLImageLoader(OnImageLoaded imageLoadedCallback) {
+        mImageLoadedCallback = imageLoadedCallback;
     }
 
     protected Bitmap doInBackground(String... urls) {
@@ -32,6 +38,11 @@ public class URLImageLoader extends AsyncTask<String, Void, Bitmap> {
     }
 
     protected void onPostExecute(Bitmap result) {
-        mImageView.setImageBitmap(result);
+        if (mImageView != null) {
+            mImageView.setImageBitmap(result);
+        } else {
+            mImageLoadedCallback.onImageLoaded(result);
+        }
     }
+
 }

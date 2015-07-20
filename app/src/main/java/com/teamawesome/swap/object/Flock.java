@@ -1,5 +1,7 @@
 package com.teamawesome.swap.object;
 
+import android.graphics.Bitmap;
+
 /**
  * Created by MichaelQ on 2015-07-18.
  */
@@ -11,6 +13,7 @@ public class Flock {
     public final String createdDate;
     public final String privacy;
     public final int members;
+    private Bitmap mMapImage200x200;
 
     public Flock(FlockBuilder fb) {
         name = fb.name;
@@ -21,6 +24,15 @@ public class Flock {
         privacy = fb.privacy;
         members = fb.members;
     }
+
+    public Bitmap mapImage200x200() {
+        return mMapImage200x200;
+    }
+
+    public void setMapImage200x200(Bitmap bitmap) {
+        mMapImage200x200 = bitmap;
+    }
+
     public static class FlockBuilder {
         private String name;
         private String description;

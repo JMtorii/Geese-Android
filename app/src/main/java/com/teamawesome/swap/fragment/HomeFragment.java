@@ -1,8 +1,6 @@
 package com.teamawesome.swap.fragment;
 
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.ListFragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -56,14 +54,14 @@ public class HomeFragment extends ListFragment {
                 new Flock.FlockBuilder().name("Hearthstone").description("Welcome to the Hearthstone flock").members(100).privacy("Invite Only").build(),
                 new Flock.FlockBuilder().name("Pokemon").description("Welcome to the Pokemanz flock").members(50).privacy("Public").latitude(43.6413496).longitude(-79.3874165).build()
         };
-        FlockProfileFragment fragment = new FlockProfileFragment();
+        FlockFragment fragment = new FlockFragment();
         fragment.setFlock(flocks[(int)(Math.random() * flocks.length)]);
         MainActivity mainActivity = (MainActivity)getActivity();
         mainActivity.switchFragment(
                 fragment,
                 R.anim.fragment_slide_in_left,
                 R.anim.fragment_slide_out_right,
-                Constants.FLOCK_PROFILE_FRAGMENT_TAG,
+                Constants.FLOCK_FRAGMENT_TAG,
                 false,
                 false,
                 true

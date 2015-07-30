@@ -39,26 +39,14 @@ public class SettingsMainFragment extends Fragment {
 
         StickyListHeadersListView stickyList = (StickyListHeadersListView)
                 getActivity().findViewById(R.id.settings_list);
+        stickyList.setAreHeadersSticky(false);
 
         SettingsListAdapter adapter = new SettingsListAdapter(getActivity());
         stickyList.setAdapter(adapter);
-//        String[] values = new String[] { "one", "two", "three", "four", "five", "six", "seven",
-//                "eight", "nine", "ten", "eleven", "twelve", "thirteen", "fourteen" };
-//
-//        // TODO: use a custom adapter and view
-//        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(),
-//                android.R.layout.simple_list_item_1, values);
-//
-//        setListAdapter(adapter);
     }
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
     }
-
-//    @Override
-//    public void onListItemClick(ListView l, View v, int position, long id) {
-//        // TODO implement some logic
-//    }
 }

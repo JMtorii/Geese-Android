@@ -14,10 +14,13 @@ import se.emilsjolander.stickylistheaders.StickyListHeadersAdapter;
 /**
  * Created by JMtorii on 15-07-29.
  */
+
+// TODO: Move string arrays to res/values and make adapter dynamic
 public class SettingsListAdapter extends BaseAdapter implements StickyListHeadersAdapter {
-    private String[] titles = {"test1", "test2", "test3", "test4", "test5", "test6", "test7",
-            "test8", "test9", "test10", "test11", "test12", "test13", "test14", "hello1", "hello2",
-            "hello3", "hello4", "hello5", "hello6", "hello7", "hello8", "hello9", "world"};
+    // TODO: move to values
+    private String[] titles = {"Share Goose", "Rate Goose", "Follow Us on Twitter",
+            "Follow Us on Facebook", "Follow Us on Instagram", "Contact Us/ Get Help",
+            "Rules and Info", "Terms of Service", "Privacy Policy"};
     private LayoutInflater inflater;
 
     public SettingsListAdapter(Context context) {
@@ -68,16 +71,28 @@ public class SettingsListAdapter extends BaseAdapter implements StickyListHeader
         } else {
             holder = (HeaderViewHolder) convertView.getTag();
         }
-        //set header text as first char in name
-        String headerText = "" + titles[position].subSequence(0, 1).charAt(0);
+
+        String headerText;
+        if (position >= 0 && position < 5) {
+            headerText = "Show Us Some Love";
+        } else if (position >= 5) {
+            headerText = "Important Stuff";
+        } else {
+            headerText = "testing";
+        }
         holder.text.setText(headerText);
         return convertView;
     }
 
     @Override
     public long getHeaderId(int position) {
-        //return the first character of the country as ID because this is what headers are based upon
-        return titles[position].subSequence(0, 1).charAt(0);
+        if (position >= 0 && position < 5) {
+            return 0;
+        } else if (position >= 5) {
+            return 5;
+        }
+
+        return position;
     }
 
     class HeaderViewHolder {

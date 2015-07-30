@@ -15,7 +15,7 @@ import com.teamawesome.geese.task.debug.PostRequestTask;
 
 public class DebugMainActivity extends ListActivity {
 
-    String[] values = new String[] { "Actual Application", "UI", "Server" };
+    String[] values = new String[] { "Actual Application", "UI", "Server", "ViewPager" };
     String rawCard = "{ " +
             "'card': {" +
                 "'templateId': 1, " +

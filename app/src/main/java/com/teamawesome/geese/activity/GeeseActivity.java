@@ -37,6 +37,6 @@ public class GeeseActivity extends Activity {
         startActivity(i);
 
         // this may not be necessary
-        setContentView(R.layout.activity_goose);
+        setContentView(R.layout.activity_geese);
     }
 }

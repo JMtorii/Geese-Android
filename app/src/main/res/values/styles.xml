@@ -12,6 +12,7 @@
         <item name="android:windowNoTitle">true</item>
         <item name="windowActionBar">false</item>
         <item name="toolbarStyle">@style/Widget.AppCompat.Toolbar</item>
+        <item name="stickyListHeadersListViewStyle">@style/Widget.AppCompat.ListView</item>
     </style>
 
 </resources>

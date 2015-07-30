@@ -19,7 +19,7 @@ import android.widget.ListView;
 
 import com.teamawesome.geese.R;
 import com.teamawesome.geese.fragment.HomeFragment;
-import com.teamawesome.geese.fragment.SettingsMainFragment;
+import com.teamawesome.geese.fragment.settings.SettingsMainFragment;
 import com.teamawesome.geese.util.Constants;
 
 

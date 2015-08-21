@@ -14,16 +14,17 @@ import com.astuetz.PagerSlidingTabStrip;
 import com.teamawesome.geese.R;
 import com.teamawesome.geese.fragment.debug.SuperAwesomeCardFragment;
 
+import butterknife.Bind;
+import butterknife.ButterKnife;
+
+
 /**
  * Created by JMtorii on 15-07-30.
  */
 public class DebugViewPagerActivity extends AppCompatActivity {
-//    @InjectView(R.id.toolbar)
-    Toolbar toolbar;
-//    @InjectView(R.id.tabs)
-    PagerSlidingTabStrip tabs;
-//    @InjectView(R.id.pager)
-    ViewPager pager;
+    @Bind(R.id.toolbar_view_pager) Toolbar toolbar;
+    @Bind(R.id.tabs) PagerSlidingTabStrip tabs;
+    @Bind(R.id.pager_debug) ViewPager pager;
 
     private MyPagerAdapter adapter;
 
@@ -31,10 +32,10 @@ public class DebugViewPagerActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.debug_activity_view_pager);
-//        ButterKnife.inject(this);
-        toolbar = (Toolbar) findViewById(R.id.toolbar_view_pager);
-        tabs = (PagerSlidingTabStrip) findViewById(R.id.tabs);
-        pager = (ViewPager) findViewById(R.id.pager);
+        ButterKnife.bind(this);
+//        toolbar = (Toolbar) findViewById(R.id.toolbar_view_pager);
+//        tabs = (PagerSlidingTabStrip) findViewById(R.id.tabs);
+//        pager = (ViewPager) findViewById(R.id.pager);
         setSupportActionBar(toolbar);
         adapter = new MyPagerAdapter(getSupportFragmentManager());
         pager.setAdapter(adapter);

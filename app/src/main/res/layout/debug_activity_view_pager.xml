@@ -7,16 +7,27 @@
 
     <include layout="@layout/debug_toolbar_view_pager"/>
 
+    <!--<TextView-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:textAppearance="?android:attr/textAppearanceSmall"-->
+        <!--android:textColor="@color/black"-->
+        <!--android:text="Small Text"-->
+        <!--android:id="@+id/textView3"-->
+        <!--android:layout_gravity="center_horizontal" />-->
+
     <com.astuetz.PagerSlidingTabStrip
         android:id="@+id/tabs"
         android:layout_width="match_parent"
+        android:background="@color/primary"
         android:layout_height="?attr/actionBarSize" />
 
     <android.support.v4.view.ViewPager
-        android:id="@+id/pager"
+        android:id="@+id/pager_debug"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
+        android:background="@color/primary"
         tools:context=".DebugViewPagerActivity"/>
 
     <!--<LinearLayout-->

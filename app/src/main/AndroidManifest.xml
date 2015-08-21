@@ -50,6 +50,10 @@
             android:name="com.teamawesome.geese.activity.debug.DebugUserProfileActivity"
             android:label="@string/title_activity_debug_user_profile" >
         </activity>
+        <activity
+            android:name="com.teamawesome.geese.activity.debug.DebugViewPagerActivity"
+            android:label="@string/title_activity_debug_user_profile" >
+        </activity>
     </application>
 
 </manifest>

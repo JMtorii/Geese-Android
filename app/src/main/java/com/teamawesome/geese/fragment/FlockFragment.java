@@ -33,43 +33,44 @@ public class FlockFragment extends Fragment {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_flock, container, false);
         final int linearLayoutId = v.findViewById(R.id.flock_linear_layout).getId();
-        RadioGroup radioGroup = (RadioGroup)v.findViewById(R.id.flock_radio_group);
-        radioGroup.check(R.id.flock_profile_button);
-        radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(RadioGroup group, int checkedId) {
-                FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
-                Fragment fragment = null;
-                String fragmentTag = null;
-                switch (checkedId) {
-                    case R.id.flock_profile_button: {
-                        FlockProfileFragment profileFragment = new FlockProfileFragment();
-                        profileFragment.setFlock(mFlock);
-                        fragment = profileFragment;
-                        fragmentTag = Constants.FLOCK_PROFILE_FRAGMENT_TAG;
-                        break;
-                    }
-                    case R.id.flock_activity_button: {
-                        FlockPostFragment activityFragment = new FlockPostFragment();
-                        fragment = activityFragment;
-                        fragmentTag = Constants.FLOCK_ACTIVITY_FRAGMENT_TAG;
-                        break;
-                    }
-                    case R.id.flock_chat_button: {
-                        FlockChatFragment chatFragment = new FlockChatFragment();
-                        fragment = chatFragment;
-                        fragmentTag = Constants.FLOCK_CHAT_FRAGMENT_TAG;
-                        break;
-                    }
-                    default:
-                        return;
-                }
-                transaction.replace(linearLayoutId, fragment, currentChildFragmentID);
-                currentChildFragmentID = fragmentTag;
-                transaction.commit();
 
-            }
-        });
+//        RadioGroup radioGroup = (RadioGroup)v.findViewById(R.id.flock_radio_group);
+//        radioGroup.check(R.id.flock_profile_button);
+//        radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+//            @Override
+//            public void onCheckedChanged(RadioGroup group, int checkedId) {
+//                FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
+//                Fragment fragment = null;
+//                String fragmentTag = null;
+//                switch (checkedId) {
+//                    case R.id.flock_profile_button: {
+//                        FlockProfileFragment profileFragment = new FlockProfileFragment();
+//                        profileFragment.setFlock(mFlock);
+//                        fragment = profileFragment;
+//                        fragmentTag = Constants.FLOCK_PROFILE_FRAGMENT_TAG;
+//                        break;
+//                    }
+//                    case R.id.flock_activity_button: {
+//                        FlockPostFragment activityFragment = new FlockPostFragment();
+//                        fragment = activityFragment;
+//                        fragmentTag = Constants.FLOCK_ACTIVITY_FRAGMENT_TAG;
+//                        break;
+//                    }
+//                    case R.id.flock_chat_button: {
+//                        FlockChatFragment chatFragment = new FlockChatFragment();
+//                        fragment = chatFragment;
+//                        fragmentTag = Constants.FLOCK_CHAT_FRAGMENT_TAG;
+//                        break;
+//                    }
+//                    default:
+//                        return;
+//                }
+//                transaction.replace(linearLayoutId, fragment, currentChildFragmentID);
+//                currentChildFragmentID = fragmentTag;
+//                transaction.commit();
+//
+//            }
+//        });
         FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
         FlockProfileFragment profile = new FlockProfileFragment();
         profile.setFlock(mFlock);
@@ -77,22 +78,6 @@ public class FlockFragment extends Fragment {
         currentChildFragmentID = Constants.FLOCK_PROFILE_FRAGMENT_TAG;
         transaction.commit();
         return v;
-    }
-
-    @Override
-    public void onDestroyView() {
-        //TODO: this should work but it crashes for some reason
-//        FragmentManager fragmentManager = getChildFragmentManager();
-//        FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
-//        Fragment childFragment = fragmentManager.findFragmentByTag(Constants.FLOCK_PROFILE_FRAGMENT_TAG);
-//        transaction.remove(childFragment);
-//        transaction.commit();
-        super.onDestroyView();
-    }
-
-    @Override
-    public void onActivityCreated(Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
     }
 
     public void setFlock(Flock f) {

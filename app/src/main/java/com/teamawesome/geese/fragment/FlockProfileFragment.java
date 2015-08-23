@@ -1,6 +1,5 @@
 package com.teamawesome.geese.fragment;
 
-import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,15 +9,15 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.teamawesome.geese.R;
-import com.teamawesome.geese.object.Flock;
 import com.teamawesome.geese.task.URLImageLoader;
 
 /**
  * Created by MichaelQ on 2015-07-18.
  */
-public class FlockProfileFragment extends Fragment {
+public class FlockProfileFragment extends FlockFragment {
+    private static final String ARG_POSITION = "position";
 
-    private Flock mFlock;
+    private int mPosition;
 
     private ImageView mMapView;
     private TextView mFlockDescription;
@@ -26,6 +25,20 @@ public class FlockProfileFragment extends Fragment {
     private TextView mFlockInfo2;
     private TextView mFlockInfo3;
     private Button mJoinFlockButton;
+
+    public static FlockProfileFragment newInstance(int position) {
+        FlockProfileFragment f = new FlockProfileFragment();
+        Bundle b = new Bundle();
+        b.putInt(ARG_POSITION, position);
+        f.setArguments(b);
+        return f;
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        mPosition = getArguments().getInt(ARG_POSITION);
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -62,7 +75,7 @@ public class FlockProfileFragment extends Fragment {
         return v;
     }
 
-    public void setFlock(Flock f) {
-        mFlock = f;
-    }
+//    public void setFlock(Flock f) {
+//        mFlock = f;
+//    }
 }

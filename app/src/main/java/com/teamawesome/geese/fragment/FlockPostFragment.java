@@ -11,7 +11,24 @@ import com.teamawesome.geese.R;
 /**
  * Created by MichaelQ on 2015-07-18.
  */
-public class FlockPostFragment extends Fragment {
+public class FlockPostFragment extends FlockFragment {
+    private static final String ARG_POSITION = "position";
+
+    private int mPosition;
+
+    public static FlockPostFragment newInstance(int position) {
+        FlockPostFragment f = new FlockPostFragment();
+        Bundle b = new Bundle();
+        b.putInt(ARG_POSITION, position);
+        f.setArguments(b);
+        return f;
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        mPosition = getArguments().getInt(ARG_POSITION);
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,

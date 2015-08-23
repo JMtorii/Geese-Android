@@ -18,23 +18,23 @@ import se.emilsjolander.stickylistheaders.StickyListHeadersAdapter;
 // TODO: Move string arrays to res/values and make adapter dynamic
 public class SettingsListAdapter extends BaseAdapter implements StickyListHeadersAdapter {
     // TODO: move to values
-    private String[] titles = {"Share Goose", "Rate Goose", "Follow Us on Twitter",
+    private String[] mTitles = {"Share Goose", "Rate Goose", "Follow Us on Twitter",
             "Follow Us on Facebook", "Follow Us on Instagram", "Contact Us/ Get Help",
             "Rules and Info", "Terms of Service", "Privacy Policy"};
-    private LayoutInflater inflater;
+    private LayoutInflater mInflater;
 
     public SettingsListAdapter(Context context) {
-        inflater = LayoutInflater.from(context);
+        mInflater = LayoutInflater.from(context);
     }
 
     @Override
     public int getCount() {
-        return titles.length;
+        return mTitles.length;
     }
 
     @Override
     public Object getItem(int position) {
-        return titles[position];
+        return mTitles[position];
     }
 
     @Override
@@ -48,14 +48,14 @@ public class SettingsListAdapter extends BaseAdapter implements StickyListHeader
 
         if (convertView == null) {
             holder = new ViewHolder();
-            convertView = inflater.inflate(R.layout.settings_list_item, parent, false);
+            convertView = mInflater.inflate(R.layout.settings_list_item, parent, false);
             holder.text = (TextView) convertView.findViewById(R.id.settings_item_text);
             convertView.setTag(holder);
         } else {
             holder = (ViewHolder) convertView.getTag();
         }
 
-        holder.text.setText(titles[position]);
+        holder.text.setText(mTitles[position]);
 
         return convertView;
     }
@@ -65,7 +65,7 @@ public class SettingsListAdapter extends BaseAdapter implements StickyListHeader
         HeaderViewHolder holder;
         if (convertView == null) {
             holder = new HeaderViewHolder();
-            convertView = inflater.inflate(R.layout.settings_list_header, parent, false);
+            convertView = mInflater.inflate(R.layout.settings_list_header, parent, false);
             holder.text = (TextView) convertView.findViewById(R.id.header_text);
             convertView.setTag(holder);
         } else {

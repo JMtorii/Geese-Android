@@ -14,7 +14,6 @@ import com.teamawesome.geese.util.Constants;
  * actual app.
  */
 public class GeeseActivity extends Activity {
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

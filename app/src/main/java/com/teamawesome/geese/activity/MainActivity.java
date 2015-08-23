@@ -177,8 +177,8 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         Fragment f = getSupportFragmentManager().findFragmentByTag(curFragmentTag);
-        Log.v("test", f.getTag());
-        if (!f.getTag().equals(Constants.HOME_FRAGMENT_TAG)) {
+        if (f != null && !f.getTag().equals(Constants.HOME_FRAGMENT_TAG)) {
+            Log.v("test", f.getTag());
             super.onBackPressed();
         }
     }

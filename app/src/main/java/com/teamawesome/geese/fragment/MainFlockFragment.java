@@ -23,6 +23,13 @@ public class MainFlockFragment extends Fragment {
     private PagerAdapter mAdapter;
     private Flock mFlock;
 
+    public FlockFragment fragments[] = {
+            FlockProfileFragment.newInstance(0),
+            FlockPostFragment.newInstance(1),
+            FlockChatFragment.newInstance(2)
+    };
+
+
     private final static String TAG_FRAGMENT = Constants.FLOCK_FRAGMENT_TAG;
 
     @Override
@@ -42,6 +49,13 @@ public class MainFlockFragment extends Fragment {
         mTabs.setViewPager(mPager);
         mPager.setCurrentItem(0);
         return v;
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        // remove all child fragments, otherwise fragment manager tries to reuse the fragments and fucks up.
+        getFragmentManager().beginTransaction().remove(fragments[0]).remove(fragments[1]).remove(fragments[2]).commit();
     }
 
     public void setFlock(Flock f) {
@@ -72,24 +86,21 @@ public class MainFlockFragment extends Fragment {
 
         @Override
         public Fragment getItem(int position) {
-            FlockFragment fragment;
+            FlockFragment fragment = fragments[position];
 
-            switch(position) {
-                case 0:     // Profile
-                    fragment = FlockProfileFragment.newInstance(position);
-                    break;
-                case 1:     // Post
-                    fragment = FlockPostFragment.newInstance(position);
-                    break;
-                case 2:     // Chat
-                    fragment = FlockChatFragment.newInstance(position);
-                    break;
-                default:
-                    return null;    // TODO: horrible. should do error checking instead
-            }
 
             fragment.setFlock(mFlock);
             return fragment;
+        }
+
+        @Override
+        public int getItemPosition(Object object){
+            for (int i = 0; i < fragments.length; i++) {
+                if (object == fragments[i]) {
+                    return i;
+                }
+            }
+            return PagerAdapter.POSITION_NONE;
         }
     }
 }

@@ -60,7 +60,10 @@ public class HomeFragment extends ListFragment {
     public void onListItemClick(ListView l, View v, int position, long id) {
         // TODO implement some logic
         // use Bundle and fragment.setArguments if required to pass additional data
-        MainFlockFragment fragment = new MainFlockFragment();
+        MainFlockFragment fragment = (MainFlockFragment)getFragmentManager().findFragmentByTag(Constants.FLOCK_FRAGMENT_TAG);
+        if (fragment == null) {
+            fragment = new MainFlockFragment();
+        }
         fragment.setFlock(flocks.get(position));
         MainActivity mainActivity = (MainActivity)getActivity();
         mainActivity.switchFragment(

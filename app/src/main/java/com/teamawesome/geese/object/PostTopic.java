@@ -5,14 +5,14 @@ package com.teamawesome.geese.object;
  */
 public class PostTopic {
     private String title;
-    private String message;
+    private String description;
     // TODO:add PostDetails list
     // TODO:support images
     private int upvotes;
 
-    public PostTopic(String title, String message, int upvotes) {
+    public PostTopic(String title, String description, int upvotes) {
         this.title = title;
-        this.message = message;
+        this.description = description;
         this.upvotes = upvotes;
     }
 
@@ -20,8 +20,8 @@ public class PostTopic {
         return title;
     }
 
-    public String getMessage() {
-        return message;
+    public String getDescription() {
+        return description;
     }
 
     public int getUpvotes() {

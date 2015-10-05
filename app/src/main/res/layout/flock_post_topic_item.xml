@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:layout_alignParentLeft="true"
+        android:id="@+id/flock_post_topic_text_container"
+        android:layout_toLeftOf="@+id/flock_post_topic_upvote_downvote"
+        android:layout_toStartOf="@+id/flock_post_topic_upvote_downvote">
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="Topic"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:id="@+id/flock_post_topic_title"/>
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="Description"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:id="@+id/flock_post_topic_description"/>
+    </LinearLayout>
+    <View
+        android:layout_width="100dp"
+        android:layout_height="fill_parent"
+        android:layout_alignParentRight="true"
+        android:id="@+id/flock_post_topic_upvote_downvote"/>
+
+</RelativeLayout>

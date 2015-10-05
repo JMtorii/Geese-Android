@@ -14,6 +14,7 @@ public class FlockPostFragment extends FlockFragment {
     private static final String ARG_POSITION = "position";
 
     private int mPosition;
+    private FlockPostTopicFragment postTopicFragment = new FlockPostTopicFragment();
 
     public static FlockPostFragment newInstance(int position) {
         FlockPostFragment f = new FlockPostFragment();
@@ -34,6 +35,7 @@ public class FlockPostFragment extends FlockFragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_flock_posts, container, false);
+        getFragmentManager().beginTransaction().add(R.id.flock_post_linear_layout, postTopicFragment).commit();
         return v;
     }
 }

@@ -9,8 +9,8 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import com.teamawesome.geese.R;
-import com.teamawesome.geese.adapter.FlockAdapter;
-import com.teamawesome.geese.object.Flock;
+import com.teamawesome.geese.adapter.FlockPostTopicAdapter;
+import com.teamawesome.geese.object.PostTopic;
 
 import java.util.ArrayList;
 
@@ -33,12 +33,11 @@ public class FlockPostTopicFragment extends ListFragment {
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        //set a real adapter
-        ArrayList<Flock> flocks = new ArrayList<Flock>();
+        ArrayList<PostTopic> posts = new ArrayList<PostTopic>();
         for (int i = 0; i < 10; i++) {
-            flocks.add(new Flock.FlockBuilder().name("Filler").description("filler").members(200).privacy("Public").build());
+            posts.add(new PostTopic("Title " + i, "Description " + i, i));
         }
-        ArrayAdapter<Flock> adapter = new FlockAdapter(getActivity(), flocks);
+        ArrayAdapter<PostTopic> adapter = new FlockPostTopicAdapter(getActivity(), posts);
         setListAdapter(adapter);
     }
 

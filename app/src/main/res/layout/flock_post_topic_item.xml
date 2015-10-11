@@ -23,10 +23,10 @@
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:id="@+id/flock_post_topic_description"/>
     </LinearLayout>
-    <include
+    <com.teamawesome.geese.view.UpvoteDownvoteView
         layout="@layout/upvote_downvote_view"
         android:layout_width="100dp"
-        android:layout_height="60dp"
+        android:layout_height="70dp"
         android:layout_alignParentRight="true"
         android:id="@+id/flock_post_topic_upvote_downvote"/>
 

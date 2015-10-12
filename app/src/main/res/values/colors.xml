@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <item name="primary" type="color">#3468f4</item>
-    <item name="primaryDark" type="color">#2349b0</item>
+    <item name="primary" type="color">#00c7b5</item>
+    <item name="primaryLight" type="color">#e3fff3</item>
+    <item name="primaryDark" type="color">#0c8079</item>
     <item name="whiteBackground" type="color">#FCFCFC</item>
     <item name="black" type="color">#000000</item>
-
-
+    <item name="grey" type="color">#999999</item>
+    <item name="darkGrey" type="color">#444444</item>
 </resources>

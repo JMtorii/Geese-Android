@@ -10,12 +10,13 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.teamawesome.geese.R;
+import com.teamawesome.geese.fragment.SignupFragment;
 import com.teamawesome.geese.activity.GeeseActivity;
 import com.teamawesome.geese.task.debug.PostRequestTask;
 
 public class DebugMainActivity extends ListActivity {
 
-    String[] values = new String[] { "Actual Application", "UI", "Server", "ViewPager" };
+    String[] values = new String[] { "Actual Application", "Login", "Server", "ViewPager" };
     String rawCard = "{ " +
             "'card': {" +
                 "'templateId': 1, " +
@@ -61,8 +62,8 @@ public class DebugMainActivity extends ListActivity {
             startActivity(i);
 
         } else if (id == 1) {  //UI
-            Intent homeIntent = new Intent(this, DebugHomeActivity.class);
-            startActivity(homeIntent);
+            Intent loginIntent = new Intent(this, SignupFragment.class);
+            startActivity(loginIntent);
 
         } else if (id == 2) { //Server
             new PostRequestTask(this).execute(rawCard);

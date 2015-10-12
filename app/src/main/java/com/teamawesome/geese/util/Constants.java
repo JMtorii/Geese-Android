@@ -11,6 +11,7 @@ public final class Constants {
 
     public static final String HOME_FRAGMENT_TAG = "HOME_FRAGMENT";
     public static final String SETTINGS_MAIN_FRAGMENT_TAG = "SETTINGS_MAIN_FRAGMENT";
+    public static final String SIGNUP_FRAGMENT_TAG = "SIGNUP_FRAGMENT_TAG";
     public static final String FLOCK_ACTIVITY_FRAGMENT_TAG = "FLOCK_ACTIVITY_FRAGMENT";
     public static final String FLOCK_CHAT_FRAGMENT_TAG = "FLOCK_ACTIVITY_CHAT";
     public static final String FLOCK_PROFILE_FRAGMENT_TAG = "FLOCK_PROFILE_FRAGMENT";

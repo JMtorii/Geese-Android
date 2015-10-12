@@ -11,10 +11,24 @@
     <string name="title_activity_debug_chat">DebugChatActivity</string>
     <string name="title_activity_debug_user_profile">DebugUserProfileActivity</string>
 
+    <!-- Login Page Strings -->
+    <string name="user_name_hint">Username</string>
+    <string name="email_hint">Email</string>
+    <string name="email_sign_up"><b>Sign Up!</b></string>
+    <string name="facebook_sign_in">Continue with Facebook</string>
+    <string name="password_hint">Password</string>
+    <string name="creation_ToS">Creation of an account means you\'re a-okay with our <b>terms of services</b>.</string>
+    <string name="login">Already have an account? <b>LOGIN</b></string>
+
+    <string name="facebook_app_id">1506283642997654</string>
+
+
     <string-array name="nav_drawer_array">
         <item>Home</item>
         <item>Nearby</item>
         <item>Settings</item>
+        <item>Signup</item>
+        <item>DEBUG LOGOUT</item>
     </string-array>
 
     <string name="drawer_open">Open navigation drawer</string>

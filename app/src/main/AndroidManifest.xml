@@ -35,7 +35,7 @@
             android:label="@string/title_activity_goose" >
         </activity>
         <activity
-            android:name="com.teamawesome.geese.activity.debug.DebugLoginActivity"
+            android:name=".fragment.SignupFragment"
             android:label="@string/title_activity_login" >
         </activity>
         <activity
@@ -54,6 +54,15 @@
             android:name="com.teamawesome.geese.activity.debug.DebugViewPagerActivity"
             android:label="@string/title_activity_debug_user_profile" >
         </activity>
+
+        <meta-data android:name="com.facebook.sdk.ApplicationId" android:value="@string/facebook_app_id"/>
+        <activity
+            android:name="com.facebook.FacebookActivity"
+            android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar"
+            android:label="@string/app_name">
+        </activity>
+
     </application>
 
 </manifest>

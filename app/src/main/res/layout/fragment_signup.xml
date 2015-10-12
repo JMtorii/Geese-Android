@@ -1,0 +1,102 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:fb="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/pager"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".LoginActivity">
+
+    <EditText
+        android:id="@+id/username_entry"
+        android:inputType="textNoSuggestions"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/toolbar"
+        android:layout_marginTop="40dp"
+        android:width="250dp"
+        android:hint="@string/user_name_hint"
+        android:singleLine="false"
+        style="@style/CustomEditTextStyle"
+        android:selectAllOnFocus="false" />
+
+    <EditText
+        android:id="@+id/email_entry"
+        android:inputType="textEmailAddress"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/username_entry"
+        android:layout_marginTop="20dp"
+        android:width="250dp"
+        android:hint="@string/email_hint"
+        style="@style/CustomEditTextStyle"
+        android:singleLine="false"
+        android:selectAllOnFocus="false" />
+
+    <EditText
+        android:id="@+id/password_entry"
+        android:inputType="textPassword"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/email_entry"
+        android:width="250dp"
+        android:hint="@string/password_hint"
+        style="@style/CustomEditTextStyle" />
+
+    <Button
+        android:id="@+id/email_sign_up_button"
+        android:layout_width="300dp"
+        android:layout_height="45dp"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/password_entry"
+        android:text="@string/email_sign_up"
+        android:textSize="18dp"
+        android:textColor="@color/whiteBackground"
+        android:textAllCaps="false"
+        android:typeface="normal"
+        android:layout_marginTop="30dp"
+        android:background="@drawable/button"
+        style="?android:attr/borderlessButtonStyle" />
+
+    <com.facebook.login.widget.LoginButton
+        android:id="@+id/facebook_login_button"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/email_sign_up_button"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="15dp"
+        fb:com_facebook_login_text="@string/facebook_sign_in"
+        fb:com_facebook_confirm_logout="false"
+        style="@style/FacebookLoginButton" />
+    <!--fb:com_facebook_fetch_user_info="true" />-->
+    <!--facebook:login_text="@string/facebook_sign_in" />-->
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp"
+        android:text="@string/creation_ToS"
+        android:id="@+id/creation_ToS"
+        android:layout_below="@+id/facebook_login_button"
+        android:width="250dp"
+        android:gravity="center"
+        android:textSize="14dp"
+        android:textColor="@color/darkGrey" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="10dp"
+        android:text="@string/login"
+        android:id="@+id/login"
+        android:layout_below="@+id/creation_ToS"
+        android:width="250dp"
+        android:gravity="center"
+        android:textSize="14dp" />
+
+</RelativeLayout>

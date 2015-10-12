@@ -17,11 +17,16 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.Toast;
 
+import com.facebook.FacebookSdk;
+import com.facebook.login.LoginManager;
 import com.teamawesome.geese.R;
+import com.teamawesome.geese.fragment.SignupFragment;
 import com.teamawesome.geese.fragment.HomeFragment;
 import com.teamawesome.geese.fragment.settings.SettingsMainFragment;
 import com.teamawesome.geese.util.Constants;
+import com.teamawesome.geese.util.SessionManager;
 
 
 /*
@@ -44,9 +49,16 @@ public class MainActivity extends AppCompatActivity {
     // Fragment manager
     private String curFragmentTag = Constants.HOME_FRAGMENT_TAG;
 
+    // Session manager
+    private SessionManager sessionManager;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        sessionManager = new SessionManager(getApplicationContext());
+        FacebookSdk.sdkInitialize(getApplicationContext());
+
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         setContentView(R.layout.activity_main);
 
@@ -151,10 +163,23 @@ public class MainActivity extends AppCompatActivity {
                 fragment = new SettingsMainFragment();
                 tag = Constants.SETTINGS_MAIN_FRAGMENT_TAG;
                 break;
+            case 3:         // Signup
+                fragment = new SignupFragment();
+                tag = Constants.SIGNUP_FRAGMENT_TAG;
+                break;
+            case 4:         // DEBUG SIGNOUT
+                LoginManager.getInstance().logOut();
+                sessionManager.deleteLoginSession();
+                return;
             default:        // this should never happen
                 fragment = null;
                 tag = "";
                 break;
+        }
+
+        if (position == 3 && sessionManager.checkLogin()) {
+            Toast.makeText(getApplicationContext(), "Already login-ed", Toast.LENGTH_SHORT).show();
+            return;
         }
 
         if (fragment != null) {
@@ -208,5 +233,9 @@ public class MainActivity extends AppCompatActivity {
 
         ft.commit();
         curFragmentTag = tag;
+    }
+
+    public SessionManager getSessionManager() {
+        return sessionManager;
     }
 }

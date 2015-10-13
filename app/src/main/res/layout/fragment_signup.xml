@@ -85,7 +85,8 @@
         android:width="250dp"
         android:gravity="center"
         android:textSize="14dp"
-        android:textColor="@color/darkGrey" />
+        android:textColor="@color/darkGrey"
+        android:clickable="true" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -97,6 +98,7 @@
         android:layout_below="@+id/creation_ToS"
         android:width="250dp"
         android:gravity="center"
-        android:textSize="14dp" />
+        android:textSize="14dp"
+        android:clickable="true" />
 
 </RelativeLayout>

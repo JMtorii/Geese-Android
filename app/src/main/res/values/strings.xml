@@ -19,9 +19,9 @@
     <string name="password_hint">Password</string>
     <string name="creation_ToS">Creation of an account means you\'re a-okay with our <b>terms of services</b>.</string>
     <string name="login">Already have an account? <b>LOGIN</b></string>
+    <string name="tos_legal_stuff">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting</string>
 
     <string name="facebook_app_id">1506283642997654</string>
-
 
     <string-array name="nav_drawer_array">
         <item>Home</item>

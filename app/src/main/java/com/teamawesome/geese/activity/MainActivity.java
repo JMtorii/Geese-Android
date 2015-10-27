@@ -19,7 +19,11 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.facebook.AccessToken;
 import com.facebook.FacebookSdk;
+import com.facebook.GraphRequest;
+import com.facebook.GraphResponse;
+import com.facebook.HttpMethod;
 import com.facebook.login.LoginManager;
 import com.teamawesome.geese.R;
 import com.teamawesome.geese.fragment.SignupFragment;
@@ -168,9 +172,17 @@ public class MainActivity extends AppCompatActivity {
                 tag = Constants.SIGNUP_FRAGMENT_TAG;
                 break;
             case 4:         // DEBUG SIGNOUT
-                LoginManager.getInstance().logOut();
+                if (AccessToken.getCurrentAccessToken() != null) {
+                    new GraphRequest(AccessToken.getCurrentAccessToken(), "/me/permissions/", null, HttpMethod.DELETE, new GraphRequest
+                            .Callback() {
+
+                        @Override
+                        public void onCompleted(GraphResponse graphResponse) {
+                            LoginManager.getInstance().logOut();
+                        }
+                    }).executeAsync();
+                }
                 sessionManager.deleteLoginSession();
-                return;
             default:        // this should never happen
                 fragment = null;
                 tag = "";

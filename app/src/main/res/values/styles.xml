@@ -32,4 +32,12 @@
         <item name="android:layout_gravity">center_horizontal</item>
     </style>
 
+    <style name="GeeseTextAppearance">
+        <item name="android:textSize">7sp</item>
+    </style>
+
+    <style name="GeeseDialogBoxTheme" parent="@android:style/Theme.Holo.Light">
+        <item name="android:textAppearanceMedium">@style/GeeseTextAppearance</item>
+    </style>
+
 </resources>

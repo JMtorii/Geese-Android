@@ -35,10 +35,6 @@
             android:label="@string/title_activity_goose" >
         </activity>
         <activity
-            android:name=".fragment.SignupFragment"
-            android:label="@string/title_activity_login" >
-        </activity>
-        <activity
             android:name="com.teamawesome.geese.activity.MainActivity"
             android:label="@string/title_activity_main" >
         </activity>

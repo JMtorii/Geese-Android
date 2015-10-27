@@ -19,9 +19,15 @@
     <string name="password_hint">Password</string>
     <string name="creation_ToS">Creation of an account means you\'re a-okay with our <b>terms of services</b>.</string>
     <string name="login">Already have an account? <b>LOGIN</b></string>
-    <string name="tos_legal_stuff">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting</string>
+    <string name="tos_legal_stuff">Lorem Ipsum is simply dummy text of the printing and typesetting Lorem Ipsum is simply dummy text of the printing and typesetting Lorem Ipsum is simply dummy text of the printing and typesetting Lorem Ipsum is simply dummy text of the printing and typesetting Lorem Ipsum is simply dummy text of the printing and typesetting Lorem Ipsum is simply dummy text of the printing and typesetting industry. orem Ipsum is simply dummy text of the printing and typesetting iorem Ipsum is simply dummy text of the printing and typesetting iorem Ipsum is simply dummy text of the printing and typesetting iorem Ipsum is simply dummy text of the printing and typesetting iLorem Ipsum has been the industry\'s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting</string>
 
     <string name="facebook_app_id">1506283642997654</string>
+
+    <string name="invalid_username">Your username must be of length 3 - 15 characters and alphanumeric.</string>
+    <string name="invalid_email">Your email doesn\'t look right...</string>
+    <string name="invalid_password">Your password must be of length 8 - 20 characters and contain digits, upper and lower case letters.</string>
+    <string name="terms_of_services">Terms of Services</string>
+    <string name="ok">OK</string>
 
     <string-array name="nav_drawer_array">
         <item>Home</item>

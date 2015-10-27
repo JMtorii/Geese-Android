@@ -38,4 +38,10 @@ public class FlockPostFragment extends FlockFragment {
         getFragmentManager().beginTransaction().add(R.id.flock_post_linear_layout, postTopicFragment).commit();
         return v;
     }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        getFragmentManager().beginTransaction().remove(postTopicFragment).commit();
+    }
 }

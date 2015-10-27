@@ -61,10 +61,6 @@ public class DebugMainActivity extends ListActivity {
             Intent i = new Intent(this, GeeseActivity.class);
             startActivity(i);
 
-        } else if (id == 1) {  //UI
-            Intent loginIntent = new Intent(this, SignupFragment.class);
-            startActivity(loginIntent);
-
         } else if (id == 2) { //Server
             new PostRequestTask(this).execute(rawCard);
 

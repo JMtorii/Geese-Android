@@ -9,8 +9,11 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import com.teamawesome.geese.R;
+import com.teamawesome.geese.activity.MainActivity;
 import com.teamawesome.geese.adapter.FlockPostTopicAdapter;
+import com.teamawesome.geese.object.PostComment;
 import com.teamawesome.geese.object.PostTopic;
+import com.teamawesome.geese.util.Constants;
 
 import java.util.ArrayList;
 
@@ -18,6 +21,8 @@ import java.util.ArrayList;
  * Created by MichaelQ on 2015-10-04.
  */
 public class FlockPostTopicFragment extends ListFragment {
+
+    ArrayList<PostTopic>  mPostTopics = null;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -33,16 +38,45 @@ public class FlockPostTopicFragment extends ListFragment {
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        ArrayList<PostTopic> posts = new ArrayList<PostTopic>();
-        for (int i = 0; i < 10; i++) {
-            posts.add(new PostTopic("Title " + i, "Description " + i, i));
+        if (mPostTopics == null) {
+            ArrayList<PostComment> comments = new ArrayList<PostComment>();
+            comments.add(new PostComment("Short comment", 100));
+            comments.add(new PostComment("long long long long long long long long long long long long long long long long long long long comment", 4));
+            comments.add(new PostComment("Short comment", 100));
+            comments.add(new PostComment("long long long long long long long long long long long long long long long long long long long " +
+                    "long long long long long long long long long long long long long long long long long long long comment", 4));
+            comments.add(new PostComment("Short comment", 100));
+            comments.add(new PostComment("long long long long long long long long long long long long long long long long long long long comment", 4));
+            ArrayList<PostTopic> posts = new ArrayList<PostTopic>();
+            for (int i = 0; i < 10; i++) {
+                posts.add(new PostTopic("Title " + i, "Description " + i, comments, i));
+            }
+            mPostTopics = posts;
         }
-        ArrayAdapter<PostTopic> adapter = new FlockPostTopicAdapter(getActivity(), posts);
+        ArrayAdapter<PostTopic> adapter = new FlockPostTopicAdapter(getActivity(), mPostTopics);
         setListAdapter(adapter);
     }
 
     @Override
     public void onListItemClick(ListView l, View v, int position, long id) {
-        //TODO: post details
+        // TODO implement some logic
+        // use Bundle and fragment.setArguments if required to pass additional data
+        FlockPostDetailsFragment fragment = (FlockPostDetailsFragment)getFragmentManager().findFragmentByTag(Constants.FLOCK_POST_DETAILS_FRAGMENT_TAG);
+        if (fragment == null) {
+            fragment = new FlockPostDetailsFragment();
+        }
+        fragment.setPostTopic(mPostTopics.get(position));
+        MainActivity mainActivity = (MainActivity) getActivity();
+        mainActivity.switchFragment(
+                fragment,
+                R.anim.fragment_slide_in_left,
+                R.anim.fragment_slide_out_right,
+                Constants.FLOCK_POST_DETAILS_FRAGMENT_TAG,
+                false,
+                false,
+                true
+        );
+
+
     }
 }

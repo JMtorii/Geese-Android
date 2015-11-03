@@ -215,7 +215,7 @@ public class MainActivity extends AppCompatActivity {
         FragmentManager fm = getSupportFragmentManager();
 
         if (clearBackStack) {
-            fm.popBackStack(curFragmentTag, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+            fm.popBackStackImmediate(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
         }
 
         FragmentTransaction ft = fm.beginTransaction();

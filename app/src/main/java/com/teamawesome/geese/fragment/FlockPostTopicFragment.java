@@ -76,7 +76,5 @@ public class FlockPostTopicFragment extends ListFragment {
                 false,
                 true
         );
-
-
     }
 }

@@ -34,6 +34,8 @@ import com.teamawesome.geese.util.SessionManager;
 
 import java.util.Stack;
 
+import retrofit.GsonConverterFactory;
+import retrofit.Retrofit;
 
 /*
  * MainActivity is responsible for holding all fragments and managing them through
@@ -61,6 +63,9 @@ public class MainActivity extends AppCompatActivity {
     // Custom back stack
     private Stack<String> customBackStack;
 
+    // Retrofit client
+    private Retrofit retrofitClient;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -69,6 +74,11 @@ public class MainActivity extends AppCompatActivity {
         customBackStack = new Stack<>();
         customBackStack.push(Constants.HOME_FRAGMENT_TAG);
         FacebookSdk.sdkInitialize(getApplicationContext());
+
+        retrofitClient = new Retrofit.Builder()
+                .baseUrl(Constants.GEESE_SERVER_ADDRESS)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
 
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         setContentView(R.layout.activity_main);
@@ -217,7 +227,6 @@ public class MainActivity extends AppCompatActivity {
             mToolbar.setTitle(mNavDrawerTitles[position]);
             mDrawerLayout.closeDrawer(mDrawerList);
         }
-
     }
 
     @Override
@@ -260,5 +269,9 @@ public class MainActivity extends AppCompatActivity {
 
     public SessionManager getSessionManager() {
         return sessionManager;
+    }
+
+    public Retrofit getRetrofitClient() {
+        return retrofitClient;
     }
 }

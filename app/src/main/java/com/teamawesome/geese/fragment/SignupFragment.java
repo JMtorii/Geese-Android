@@ -3,6 +3,7 @@ package com.teamawesome.geese.fragment;
 import android.support.v4.app.DialogFragment;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,8 +15,13 @@ import android.widget.Toast;
 import com.facebook.AccessToken;
 import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.reflect.TypeToken;
 import com.teamawesome.geese.R;
 import com.teamawesome.geese.activity.MainActivity;
+import com.teamawesome.geese.rest.model.Goose;
+import com.teamawesome.geese.rest.service.GeeseService;
 import com.teamawesome.geese.util.Utilities;
 
 import com.facebook.CallbackManager;
@@ -26,8 +32,18 @@ import com.facebook.login.widget.LoginButton;
 
 import org.json.JSONObject;
 
+import java.io.IOException;
+import java.lang.reflect.Type;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Iterator;
 import java.util.List;
+
+import retrofit.Call;
+import retrofit.Callback;
+import retrofit.GsonConverterFactory;
+import retrofit.Response;
+import retrofit.Retrofit;
 
 public class SignupFragment extends Fragment {
     private CallbackManager callbackManager;
@@ -191,11 +207,49 @@ public class SignupFragment extends Fragment {
     }
 
     private void attemptSignup(String username, String email, String password) {
-        // TODO shenanigans here to attempt a signup and setup callback
-        // Failure callback:
-        // attemptLogin(username, email, password);
-        // Successful:
-        loginUserComplete(username, email);
+        // Test get rest call
+        GeeseService geeseService = ((MainActivity) getActivity()).getRetrofitClient().create(GeeseService.class);
+        Call<List<Goose>> call = geeseService.getGeese();
+        call.enqueue(new Callback<List<Goose>>() {
+            @Override
+            public void onResponse(Response<List<Goose>> response, Retrofit retrofit) {
+                Log.d("Test", String.valueOf(response.raw()));
+                Log.d("Test", String.valueOf(response.body()));
+                try {
+                    // TODO 302?? test parsing of body here, gets returned in errorBody instead of actual body...
+                    //Log.d("test", response.errorBody().string());
+                    Gson gson = new GsonBuilder().create();
+                    Type geeseType = new TypeToken<ArrayList<Goose>>() {}.getType();
+                    List<Goose> geese = gson.fromJson(response.errorBody().string(), geeseType);
+                    if (!geese.isEmpty()) {
+                        for (Iterator<Goose> i = geese.iterator(); i.hasNext(); ) {
+                            Goose goose = i.next();
+                            Log.e("Test", goose.getEmail());
+                        }
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                if (response.isSuccess()) {
+                    List<Goose> geese = response.body();
+                    for (Iterator<Goose> i = geese.iterator(); i.hasNext(); ) {
+                        Goose goose = i.next();
+                        Log.e("Test", goose.getEmail());
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Throwable t) {
+                System.out.println(t.getMessage().toString());
+                t.printStackTrace();
+            }
+        });
+//         TODO shenanigans here to attempt a signup and setup callback
+//         Failure callback:
+//         attemptLogin(username, email, password);
+//         Successful:
+//        loginUserComplete(username, email);
     }
 
     private void attemptLogin(String username, String email, String password) {

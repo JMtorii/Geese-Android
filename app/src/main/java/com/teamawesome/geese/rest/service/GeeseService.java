@@ -22,4 +22,12 @@ public interface GeeseService {
         "Content-Type: application/json"
     })
     Call<List<Goose>> getGeese();
+
+    @POST("/goose")
+    @Headers({
+        "Accept: */*",
+        "Cache-Control: no-cache",
+        "Content-Type: application/json"
+    })
+    Call<Goose> createGoose(@Body Goose goose);
 }

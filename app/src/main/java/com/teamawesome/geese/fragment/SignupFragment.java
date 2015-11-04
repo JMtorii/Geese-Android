@@ -215,33 +215,35 @@ public class SignupFragment extends Fragment {
             public void onResponse(Response<List<Goose>> response, Retrofit retrofit) {
                 Log.d("Test", String.valueOf(response.raw()));
                 Log.d("Test", String.valueOf(response.body()));
-                try {
-                    // TODO 302?? test parsing of body here, gets returned in errorBody instead of actual body...
-                    //Log.d("test", response.errorBody().string());
-                    Gson gson = new GsonBuilder().create();
-                    Type geeseType = new TypeToken<ArrayList<Goose>>() {}.getType();
-                    List<Goose> geese = gson.fromJson(response.errorBody().string(), geeseType);
-                    if (!geese.isEmpty()) {
-                        for (Iterator<Goose> i = geese.iterator(); i.hasNext(); ) {
-                            Goose goose = i.next();
-                            Log.e("Test", goose.getEmail());
-                        }
-                    }
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
                 if (response.isSuccess()) {
                     List<Goose> geese = response.body();
                     for (Iterator<Goose> i = geese.iterator(); i.hasNext(); ) {
                         Goose goose = i.next();
                         Log.e("Test", goose.getEmail());
                     }
+                } else {
+                    try {
+                        // TODO 302?? test parsing of body here, gets returned in errorBody instead of actual body...
+                        //Log.d("test", response.errorBody().string());
+                        Gson gson = new GsonBuilder().create();
+                        Type geeseType = new TypeToken<ArrayList<Goose>>() {
+                        }.getType();
+                        List<Goose> geese = gson.fromJson(response.errorBody().string(), geeseType);
+                        if (!geese.isEmpty()) {
+                            for (Iterator<Goose> i = geese.iterator(); i.hasNext(); ) {
+                                Goose goose = i.next();
+                                Log.e("Test", goose.getEmail());
+                            }
+                        }
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
                 }
             }
 
             @Override
             public void onFailure(Throwable t) {
-                System.out.println(t.getMessage().toString());
+                Log.e("Test", t.getMessage().toString());
                 t.printStackTrace();
             }
         });
@@ -253,8 +255,35 @@ public class SignupFragment extends Fragment {
     }
 
     private void attemptLogin(String username, String email, String password) {
+        // Test post goose call
+        GeeseService geeseService = ((MainActivity) getActivity()).getRetrofitClient().create(GeeseService.class);
+        // TODO create GooseKey object with keys required to create goose
+        Goose goose = new Goose(100, "Leotest", "130.leo@gmail.com", true, "P@ssword", "NaCl");
+        Call<Goose> call = geeseService.createGoose(goose);
+        call.enqueue(new Callback<Goose>() {
+            @Override
+            public void onResponse(Response<Goose> response, Retrofit retrofit) {
+                Log.d("Test", String.valueOf(response.raw()));
+                Log.d("Test", String.valueOf(response.body()));
+                if (response.isSuccess()) {
+                    Log.d("Test", "Goose made!");
+                } else {
+                    try {
+                        Log.d("test", response.errorBody().string());
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Throwable t) {
+                Log.e("Test", t.getMessage().toString());
+                t.printStackTrace();
+            }
+        });
         // TODO send request to attempt login
-        loginUserComplete(username, email);
+        //loginUserComplete(username, email);
     }
 
     private void loginUserComplete(String user, String email) {

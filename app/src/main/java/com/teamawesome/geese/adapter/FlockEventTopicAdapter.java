@@ -5,47 +5,55 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.TextView;
 
 import com.teamawesome.geese.R;
-import com.teamawesome.geese.object.EventTopic;
+import com.teamawesome.geese.object.EventItem;
 
 import java.util.ArrayList;
 
 /**
  * Created by codychung on 10/12/15.
  */
-public class FlockEventTopicAdapter extends ArrayAdapter<EventTopic> {
-    private static class ViewHolder {
-        TextView title;
-        TextView eventDateTime;
-        TextView numGuests;
-        int position;
+public class FlockEventTopicAdapter extends ArrayAdapter<EventItem> {
+    public enum RowType {
+        Header,
+        Topic,
     }
 
-    public FlockEventTopicAdapter(Context context, ArrayList<EventTopic> events) {
-        super(context, R.layout.flock_event_topic_item, events);
+    private static class ViewHolder {
+        View view;
+    }
+
+    private LayoutInflater mInflater;
+
+    public FlockEventTopicAdapter(Context context, ArrayList<EventItem> events) {
+        super(context, 0, events);
+        mInflater = LayoutInflater.from(context);
+    }
+
+    @Override
+    public int getItemViewType(int position) {
+        return getItem(position).getViewType();
     }
 
     @Override
     public View getView(final int position, View convertView, ViewGroup parent) {
-        final EventTopic event = getItem(position);
-        final ViewHolder viewHolder;
+        ViewHolder holder;
         if (convertView == null) {
-            viewHolder = new ViewHolder();
-            LayoutInflater inflater = LayoutInflater.from(getContext());
-            convertView = inflater.inflate(R.layout.flock_event_topic_item, parent, false);
-            viewHolder.title = (TextView)convertView.findViewById(R.id.flock_event_topic_name);
-            viewHolder.eventDateTime = (TextView)convertView.findViewById(R.id.flock_event_topic_time);
-            viewHolder.numGuests = (TextView)convertView.findViewById(R.id.flock_event_topic_attendance);
-            convertView.setTag(viewHolder);
-        } else {
-            viewHolder = (ViewHolder) convertView.getTag();
+            holder = new ViewHolder();
+            switch (getItemViewType(position)) {
+                case 0:
+                    // Header
+                    convertView = mInflater.inflate(R.layout.flock_event_topic_header, null);
+                    break;
+                case 1:
+                    // Topic
+                    convertView = mInflater.inflate(R.layout.flock_event_topic_item, null);
+                    break;
+            }
+            holder.view = getItem(position).getView(mInflater, convertView);
+            convertView.setTag(holder);
         }
-        viewHolder.position = position;
-        viewHolder.title.setText(event.getTitle());
-        viewHolder.eventDateTime.setText(event.getEventDateTime().toString());
-        viewHolder.numGuests.setText(Integer.toString(event.getNumGuests()));
         return convertView;
     }
 }

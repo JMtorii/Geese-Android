@@ -10,6 +10,8 @@ import android.widget.ListView;
 
 import com.teamawesome.geese.R;
 import com.teamawesome.geese.adapter.FlockEventTopicAdapter;
+import com.teamawesome.geese.object.EventHeader;
+import com.teamawesome.geese.object.EventItem;
 import com.teamawesome.geese.object.EventTopic;
 
 import java.util.ArrayList;
@@ -34,11 +36,14 @@ public class FlockEventTopicFragment extends ListFragment {
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        ArrayList<EventTopic> events = new ArrayList<>();
-        for (int i = 0; i < 10; i++) {
-            events.add(new EventTopic("Title " + i, new Date(), i * 10));
+        ArrayList<EventItem> events = new ArrayList<>();
+        for (int i = 0; i < 2; i++) {
+            events.add(new EventHeader("Some Category"));
+            for (int j = 0; j < 5; j++) {
+                events.add(new EventTopic("Title " + j, new Date(), j * 10));
+            }
         }
-        ArrayAdapter<EventTopic> adapter = new FlockEventTopicAdapter(getActivity(), events);
+        FlockEventTopicAdapter adapter = new FlockEventTopicAdapter(getActivity(), events);
         setListAdapter(adapter);
     }
 

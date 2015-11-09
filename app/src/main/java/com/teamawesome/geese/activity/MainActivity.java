@@ -32,6 +32,8 @@ import com.teamawesome.geese.fragment.settings.SettingsMainFragment;
 import com.teamawesome.geese.util.Constants;
 import com.teamawesome.geese.util.SessionManager;
 
+import java.util.Stack;
+
 
 /*
  * MainActivity is responsible for holding all fragments and managing them through
@@ -56,11 +58,16 @@ public class MainActivity extends AppCompatActivity {
     // Session manager
     private SessionManager sessionManager;
 
+    // Custom back stack
+    private Stack<String> customBackStack;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         sessionManager = new SessionManager(getApplicationContext());
+        customBackStack = new Stack<>();
+        customBackStack.push(Constants.HOME_FRAGMENT_TAG);
         FacebookSdk.sdkInitialize(getApplicationContext());
 
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
@@ -216,9 +223,12 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         Fragment f = getSupportFragmentManager().findFragmentByTag(curFragmentTag);
+
+        // This is a temporary fix due to the viewpager being weird
         if (f != null && !f.getTag().equals(Constants.HOME_FRAGMENT_TAG)) {
-            Log.v("test", f.getTag());
             super.onBackPressed();
+            customBackStack.pop();
+            curFragmentTag = customBackStack.peek();
         }
     }
 
@@ -227,7 +237,7 @@ public class MainActivity extends AppCompatActivity {
         FragmentManager fm = getSupportFragmentManager();
 
         if (clearBackStack) {
-            fm.popBackStack(curFragmentTag, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+            fm.popBackStackImmediate(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
         }
 
         FragmentTransaction ft = fm.beginTransaction();
@@ -237,6 +247,7 @@ public class MainActivity extends AppCompatActivity {
             ft.replace(R.id.content_frame, fragment, tag);
         } else {
             ft.add(R.id.content_frame, fragment, tag);
+            customBackStack.push(tag);
         }
 
         if (isAddedToBackStack) {

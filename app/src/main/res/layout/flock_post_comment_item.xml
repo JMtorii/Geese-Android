@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/flock_post_comment_item"
+    android:descendantFocusability="blocksDescendants">
+    <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentLeft="true"
+        android:text="Comment"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:id="@+id/flock_post_comment"
+        android:layout_toStartOf="@+id/flock_post_comment_upvote_downvote"
+        android:layout_toLeftOf="@+id/flock_post_comment_upvote_downvote" />
+
+    <com.teamawesome.geese.view.UpvoteDownvoteView
+        layout="@layout/upvote_downvote_view"
+        android:layout_width="100dp"
+        android:layout_height="70dp"
+        android:layout_alignParentRight="true"
+        android:id="@+id/flock_post_comment_upvote_downvote"/>
+
+
+</RelativeLayout>

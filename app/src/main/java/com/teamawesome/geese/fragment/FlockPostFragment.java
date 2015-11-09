@@ -35,6 +35,8 @@ public class FlockPostFragment extends FlockFragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_flock_posts, container, false);
+        // TODO: this shouldn't have a child fragment, it should just be a list view as the main view/
+        //       not like the post topic fragment is going to be reuse anywhere.
         getFragmentManager().beginTransaction().add(R.id.flock_post_linear_layout, postTopicFragment).commit();
         return v;
     }

@@ -1,5 +1,7 @@
 package com.teamawesome.geese.object;
 
+import android.graphics.Bitmap;
+
 import java.util.ArrayList;
 
 /**
@@ -9,13 +11,15 @@ public class PostTopic {
     private String title;
     private String description;
     private ArrayList<PostComment> postComments;
-    // TODO:support images
+    private String imageURL;
+    private Bitmap imageData;
     private int upvotes;
 
-    public PostTopic(String title, String description, ArrayList<PostComment> postComments, int upvotes) {
+    public PostTopic(String title, String description, ArrayList<PostComment> postComments, String imageURL, int upvotes) {
         this.title = title;
         this.description = description;
         this.postComments = postComments;
+        this.imageURL = imageURL;
         this.upvotes = upvotes;
     }
 
@@ -33,5 +37,17 @@ public class PostTopic {
 
     public int getUpvotes() {
         return upvotes;
+    }
+
+    public String getImageURL() {
+        return imageURL;
+    }
+
+    public Bitmap getImageData() {
+        return imageData;
+    }
+
+    public void setImageData(Bitmap imageData) {
+        this.imageData = imageData;
     }
 }

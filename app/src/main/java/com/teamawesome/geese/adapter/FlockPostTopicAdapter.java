@@ -1,14 +1,18 @@
 package com.teamawesome.geese.adapter;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.teamawesome.geese.R;
 import com.teamawesome.geese.object.PostTopic;
+import com.teamawesome.geese.task.OnImageLoaded;
+import com.teamawesome.geese.task.URLImageLoader;
 import com.teamawesome.geese.view.UpvoteDownvoteListener;
 import com.teamawesome.geese.view.UpvoteDownvoteView;
 
@@ -22,6 +26,7 @@ public class FlockPostTopicAdapter extends ArrayAdapter<PostTopic> {
     private static class ViewHolder {
         TextView title;
         TextView description;
+        ImageView image;
         UpvoteDownvoteView upvoteDownvoteView;
         int position;
     }
@@ -57,6 +62,7 @@ public class FlockPostTopicAdapter extends ArrayAdapter<PostTopic> {
             convertView = inflater.inflate(R.layout.flock_post_topic_item, parent, false);
             viewHolder.title = (TextView)convertView.findViewById(R.id.flock_post_topic_title);
             viewHolder.description = (TextView)convertView.findViewById(R.id.flock_post_topic_description);
+            viewHolder.image = (ImageView)convertView.findViewById(R.id.flock_post_topic_image);
             viewHolder.upvoteDownvoteView = (UpvoteDownvoteView)convertView.findViewById(R.id.flock_post_topic_upvote_downvote);
             viewHolder.upvoteDownvoteView.setUpvoteDownvoteListener(mUpvoteDownvoteListener);
             convertView.setTag(viewHolder);
@@ -68,6 +74,25 @@ public class FlockPostTopicAdapter extends ArrayAdapter<PostTopic> {
         viewHolder.description.setText(post.getDescription());
         viewHolder.upvoteDownvoteView.setTag(position);
         viewHolder.upvoteDownvoteView.setVotesText(Integer.toString(getItem(position).getUpvotes()));
+        // TODO: check if image scaling is off
+        viewHolder.image.setImageDrawable(null);
+        if (post.getImageURL() != null) {
+            if (post.getImageData() == null) {
+                URLImageLoader imageLoader = new URLImageLoader(new OnImageLoaded() {
+                    @Override
+                    public void onImageLoaded(Bitmap bitmap) {
+                        post.setImageData(bitmap);
+                        // check if it is still the same position before setting the image, may have changed
+                        if (position == viewHolder.position) {
+                            viewHolder.image.setImageBitmap(bitmap);
+                        }
+                    }
+                });
+                imageLoader.execute(post.getImageURL());
+            } else {
+                viewHolder.image.setImageBitmap(post.getImageData());
+            }
+        }
         return convertView;
     }
 }

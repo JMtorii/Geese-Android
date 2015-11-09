@@ -49,7 +49,14 @@ public class FlockPostTopicFragment extends ListFragment {
             comments.add(new PostComment("long long long long long long long long long long long long long long long long long long long comment", 4));
             ArrayList<PostTopic> posts = new ArrayList<PostTopic>();
             for (int i = 0; i < 10; i++) {
-                posts.add(new PostTopic("Title " + i, "Description " + i, comments, i));
+                if (i == 5) {
+                    //ITS PIKACHU!!!
+                    posts.add(new PostTopic("PIKACHU", "I CHOOSE YOU", comments, "http://www.darktheatre.net/wiki/images/8/89/Pikachu.jpg", i));
+                } else if (i == 6) {
+                    posts.add(new PostTopic("DR BALANCED", "Boom bots OP", comments, "http://hydra-media.cursecdn.com/hearthstone.gamepedia.com/thumb/f/f5/Dr._Boom_by_Alex_Garner.png/390px-Dr._Boom_by_Alex_Garner.png?version=8d87b25588cea42813c20de77a5314e2", i));
+                } else {
+                    posts.add(new PostTopic("Title " + i, "Description " + i, comments, null, i));
+                }
             }
             mPostTopics = posts;
         }

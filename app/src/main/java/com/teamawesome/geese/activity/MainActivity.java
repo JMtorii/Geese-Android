@@ -29,6 +29,7 @@ import com.teamawesome.geese.R;
 import com.teamawesome.geese.fragment.SignupFragment;
 import com.teamawesome.geese.fragment.HomeFragment;
 import com.teamawesome.geese.fragment.settings.SettingsMainFragment;
+import com.teamawesome.geese.rest.RestExamples;
 import com.teamawesome.geese.util.Constants;
 import com.teamawesome.geese.util.SessionManager;
 

@@ -1,5 +1,7 @@
 package com.teamawesome.geese.rest.model;
 
+import android.util.Log;
+
 import com.google.gson.annotations.SerializedName;
 import org.parceler.Parcel;
 
@@ -9,24 +11,26 @@ import org.parceler.Parcel;
 @Parcel
 public class Goose {
     @SerializedName("id")
-    int id;
+    public int id;
 
     @SerializedName("name")
-    String name;
+    public String name;
 
     @SerializedName("email")
-    String email;
+    public String email;
 
     @SerializedName("verified")
-    boolean verified;
+    public boolean verified;
 
     @SerializedName("password")
-    String password;
+    public String password;
 
     @SerializedName("salt")
-    String salt;
+    public String salt;
 
     public Goose() {}
+
+    // TODO smaller constructor for Goose keys
 
     public Goose(int id, String name, String email, boolean verified, String password, String salt) {
         this.id = id;
@@ -37,27 +41,8 @@ public class Goose {
         this.salt = salt;
     }
 
-    public int getId() {
-        return id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public boolean getVerified() {
-        return verified;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public String getSalt() {
-        return salt;
+    public void print() {
+        Log.d("Goose", "Name<" + name + "> Email<" + email + "> Verified<" + verified
+                + "> Password<" + password + "> Salt<" + salt + ">");
     }
 }

@@ -8,16 +8,16 @@ import android.view.ViewGroup;
 import com.teamawesome.geese.R;
 
 /**
- * Created by MichaelQ on 2015-07-18.
+ * Created by codychung on 10/7/15.
  */
-public class FlockPostFragment extends FlockFragment {
+public class FlockEventFragment extends FlockFragment {
     private static final String ARG_POSITION = "position";
 
     private int mPosition;
-    private FlockPostTopicFragment postTopicFragment = new FlockPostTopicFragment();
+    private FlockEventTopicFragment eventTopicFragment = new FlockEventTopicFragment();
 
-    public static FlockPostFragment newInstance(int position) {
-        FlockPostFragment f = new FlockPostFragment();
+    public static FlockEventFragment newInstance(int position) {
+        FlockEventFragment f = new FlockEventFragment();
         Bundle b = new Bundle();
         b.putInt(ARG_POSITION, position);
         f.setArguments(b);
@@ -34,16 +34,14 @@ public class FlockPostFragment extends FlockFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View v = inflater.inflate(R.layout.fragment_flock_posts, container, false);
-        // TODO: this shouldn't have a child fragment, it should just be a list view as the main view/
-        //       not like the post topic fragment is going to be reuse anywhere.
-        getFragmentManager().beginTransaction().add(R.id.flock_post_linear_layout, postTopicFragment).commit();
+        View v = inflater.inflate(R.layout.fragment_flock_events, container, false);
+        getFragmentManager().beginTransaction().add(R.id.flock_event_linear_layout, eventTopicFragment).commit();
         return v;
     }
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        getFragmentManager().beginTransaction().remove(postTopicFragment).commit();
+        getFragmentManager().beginTransaction().remove(eventTopicFragment).commit();
     }
 }

@@ -39,6 +39,7 @@ public class FlockPostDetailsFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_flock_post_details, container, false);
+        view.setClickable(true);
         TextView title = (TextView)view.findViewById(R.id.flock_post_topic_title);
         TextView description = (TextView)view.findViewById(R.id.flock_post_topic_description);
         final ImageView image = (ImageView)view.findViewById(R.id.flock_post_topic_image);

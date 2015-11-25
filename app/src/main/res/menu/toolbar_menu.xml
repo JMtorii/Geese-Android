@@ -4,8 +4,18 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context="com.teamawesome.geese.activity.MainActivity">
 
-    <!--<item android:id="@+id/action_settings"-->
-        <!--android:title="@string/action_settings"-->
-        <!--android:icon="@drawable/ic_action_settings"-->
-        <!--app:showAsAction="ifRoom" />-->
+    <item android:id="@+id/action_settings"
+        android:title="@string/action_settings"
+        android:icon="@drawable/ic_action_kebab"
+        app:showAsAction="ifRoom">
+
+        <menu>
+            <item
+                android:id="@+id/menuTest1"
+                android:title="Test 1" />
+            <item
+                android:id="@+id/menuTest2"
+                android:title="Test 2" />
+        </menu>
+    </item>
 </menu>

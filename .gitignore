@@ -17,3 +17,5 @@ app/app.iml
 .idea/gradle.xml
 .idea/encodings.xml
 .idea/compiler.xml
+*.iml
+app/.idea/

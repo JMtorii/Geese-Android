@@ -11,7 +11,6 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
@@ -26,10 +25,9 @@ import com.facebook.GraphResponse;
 import com.facebook.HttpMethod;
 import com.facebook.login.LoginManager;
 import com.teamawesome.geese.R;
-import com.teamawesome.geese.fragment.SignupFragment;
 import com.teamawesome.geese.fragment.HomeFragment;
+import com.teamawesome.geese.fragment.SignupFragment;
 import com.teamawesome.geese.fragment.settings.SettingsMainFragment;
-import com.teamawesome.geese.rest.RestExamples;
 import com.teamawesome.geese.util.Constants;
 import com.teamawesome.geese.util.SessionManager;
 
@@ -87,20 +85,17 @@ public class MainActivity extends AppCompatActivity {
         mToolbar = (Toolbar) findViewById(R.id.toolbar);
         mToolbar.setTitle("Main Activity");
 
-        // TODO: add appropriate action items to menu
         mToolbar.inflateMenu(R.menu.toolbar_menu);
         mToolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem menuItem) {
-                // TODO: add appropriate menu items
-//                switch (menuItem.getItemId()) {
-//                    case R.id.action_settings:
-//                        // TODO: add custom animation
+                switch (menuItem.getItemId()) {
+                    case R.id.action_settings:
+                        // TODO: add custom animation
 //                        Fragment fragment = new SettingsMainFragment();
-//                        FragmentManager fragmentManager = getSupportFragmentManager();
-//                        fragmentManager.beginTransaction().add(R.id.content_frame, fragment).commit();
+//                        switchFragment(fragment, 0, 0, Constants.SETTINGS_MAIN_FRAGMENT_TAG, true, true, true);
 //                        return true;
-//                }
+                }
 
                 return false;
             }

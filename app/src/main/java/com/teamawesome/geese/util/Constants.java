@@ -16,6 +16,7 @@ public final class Constants {
     public static final String FLOCK_CHAT_FRAGMENT_TAG = "FLOCK_ACTIVITY_CHAT";
     public static final String FLOCK_PROFILE_FRAGMENT_TAG = "FLOCK_PROFILE_FRAGMENT";
     public static final String FLOCK_FRAGMENT_TAG = "FLOCK_FRAGMENT";
+    public static final String FLOCK_EVENT_DETAILS_FRAGMENT_TAG = "FLOCK_EVENT_DETAILS_FRAGMENT";
     public static final String FLOCK_POST_DETAILS_FRAGMENT_TAG = "FLOCK_POST_DETAILS_FRAGMENT";
 
     // TODO change this to SSL/geeseapp

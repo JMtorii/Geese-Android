@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/whiteBackground"
+    android:clickable="true">
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/flock_event_detail_attendance_options">
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="100dp"
+                android:layout_alignParentTop="true"
+                android:id="@+id/flock_event_detail_banner_image"
+                android:contentDescription="banner image of event" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/flock_event_detail_banner_image"
+                android:orientation="vertical"
+                android:paddingTop="20dp"
+                android:paddingLeft="20dp"
+                android:id="@+id/flock_event_detail_content">
+
+                <TextView
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Event Name"
+                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:id="@+id/flock_event_detail_name"/>
+                <TextView
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Event Time"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:id="@+id/flock_event_detail_time"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="People going"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:id="@+id/flock_event_detail_attendance"/>
+                <TextView
+                    android:paddingTop="30dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="More details of the event\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n.\n."
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:id="@+id/flock_event_detail_description"/>
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+    <RelativeLayout
+        android:id="@+id/flock_event_detail_attendance_options"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:orientation="horizontal">
+            <TextView android:text="Join"
+                android:id="@+id/flock_event_detail_button_join"
+                android:layout_width="0dp"
+                android:layout_weight=".33"
+                android:layout_height="match_parent"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:gravity="center">
+            </TextView>
+            <TextView android:text="Maybe"
+                android:id="@+id/flock_event_detail_button_maybe"
+                android:layout_width="0dp"
+                android:layout_weight=".33"
+                android:layout_height="match_parent"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:gravity="center">
+            </TextView>
+            <TextView android:text="Decline"
+                android:id="@+id/flock_event_detail_button_decline"
+                android:layout_width="0dp"
+                android:layout_weight=".33"
+                android:layout_height="match_parent"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:gravity="center">
+            </TextView>
+        </LinearLayout>
+    </RelativeLayout>
+</RelativeLayout>

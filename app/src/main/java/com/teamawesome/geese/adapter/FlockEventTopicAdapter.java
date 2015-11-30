@@ -37,6 +37,11 @@ public class FlockEventTopicAdapter extends ArrayAdapter<EventItem> {
     }
 
     @Override
+    public boolean isEnabled(int position) {
+        return getItem(position).getViewType() == RowType.Topic.ordinal();
+    }
+
+    @Override
     public View getView(final int position, View convertView, ViewGroup parent) {
         ViewHolder holder;
         if (convertView == null) {

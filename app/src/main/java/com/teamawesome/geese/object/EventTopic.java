@@ -16,11 +16,29 @@ public class EventTopic implements EventItem {
     private String title;
     private Date eventDateTime;
     private int numGuests;
+    private String description;
 
-    public EventTopic(String title, Date time, Integer guests) {
+    public EventTopic(String title, Date time, Integer guests, String description) {
         this.title = title;
         this.eventDateTime = time;
         this.numGuests = guests;
+        this.description = description;
+    }
+
+    public String getTitle() {
+        return this.title;
+    }
+
+    public Date getEventDateTime() {
+        return this.eventDateTime;
+    }
+
+    public int getNumGuests() {
+        return this.numGuests;
+    }
+
+    public String getDescription() {
+        return this.description;
     }
 
     @Override

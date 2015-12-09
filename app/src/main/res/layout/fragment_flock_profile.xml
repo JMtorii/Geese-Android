@@ -14,11 +14,17 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
+            <com.google.android.gms.maps.MapView
+                android:id="@+id/flock_profile_google_map"
+                android:layout_width="match_parent"
+                android:layout_height="100dp" />
+
             <ImageView
                 android:layout_width="match_parent"
                 android:layout_height="100dp"
-                android:id="@+id/flock_profile_map"
+                android:id="@+id/flock_profile_image_map"
                 android:layout_marginTop="100px" />
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

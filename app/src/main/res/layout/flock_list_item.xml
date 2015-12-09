@@ -8,6 +8,8 @@
         android:orientation="vertical"
         android:layout_alignParentLeft="true"
         android:id="@+id/flock_list_item_text_container"
+        android:paddingLeft="10dp"
+        android:paddingTop="10dp"
         android:layout_toLeftOf="@+id/flock_list_item_map_image"
         android:layout_toStartOf="@+id/flock_list_item_map_image">
         <TextView

@@ -13,6 +13,7 @@ public class Flock {
     public final String createdDate;
     public final String privacy;
     public final int members;
+    public final String imageURL;
     private Bitmap mMapImage200x200;
 
     public Flock(FlockBuilder fb) {
@@ -23,6 +24,7 @@ public class Flock {
         createdDate = fb.createdDate;
         privacy = fb.privacy;
         members = fb.members;
+        imageURL = fb.imageURL;
     }
 
     public Bitmap mapImage200x200() {
@@ -41,6 +43,7 @@ public class Flock {
         private String createdDate;
         private String privacy;
         private int members;
+        private String imageURL;
 
         public FlockBuilder() {
             //defaults
@@ -49,7 +52,7 @@ public class Flock {
             longitude = -80.5429343;
             createdDate = "June 1st 2015";
             privacy = "Invite Only";
-
+            imageURL = "http://imgfave-herokuapp-com.global.ssl.fastly.net/image_cache/1312516101480428.jpg";
         }
 
         public FlockBuilder name(String n) { name = n; return this; }
@@ -59,6 +62,7 @@ public class Flock {
         public FlockBuilder createdDate(String s) { createdDate = s; return this; }
         public FlockBuilder privacy(String s) { privacy = s; return this; }
         public FlockBuilder members(int m) { members = m; return this; }
+        public FlockBuilder imageURL(String s) { imageURL = s; return this; }
         public Flock build() {
             return new Flock(this);
         }

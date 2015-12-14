@@ -2,6 +2,8 @@ package com.teamawesome.geese.adapter;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.location.Address;
+import android.location.Geocoder;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,6 +17,8 @@ import com.teamawesome.geese.task.OnImageLoaded;
 import com.teamawesome.geese.task.URLImageLoader;
 
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Locale;
 
 /**
  * Created by MichaelQ on 2015-07-19.
@@ -23,10 +27,10 @@ public class FlockAdapter extends ArrayAdapter<Flock> {
     // View lookup cache
     private static class ViewHolder {
         TextView name;
-        TextView description;
+        TextView location;
         TextView members;
         TextView privacy;
-        ImageView mapImage;
+        ImageView image;
         int position;
     }
 
@@ -43,35 +47,34 @@ public class FlockAdapter extends ArrayAdapter<Flock> {
             LayoutInflater inflater = LayoutInflater.from(getContext());
             convertView = inflater.inflate(R.layout.flock_list_item, parent, false);
             viewHolder.name = (TextView)convertView.findViewById(R.id.flock_list_item_name);
-            viewHolder.description = (TextView)convertView.findViewById(R.id.flock_list_item_description);
+            viewHolder.location = (TextView)convertView.findViewById(R.id.flock_list_item_location);
             viewHolder.members = (TextView)convertView.findViewById(R.id.flock_list_item_members);
             viewHolder.privacy = (TextView)convertView.findViewById(R.id.flock_list_item_privacy);
-            viewHolder.mapImage = (ImageView)convertView.findViewById(R.id.flock_list_item_map_image);
+            viewHolder.image = (ImageView)convertView.findViewById(R.id.flock_list_item_image);
             convertView.setTag(viewHolder);
         } else {
             viewHolder = (ViewHolder) convertView.getTag();
         }
         viewHolder.position = position;
         viewHolder.name.setText(flock.name);
-        viewHolder.description.setText(flock.description);
+
+        Geocoder gcd = new Geocoder(getContext(), Locale.getDefault());
+        try {
+            List<Address> addresses = gcd.getFromLocation(flock.latitude, flock.longitude, 1);
+            if (addresses.size() > 0) {
+                viewHolder.location.setText(addresses.get(0).getLocality());
+            } else {
+                viewHolder.location.setVisibility(View.GONE);
+            }
+        } catch (Exception e) {
+            viewHolder.location.setVisibility(View.GONE);
+        }
+
         viewHolder.members.setText("Members: " + flock.members);
         viewHolder.privacy.setText("Privacy: " + flock.privacy);
-        if (flock.mapImage200x200() == null) {
-            viewHolder.mapImage.setImageDrawable(null);
-            URLImageLoader imageLoader = new URLImageLoader(new OnImageLoaded() {
-                @Override
-                public void onImageLoaded(Bitmap bitmap) {
-                    flock.setMapImage200x200(bitmap);
-                    // check if it is still the same position before setting the image, may have changed
-                    if (position == viewHolder.position) {
-                        viewHolder.mapImage.setImageBitmap(bitmap);
-                    }
-                }
-            });
-            imageLoader.execute("http://maps.google.com/maps/api/staticmap?center=" + flock.latitude + "," + flock.longitude + "&zoom=15&size=200x200&sensor=false");
-        } else {
-            viewHolder.mapImage.setImageBitmap(flock.mapImage200x200());
-        }
+        URLImageLoader profileImageLoader = new URLImageLoader(viewHolder.image);
+        profileImageLoader.execute(flock.imageURL);
+
         return convertView;
     }
 }

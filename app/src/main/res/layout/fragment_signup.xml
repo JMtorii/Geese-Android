@@ -75,12 +75,12 @@
     <!--facebook:login_text="@string/facebook_sign_in" />-->
 
     <TextView
+        android:id="@+id/creation_ToS"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="20dp"
         android:text="@string/creation_ToS"
-        android:id="@+id/creation_ToS"
         android:layout_below="@+id/facebook_login_button"
         android:width="250dp"
         android:gravity="center"
@@ -89,12 +89,12 @@
         android:clickable="true" />
 
     <TextView
+        android:id="@+id/login"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="10dp"
         android:text="@string/login"
-        android:id="@+id/login"
         android:layout_below="@+id/creation_ToS"
         android:width="250dp"
         android:gravity="center"

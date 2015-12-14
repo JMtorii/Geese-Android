@@ -1,88 +1,124 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/whiteGrey"
+    >
 
-    <android.support.v7.widget.CardView
-        android:id="@+id/cardview"
+    <ScrollView
+        android:id="@+id/profile_scroll_view"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        >
 
         <LinearLayout
             android:orientation="vertical"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="match_parent"
+            >
+
+            <LinearLayout
+                android:id="@+id/profile_info"
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/whiteBackground"
+                android:gravity="center"
+                >
+
+                <TextView
+                    android:id="@+id/profile_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:text="Flock Name"
+                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:textStyle="bold"
+                    android:textAlignment="center"
+                    />
+
+                <TextView
+                    android:id="@+id/profile_info_creation_date"
+                    style="@style/FlockProfileInfoItemStyle"
+                    android:text="Created on May 1st 2015"
+                    />
+
+                <TextView
+                    android:id="@+id/profile_info_privacy"
+                    style="@style/FlockProfileInfoItemStyle"
+                    android:layout_marginBottom="5dp"
+                    android:text="Invite Only"
+                    android:textStyle="italic"
+                    />
+
+                <com.teamawesome.geese.view.RoundedImageView
+                    android:id="@+id/profile_image"
+                    android:layout_width="75dp"
+                    android:layout_height="75dp"
+                    android:layout_margin="5dp"
+                    />
+
+                <TextView
+                    android:id="@+id/profile_info_member_count"
+                    style="@style/FlockProfileInfoItemStyle"
+                    android:layout_marginBottom="5dp"
+                    android:text="100 memebers"
+                    />
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:layout_marginBottom="2dp"
+                android:background="@color/grey"
+                />
 
             <com.google.android.gms.maps.MapView
-                android:id="@+id/flock_profile_google_map"
-                android:layout_width="match_parent"
-                android:layout_height="100dp" />
+                android:id="@+id/profile_google_map"
+                android:layout_width="fill_parent"
+                android:layout_height="125dp"
+                android:layout_margin="5dp"
+                />
 
             <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="100dp"
-                android:id="@+id/flock_profile_image_map"
-                android:layout_marginTop="100px" />
+                android:id="@+id/profile_image_map"
+                android:layout_width="fill_parent"
+                android:layout_height="125dp"
+                android:layout_margin="5dp"
+                />
 
             <TextView
+                android:id="@+id/profile_description"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:layout_marginLeft="5dp"
-                android:layout_marginRight="5dp"
-                android:layout_marginBottom="5dp"
-                android:textAppearance="?android:attr/textAppearanceLarge"
-                android:text="Welcome to some random flock. This is the main page of the flock that should have all the information about the flock"
-                android:id="@+id/flock_profile_description"
-                android:textAlignment="center" />
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="#666666" />
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:layout_marginTop="5dp"
-                android:layout_marginBottom="5dp"
-                android:id="@+id/flock_profile_info_layout">
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Created: May 1st 2015"
-                    android:id="@+id/flock_profile_info1"
-                    android:textAppearance="?android:attr/textAppearanceMedium"
-                    />
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Privacy: Anonymous"
-                    android:id="@+id/flock_profile_info2"
-                    android:textAppearance="?android:attr/textAppearanceMedium"
-                    />
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Members: 100"
-                    android:id="@+id/flock_profile_info3"
-                    android:textAppearance="?android:attr/textAppearanceMedium"
-                    />
-            </LinearLayout>
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="#666666" />
-            <Button
-                android:layout_width="fill_parent"
-                android:layout_height="50dp"
-                android:layout_weight="0.5"
-                android:text="Join Flock"
-                android:textColor="#FFFFFF"
-                android:id="@+id/join_flock_button"/>
+                android:layout_margin="10dp"
+                android:text="This is a description of the flock! Write some words about why geese should be flocking to it..."
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:textAlignment="center"
+                />
 
         </LinearLayout>
+    </ScrollView>
 
+    <RelativeLayout
+        android:id="@+id/profile_footer"
+        android:layout_alignParentBottom="true"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+        >
 
-    </android.support.v7.widget.CardView>
-</FrameLayout>
+        <Button
+            android:id="@+id/profile_join"
+            android:layout_width="fill_parent"
+            android:layout_height="40dp"
+            android:text="Join Flock"
+            android:background="@color/primaryDark"
+            android:textColor="@color/whiteBackground"
+            />
+
+    </RelativeLayout>
+
+</RelativeLayout>

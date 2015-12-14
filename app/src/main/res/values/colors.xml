@@ -7,4 +7,5 @@
     <item name="black" type="color">#000000</item>
     <item name="grey" type="color">#999999</item>
     <item name="darkGrey" type="color">#444444</item>
+    <item name="whiteGrey" type="color">#f5fafa</item>
 </resources>

@@ -26,9 +26,9 @@ public class HomeFragment extends ListFragment {
 
     public HomeFragment() {
         //set up initial flocks for now
-        flocks.add(new Flock.FlockBuilder().name("Hearthstone").description("Welcome to the Hearthstone flock").members(100).privacy("Invite Only").build());
-        flocks.add(new Flock.FlockBuilder().name("Pokemon").description("Welcome to the Pokemon flock").members(50).privacy("Public").latitude(43.6413496).longitude(-79.3874165).build());
-        flocks.add(new Flock.FlockBuilder().name("Android").description("Welcome to the Android flock").members(200).privacy("Public").build());
+        flocks.add(new Flock.FlockBuilder().name("Hearthstone").description("Welcome to the Hearthstone flock").members(100).privacy("Invite Only").imageURL("https://lh6.ggpht.com/J-_wYHXVmR86Mvq6KNHiSvR0T3WH4wHgVC0OLQEIa1FHVbXARD0zafLA8JEUjo-CqDw=w300").build());
+        flocks.add(new Flock.FlockBuilder().name("Pokemon").description("Welcome to the Pokemon flock").members(50).privacy("Public").latitude(43.6413496).longitude(-79.3874165).imageURL("http://media.pocketmonsters.net/news/2024/megatokyo.png").build());
+        flocks.add(new Flock.FlockBuilder().name("Android").description("Welcome to the Android flock").members(200).privacy("Public").imageURL("https://lh6.googleusercontent.com/-QAw4stAwm_E/AAAAAAAAAAI/AAAAAAAABwQ/ekEmpXH3XVA/photo.jpg").build());
         flocks.add(new Flock.FlockBuilder().name("iOS").description("Welcome to the iOS flock").members(200).privacy("Public").latitude(43.6413496).longitude(-79.3874165).build());
         flocks.add(new Flock.FlockBuilder().name("League of Legends").description("Welcome to the LoL flock").members(200).privacy("Public").latitude(43.6413496).longitude(-79.3874165).build());
         flocks.add(new Flock.FlockBuilder().name("UWaterloo").description("Welcome to the UW flock").members(200).privacy("Public").build());

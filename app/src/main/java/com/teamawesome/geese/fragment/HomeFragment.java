@@ -33,23 +33,9 @@ import rx.schedulers.Schedulers;
 public class HomeFragment extends ListFragment {
     private final static String TAG_FRAGMENT = Constants.HOME_FRAGMENT_TAG;
 
-    // TODO: change this to List
     private List<FlockV2> flocks = new ArrayList<>();
     private ArrayAdapter<FlockV2> flockAdapter;
     private MainActivity mainActivity;
-
-    public HomeFragment() {
-//        //set up initial flocks for now
-//        flocks.add(new Flock.FlockBuilder().name("Hearthstone").description("Welcome to the Hearthstone flock").members(100).privacy("Invite Only").build());
-//        flocks.add(new Flock.FlockBuilder().name("Pokemon").description("Welcome to the Pokemon flock").members(50).privacy("Public").latitude(43.6413496).longitude(-79.3874165).build());
-//        flocks.add(new Flock.FlockBuilder().name("Android").description("Welcome to the Android flock").members(200).privacy("Public").build());
-//        flocks.add(new Flock.FlockBuilder().name("iOS").description("Welcome to the iOS flock").members(200).privacy("Public").latitude(43.6413496).longitude(-79.3874165).build());
-//        flocks.add(new Flock.FlockBuilder().name("League of Legends").description("Welcome to the LoL flock").members(200).privacy("Public").latitude(43.6413496).longitude(-79.3874165).build());
-//        flocks.add(new Flock.FlockBuilder().name("UWaterloo").description("Welcome to the UW flock").members(200).privacy("Public").build());
-//        for (int i = 0; i < 10; i++) {
-//            flocks.add(new Flock.FlockBuilder().name("Filler").description("filler").members(200).privacy("Public").build());
-//        }
-    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="match_parent">
+
+    <LinearLayout
+        android:id="@+id/flock_information"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/whiteBackground"
+        >
+
+        <TextView
+            android:id="@+id/flock_title"
+            android:layout_margin="15dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Flock Name"
+            android:textStyle="bold"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            />
+
+    </LinearLayout>
+
+
+    <com.google.android.gms.maps.MapView
+        android:id="@+id/google_map"
+        android:layout_width="match_parent"
+        android:layout_height="fill_parent"
+        android:layout_below="@id/flock_information"
+        />
+
+</RelativeLayout>

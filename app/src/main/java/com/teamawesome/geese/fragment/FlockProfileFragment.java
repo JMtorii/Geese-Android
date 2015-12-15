@@ -1,6 +1,8 @@
 package com.teamawesome.geese.fragment;
 
+import android.app.FragmentManager;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,7 +19,10 @@ import com.google.android.gms.maps.MapsInitializer;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.teamawesome.geese.R;
+import com.teamawesome.geese.activity.MainActivity;
+import com.teamawesome.geese.fragment.debug.FlockFullScreenMapFragment;
 import com.teamawesome.geese.task.URLImageLoader;
+import com.teamawesome.geese.util.Constants;
 import com.teamawesome.geese.view.RoundedImageView;
 
 /**
@@ -100,21 +105,41 @@ public class FlockProfileFragment extends FlockFragment {
             mGMapView.onCreate(savedInstanceState);
             map = mGMapView.getMap();
             map.getUiSettings().setMyLocationButtonEnabled(false);
+            map.getUiSettings().setMapToolbarEnabled(false);
             map.setMyLocationEnabled(true);
+
+            map.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
+                @Override
+                public void onMapClick(LatLng point) {
+                    FlockFullScreenMapFragment fragment = (FlockFullScreenMapFragment) getFragmentManager().findFragmentByTag(Constants.FLOCK_FULL_SCREEN_MAP_FRAGMENT_TAG);
+                    if (fragment == null) {
+                        fragment = new FlockFullScreenMapFragment();
+                    }
+                    fragment.setFlockTitle(mFlock.name);
+                    fragment.setLatLng(new LatLng(mFlock.latitude, mFlock.longitude));
+                    MainActivity mainActivity = (MainActivity) getActivity();
+                    mainActivity.switchFragment(
+                            fragment,
+                            R.anim.fragment_slide_in_left,
+                            R.anim.fragment_slide_out_right,
+                            Constants.FLOCK_FULL_SCREEN_MAP_FRAGMENT_TAG,
+                            false,
+                            false,
+                            true
+                    );
+                }
+            });
 
             try {
                 MapsInitializer.initialize(this.getActivity());
+                map.setMapType(GoogleMap.MAP_TYPE_NORMAL);
+                map.addMarker(new MarkerOptions()
+                                .position(new LatLng(mFlock.latitude, mFlock.longitude))
+                );
+                map.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(mFlock.latitude, mFlock.longitude), 10));
             } catch (Exception e) {
                 e.printStackTrace();
             }
-
-            map.setMapType(GoogleMap.MAP_TYPE_NORMAL);
-
-            map.addMarker(new MarkerOptions()
-                            .position(new LatLng(mFlock.latitude, mFlock.longitude))
-            );
-            map.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(mFlock.latitude, mFlock.longitude), 10));
-
         } else {
             mGMapView.setVisibility(View.GONE);
             mMapImageView.setVisibility(View.VISIBLE);

@@ -95,7 +95,6 @@ public class SignupFragment extends Fragment {
     }
 
     private void setupSignupButton() {
-
         signupButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

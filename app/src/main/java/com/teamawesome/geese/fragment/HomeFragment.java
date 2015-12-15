@@ -26,11 +26,11 @@ public class HomeFragment extends ListFragment {
 
     public HomeFragment() {
         //set up initial flocks for now
-        flocks.add(new Flock.FlockBuilder().name("Hearthstone").description("Welcome to the Hearthstone flock").members(100).privacy("Invite Only").imageURL("https://lh6.ggpht.com/J-_wYHXVmR86Mvq6KNHiSvR0T3WH4wHgVC0OLQEIa1FHVbXARD0zafLA8JEUjo-CqDw=w300").build());
+        flocks.add(new Flock.FlockBuilder().name("Hearthstone").description("Welcome to the Hearthstone flock! Hearthstone: Heroes of Warcraft is an online collectible card game developed by Blizzard Entertainment. It is free-to-play with optional purchases to acquire additional cards and access content quicker. The game was announced at the Penny Arcade Expo in March 2013 and released on March 11, 2014. Hearthstone is available on both Microsoft Windows and OS X systems, and is also available on iOS and Android touchscreen devices.").members(100).privacy("Invite Only").imageURL("https://lh6.ggpht.com/J-_wYHXVmR86Mvq6KNHiSvR0T3WH4wHgVC0OLQEIa1FHVbXARD0zafLA8JEUjo-CqDw=w300").build());
         flocks.add(new Flock.FlockBuilder().name("Pokemon").description("Welcome to the Pokemon flock").members(50).privacy("Public").latitude(43.6413496).longitude(-79.3874165).imageURL("http://media.pocketmonsters.net/news/2024/megatokyo.png").build());
         flocks.add(new Flock.FlockBuilder().name("Android").description("Welcome to the Android flock").members(200).privacy("Public").imageURL("https://lh6.googleusercontent.com/-QAw4stAwm_E/AAAAAAAAAAI/AAAAAAAABwQ/ekEmpXH3XVA/photo.jpg").build());
         flocks.add(new Flock.FlockBuilder().name("iOS").description("Welcome to the iOS flock").members(200).privacy("Public").latitude(43.6413496).longitude(-79.3874165).build());
-        flocks.add(new Flock.FlockBuilder().name("League of Legends").description("Welcome to the LoL flock").members(200).privacy("Public").latitude(43.6413496).longitude(-79.3874165).build());
+        flocks.add(new Flock.FlockBuilder().name("League of Legendzzzzzzzzzzzzzzzzzzzzzzz").description("Welcome to the LoL flock").members(200).privacy("Public").latitude(43.6413496).longitude(-79.3874165).build());
         flocks.add(new Flock.FlockBuilder().name("UWaterloo").description("Welcome to the UW flock").members(200).privacy("Public").build());
         for (int i = 0; i < 10; i++) {
             flocks.add(new Flock.FlockBuilder().name("Filler").description("filler").members(200).privacy("Public").build());

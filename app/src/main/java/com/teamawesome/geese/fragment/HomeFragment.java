@@ -51,7 +51,7 @@ public class HomeFragment extends ListFragment {
         View view = inflater.inflate(R.layout.fragment_home, container, false);
 
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://192.168.57.1:8080")
+                .baseUrl(Constants.GEESE_SERVER_ADDRESS)
                 .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
                 .addConverterFactory(JacksonConverterFactory.create())
                 .build();
@@ -74,8 +74,6 @@ public class HomeFragment extends ListFragment {
 
                     @Override
                     public void onNext(List<FlockV2> flocks) {
-//                        flockAdapter = new FlockAdapter(mainActivity, flocks);
-//                        setListAdapter(flockAdapter);
                         Log.i("HomeFragment", "onNext called");
 
                         flockAdapter.clear();

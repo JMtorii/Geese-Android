@@ -10,16 +10,16 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.teamawesome.geese.R;
-import com.teamawesome.geese.object.Flock;
+import com.teamawesome.geese.rest.model.FlockV2;
 import com.teamawesome.geese.task.OnImageLoaded;
 import com.teamawesome.geese.task.URLImageLoader;
 
-import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by MichaelQ on 2015-07-19.
  */
-public class FlockAdapter extends ArrayAdapter<Flock> {
+public class FlockAdapter extends ArrayAdapter<FlockV2> {
     // View lookup cache
     private static class ViewHolder {
         TextView name;
@@ -30,13 +30,13 @@ public class FlockAdapter extends ArrayAdapter<Flock> {
         int position;
     }
 
-    public FlockAdapter(Context context, ArrayList<Flock> flocks) {
+    public FlockAdapter(Context context, List<FlockV2> flocks) {
         super(context, R.layout.flock_list_item, flocks);
     }
 
     @Override
     public View getView(final int position, View convertView, ViewGroup parent) {
-        final Flock flock = getItem(position);
+        final FlockV2 flock = getItem(position);
         final ViewHolder viewHolder;
         if (convertView == null) {
             viewHolder = new ViewHolder();
@@ -52,11 +52,13 @@ public class FlockAdapter extends ArrayAdapter<Flock> {
             viewHolder = (ViewHolder) convertView.getTag();
         }
         viewHolder.position = position;
-        viewHolder.name.setText(flock.name);
-        viewHolder.description.setText(flock.description);
-        viewHolder.members.setText("Members: " + flock.members);
-        viewHolder.privacy.setText("Privacy: " + flock.privacy);
-        if (flock.mapImage200x200() == null) {
+        viewHolder.name.setText(flock.getName());
+        viewHolder.description.setText(flock.getDescription());
+//        viewHolder.members.setText("Members: " + flock.members);
+//        viewHolder.privacy.setText("Privacy: " + flock.privacy);
+        viewHolder.members.setText("Members: 50");
+        viewHolder.privacy.setText("Privacy: Public");
+        if (flock.getMapImage200x200() == null) {
             viewHolder.mapImage.setImageDrawable(null);
             URLImageLoader imageLoader = new URLImageLoader(new OnImageLoaded() {
                 @Override
@@ -68,9 +70,9 @@ public class FlockAdapter extends ArrayAdapter<Flock> {
                     }
                 }
             });
-            imageLoader.execute("http://maps.google.com/maps/api/staticmap?center=" + flock.latitude + "," + flock.longitude + "&zoom=15&size=200x200&sensor=false");
+            imageLoader.execute("http://maps.google.com/maps/api/staticmap?center=" + flock.getLatitude() + "," + flock.getLongitude() + "&zoom=15&size=200x200&sensor=false");
         } else {
-            viewHolder.mapImage.setImageBitmap(flock.mapImage200x200());
+            viewHolder.mapImage.setImageBitmap(flock.getMapImage200x200());
         }
         return convertView;
     }

@@ -22,7 +22,7 @@ import java.util.ArrayList;
  */
 public class FlockPostTopicFragment extends ListFragment {
 
-    ArrayList<PostTopic>  mPostTopics = null;
+    ArrayList<PostTopic> mPostTopics = null;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

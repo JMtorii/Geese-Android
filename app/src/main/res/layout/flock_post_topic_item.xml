@@ -2,40 +2,52 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:descendantFocusability="blocksDescendants">
+    android:descendantFocusability="blocksDescendants"
+    >
+
     <LinearLayout
+        android:id="@+id/flock_post_topic_text_container"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:layout_alignParentLeft="true"
-        android:id="@+id/flock_post_topic_text_container"
         android:layout_toLeftOf="@+id/flock_post_topic_upvote_downvote"
-        android:layout_toStartOf="@+id/flock_post_topic_upvote_downvote">
+        android:layout_toStartOf="@+id/flock_post_topic_upvote_downvote"
+        >
+
         <TextView
+            android:id="@+id/flock_post_topic_title"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:text="Topic"
             android:textAppearance="?android:attr/textAppearanceLarge"
-            android:id="@+id/flock_post_topic_title"/>
+            />
+
         <ImageView
+            android:id="@+id/flock_post_topic_image"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:maxHeight="200dp"
             android:adjustViewBounds="true"
-            android:id="@+id/flock_post_topic_image"/>
+            />
+
         <TextView
+            android:id="@+id/flock_post_topic_description"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:text="Description"
             android:textAppearance="?android:attr/textAppearanceSmall"
-            android:id="@+id/flock_post_topic_description"/>
+            />
+
     </LinearLayout>
+
     <com.teamawesome.geese.view.UpvoteDownvoteView
+        android:id="@+id/flock_post_topic_upvote_downvote"
         layout="@layout/upvote_downvote_view"
         android:layout_width="100dp"
         android:layout_height="70dp"
         android:layout_alignParentRight="true"
-        android:id="@+id/flock_post_topic_upvote_downvote"/>
+        />
 
 
 </RelativeLayout>

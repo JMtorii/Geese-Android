@@ -1,7 +1,6 @@
 package com.teamawesome.geese.fragment;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -59,18 +58,18 @@ public class FlockProfileFragment extends FlockFragment {
         View v = inflater.inflate(R.layout.fragment_flock_profile, container, false);
         mFlockDescription = (TextView)v.findViewById(R.id.flock_profile_description);
         if (mFlockDescription != null) {
-            mFlockDescription.setText(mFlock.description);
+            mFlockDescription.setText(mFlock.getDescription());
         }
         mFlockInfo1 = (TextView)v.findViewById(R.id.flock_profile_info1);
-        if (mFlock.createdDate != null) {
-            mFlockInfo1.setText("Created: " + mFlock.createdDate);
-        }
+//        if (mFlock.createdDate != null) {
+//            mFlockInfo1.setText("Created: " + mFlock.createdDate);
+//        }
         mFlockInfo2 = (TextView)v.findViewById(R.id.flock_profile_info2);
-        if (mFlock.privacy != null) {
-            mFlockInfo2.setText("Privacy: " + mFlock.privacy);
-        }
+//        if (mFlock.privacy != null) {
+//            mFlockInfo2.setText("Privacy: " + mFlock.privacy);
+//        }
         mFlockInfo3 = (TextView)v.findViewById(R.id.flock_profile_info3);
-        mFlockInfo3.setText("Members: " + mFlock.members);
+//        mFlockInfo3.setText("Members: " + mFlock.members);
         mJoinFlockButton = (Button)v.findViewById(R.id.join_flock_button);
         mJoinFlockButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -102,10 +101,10 @@ public class FlockProfileFragment extends FlockFragment {
             map.setMapType(GoogleMap.MAP_TYPE_NORMAL);
 
             map.addMarker(new MarkerOptions()
-                    .position(new LatLng(mFlock.latitude, mFlock.longitude))
+                    .position(new LatLng(mFlock.getLatitude(), mFlock.getLongitude()))
                     .title("Marker"));
 
-            CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(new LatLng(mFlock.latitude, mFlock.longitude), 10);
+            CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(new LatLng(mFlock.getLatitude(), mFlock.getLongitude()), 10);
             map.animateCamera(cameraUpdate);
 
         } else {
@@ -115,7 +114,7 @@ public class FlockProfileFragment extends FlockFragment {
             //grab static image of map based on location
             //http://maps.google.com/maps/api/staticmap?center=48.858235,2.294571&zoom=15&size=1000x200&sensor=false
             URLImageLoader imageLoader = new URLImageLoader(mMapImageView);
-            imageLoader.execute("http://maps.google.com/maps/api/staticmap?center=" + mFlock.latitude + "," + mFlock.longitude + "&zoom=15&size=1000x200&sensor=false");
+            imageLoader.execute("http://maps.google.com/maps/api/staticmap?center=" + mFlock.getLatitude() + "," + mFlock.getLongitude() + "&zoom=15&size=1000x200&sensor=false");
         }
 
         return v;

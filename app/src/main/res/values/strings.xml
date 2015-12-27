@@ -29,8 +29,12 @@
     <string name="terms_of_services">Terms of Services</string>
     <string name="ok">OK</string>
 
+    <string name="settings_rules_info_header">Information</string>
     <string name="settings_rules_info">Geese connects you with others in your area by creating flocks. Each flock is similar to a club being held at a specific location and you have the opportunity to share content with others within each flock. Whether you\'re creating posts, chatting, or hosting events, make sure you\'re positing quality content! Try to support each other by down voting inappropriate posts and report content that violates our rules.</string>
+    <string name="settings_rules_rules_header">Rules</string>
     <string name="settings_rules_rules">As you should know, you should not post content on Geese that harms others or the community. \n\n1. DON\'T bully others. \n\n2. DON\'T post anyone\'s personal information or identity. \n\n3. DON\'T spam others.</string>
+    <string name="settings_terms">Nothing defined yet.</string>
+    <string name="settings_privacy_policy">Nothing defined yet.</string>
 
     <string-array name="nav_drawer_array">
         <item>Home</item>

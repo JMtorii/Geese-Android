@@ -14,8 +14,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textSize="22sp"
-            android:textColor="@android:color/holo_blue_dark"
-            android:text="Information"/>
+            android:textColor="@android:color/holo_green_dark"
+            android:text="@string/settings_rules_info_header"/>
 
         <TextView
             android:layout_width="wrap_content"
@@ -31,8 +31,8 @@
             android:layout_height="wrap_content"
             android:textSize="22sp"
             android:layout_marginTop="30dp"
-            android:textColor="@android:color/holo_blue_dark"
-            android:text="Rules"/>
+            android:textColor="@android:color/holo_green_dark"
+            android:text="@string/settings_rules_rules_header"/>
 
         <TextView
             android:layout_width="wrap_content"

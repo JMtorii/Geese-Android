@@ -21,5 +21,5 @@ public final class Constants {
 
     // TODO change this to SSL/geeseapp
     // Currently points to own machine (en0 interface)
-    public static final String GEESE_SERVER_ADDRESS = "http://geeseapp.com:8080";
+    public static final String GEESE_SERVER_ADDRESS = "http://geese-app.elasticbeanstalk.com";
 }

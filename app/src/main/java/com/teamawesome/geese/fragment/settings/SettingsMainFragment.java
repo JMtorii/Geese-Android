@@ -2,14 +2,11 @@ package com.teamawesome.geese.fragment.settings;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.ListFragment;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.ListView;
 
 import com.teamawesome.geese.R;
 import com.teamawesome.geese.adapter.SettingsListAdapter;
@@ -27,9 +24,7 @@ public class SettingsMainFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_settings_main, container, false);
     }
 
@@ -37,8 +32,7 @@ public class SettingsMainFragment extends Fragment {
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        StickyListHeadersListView stickyList = (StickyListHeadersListView)
-                getActivity().findViewById(R.id.settings_list);
+        StickyListHeadersListView stickyList = (StickyListHeadersListView) getActivity().findViewById(R.id.settings_list);
         stickyList.setAreHeadersSticky(false);
 
         SettingsListAdapter adapter = new SettingsListAdapter(getActivity());

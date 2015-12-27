@@ -106,7 +106,7 @@ public class HomeFragment extends ListFragment {
             fragment = new MainFlockFragment();
         }
         fragment.setFlock(flocks.get(position));
-        MainActivity mainActivity = (MainActivity)getActivity();
+        MainActivity mainActivity = (MainActivity) getActivity();
         mainActivity.switchFragment(
                 fragment,
                 R.anim.fragment_slide_in_left,

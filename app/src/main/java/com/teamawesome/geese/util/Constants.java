@@ -18,6 +18,9 @@ public final class Constants {
     public static final String FLOCK_FRAGMENT_TAG = "FLOCK_FRAGMENT";
     public static final String FLOCK_EVENT_DETAILS_FRAGMENT_TAG = "FLOCK_EVENT_DETAILS_FRAGMENT";
     public static final String FLOCK_POST_DETAILS_FRAGMENT_TAG = "FLOCK_POST_DETAILS_FRAGMENT";
+    public static final String SETTINGS_RULES_TAG = "SETTINGS_RULES_TAG";
+    public static final String SETTINGS_PRIVACY_POLICTY_TAG = "SETTINGS_PRIVACY_POLICTY_TAG";
+    public static final String SETTINGS_TERMS_SERVICE_TAG = "SETTINGS_TERMS_SERVICE_TAG";
 
     // TODO change this to SSL/geeseapp
     // Currently points to own machine (en0 interface)

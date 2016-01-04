@@ -17,7 +17,7 @@
         <item name="colorControlHighlight">@color/primaryLight</item>
     </style>
 
-    <style name="FlockProfileInfoItemStyle" parent="android:Widget.TextView">
+    <style name="FlockSmallTextStyle" parent="android:Widget.TextView">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_marginTop">1dp</item>

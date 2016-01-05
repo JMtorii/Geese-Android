@@ -2,6 +2,7 @@ package com.teamawesome.geese.fragment;
 
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,10 +12,20 @@ import android.widget.ListView;
 import com.teamawesome.geese.R;
 import com.teamawesome.geese.activity.MainActivity;
 import com.teamawesome.geese.adapter.FlockAdapter;
-import com.teamawesome.geese.object.Flock;
+import com.teamawesome.geese.rest.model.FlockV2;
+import com.teamawesome.geese.rest.service.FlockService;
 import com.teamawesome.geese.util.Constants;
 
 import java.util.ArrayList;
+import java.util.List;
+
+import retrofit.JacksonConverterFactory;
+import retrofit.Retrofit;
+import retrofit.RxJavaCallAdapterFactory;
+import rx.Observable;
+import rx.Subscriber;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 
 /**
  * Created by JMtorii on 15-07-14.
@@ -22,38 +33,68 @@ import java.util.ArrayList;
 public class HomeFragment extends ListFragment {
     private final static String TAG_FRAGMENT = Constants.HOME_FRAGMENT_TAG;
 
-    private ArrayList<Flock> flocks = new ArrayList<Flock>();
-
-    public HomeFragment() {
-        //set up initial flocks for now
-        flocks.add(new Flock.FlockBuilder().name("Hearthstone").description("Welcome to the Hearthstone flock! Hearthstone: Heroes of Warcraft is an online collectible card game developed by Blizzard Entertainment. It is free-to-play with optional purchases to acquire additional cards and access content quicker. The game was announced at the Penny Arcade Expo in March 2013 and released on March 11, 2014. Hearthstone is available on both Microsoft Windows and OS X systems, and is also available on iOS and Android touchscreen devices.").members(100).privacy("Invite Only").imageURL("https://lh6.ggpht.com/J-_wYHXVmR86Mvq6KNHiSvR0T3WH4wHgVC0OLQEIa1FHVbXARD0zafLA8JEUjo-CqDw=w300").build());
-        flocks.add(new Flock.FlockBuilder().name("Pokemon").description("Welcome to the Pokemon flock").members(50).privacy("Public").latitude(43.6413496).longitude(-79.3874165).imageURL("http://media.pocketmonsters.net/news/2024/megatokyo.png").build());
-        flocks.add(new Flock.FlockBuilder().name("Android").description("Welcome to the Android flock").members(200).privacy("Public").imageURL("https://lh6.googleusercontent.com/-QAw4stAwm_E/AAAAAAAAAAI/AAAAAAAABwQ/ekEmpXH3XVA/photo.jpg").build());
-        flocks.add(new Flock.FlockBuilder().name("iOS").description("Welcome to the iOS flock").members(200).privacy("Public").latitude(43.6413496).longitude(-79.3874165).build());
-        flocks.add(new Flock.FlockBuilder().name("League of Legendzzzzzzzzzzzzzzzzzzzzzzz").description("Welcome to the LoL flock").members(200).privacy("Public").latitude(43.6413496).longitude(-79.3874165).build());
-        flocks.add(new Flock.FlockBuilder().name("UWaterloo").description("Welcome to the UW flock").members(200).privacy("Public").build());
-        for (int i = 0; i < 10; i++) {
-            flocks.add(new Flock.FlockBuilder().name("Filler").description("filler").members(200).privacy("Public").build());
-        }
-    }
+    private List<FlockV2> flocks = new ArrayList<>();
+    private ArrayAdapter<FlockV2> flockAdapter;
+    private MainActivity mainActivity;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        mainActivity = (MainActivity) getActivity();
+        flockAdapter = new FlockAdapter(mainActivity, flocks);
+        setListAdapter(flockAdapter);
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_home, container, false);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_home, container, false);
+
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(Constants.GEESE_SERVER_ADDRESS)
+                .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
+                .addConverterFactory(JacksonConverterFactory.create())
+                .build();
+
+        FlockService flockService = retrofit.create(FlockService.class);
+
+        Observable<List<FlockV2>> observable = flockService.getNearbyFlocks(43.471086f, -80.541875f);
+        observable.subscribeOn(Schedulers.newThread())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Subscriber<List<FlockV2>>() {
+                    @Override
+                    public void onCompleted() {
+                        // nothing to do here
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        Log.e("HomeFragment", "Something happened: " + e.getMessage());
+                    }
+
+                    @Override
+                    public void onNext(List<FlockV2> flocks) {
+                        Log.i("HomeFragment", "onNext called");
+
+                        flockAdapter.clear();
+                        if (flocks != null) {
+                            for(FlockV2 flock : flocks) {
+                                flockAdapter.insert(flock, flockAdapter.getCount());
+                            }
+                        }
+
+                        flockAdapter.notifyDataSetChanged();
+                    }
+                });
+
+        return view;
     }
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        ArrayAdapter<Flock> adapter = new FlockAdapter(getActivity(), flocks);
-        setListAdapter(adapter);
+//        flockAdapter = new FlockAdapter(mainActivity, flocks);
+        setListAdapter(flockAdapter);
     }
 
     @Override
@@ -65,7 +106,7 @@ public class HomeFragment extends ListFragment {
             fragment = new MainFlockFragment();
         }
         fragment.setFlock(flocks.get(position));
-        MainActivity mainActivity = (MainActivity)getActivity();
+        MainActivity mainActivity = (MainActivity) getActivity();
         mainActivity.switchFragment(
                 fragment,
                 R.anim.fragment_slide_in_left,

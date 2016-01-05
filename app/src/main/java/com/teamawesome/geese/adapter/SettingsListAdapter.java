@@ -18,9 +18,10 @@ import se.emilsjolander.stickylistheaders.StickyListHeadersAdapter;
 // TODO: Move string arrays to res/values and make adapter dynamic
 public class SettingsListAdapter extends BaseAdapter implements StickyListHeadersAdapter {
     // TODO: move to values
-    private String[] mTitles = {"Share Goose", "Rate Goose", "Follow Us on Twitter",
-            "Follow Us on Facebook", "Follow Us on Instagram", "Contact Us/ Get Help",
-            "Rules and Info", "Terms of Service", "Privacy Policy"};
+//    private String[] mTitles = {"Share Goose", "Rate Goose", "Follow Us on Twitter",
+//            "Follow Us on Facebook", "Follow Us on Instagram", "Contact Us/ Get Help",
+//            "Rules and Info", "Terms of Service", "Privacy Policy"};
+    private String[] mTitles = {"Rules and Info", "Terms of Service", "Privacy Policy"};
     private LayoutInflater mInflater;
 
     public SettingsListAdapter(Context context) {
@@ -73,13 +74,14 @@ public class SettingsListAdapter extends BaseAdapter implements StickyListHeader
         }
 
         String headerText;
-        if (position >= 0 && position < 5) {
-            headerText = "Show Us Some Love";
-        } else if (position >= 5) {
-            headerText = "Important Stuff";
-        } else {
-            headerText = "testing";
-        }
+//        if (position >= 0 && position < 3) {
+//            headerText = "Show Us Some Love";
+//        } else if (position >= 5) {
+//            headerText = "Important Stuff";
+//        } else {
+//            headerText = "Miscellaneous";
+//        }
+        headerText = "Important Stuff";
         holder.text.setText(headerText);
         return convertView;
     }

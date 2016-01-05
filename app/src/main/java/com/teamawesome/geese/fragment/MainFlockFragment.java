@@ -11,7 +11,7 @@ import android.view.ViewGroup;
 
 import com.astuetz.PagerSlidingTabStrip;
 import com.teamawesome.geese.R;
-import com.teamawesome.geese.object.Flock;
+import com.teamawesome.geese.rest.model.FlockV2;
 import com.teamawesome.geese.util.Constants;
 
 /**
@@ -21,7 +21,7 @@ public class MainFlockFragment extends Fragment {
     private PagerSlidingTabStrip mTabs;
     private ViewPager mPager;
     private PagerAdapter mAdapter;
-    private Flock mFlock;
+    private FlockV2 mFlock;
 
     public FlockFragment fragments[] = {
             FlockProfileFragment.newInstance(0),
@@ -59,7 +59,7 @@ public class MainFlockFragment extends Fragment {
         getFragmentManager().beginTransaction().remove(fragments[0]).remove(fragments[1]).remove(fragments[2]).remove(fragments[3]).commit();
     }
 
-    public void setFlock(Flock f) {
+    public void setFlock(FlockV2 f) {
         mFlock = f;
     }
 

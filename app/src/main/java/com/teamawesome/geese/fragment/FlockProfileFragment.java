@@ -65,33 +65,37 @@ public class FlockProfileFragment extends FlockFragment {
 
         mFlockTitleTextView = (TextView)v.findViewById(R.id.profile_title);
         if (mFlockTitleTextView != null) {
-            mFlockTitleTextView.setText(mFlock.name);
+            mFlockTitleTextView.setText(mFlock.getName());
         }
 
         mFlockInfoMemberCountTextView = (TextView)v.findViewById(R.id.profile_info_member_count);
-        if (mFlock.members >= 0) {
-            mFlockInfoMemberCountTextView.setText(mFlock.members + " members");
-        } else {
-            mFlockInfoMemberCountTextView.setVisibility(View.GONE);
-        }
+//        if (mFlock.members >= 0) {
+//            mFlockInfoMemberCountTextView.setText(mFlock.members + " members");
+//        } else {
+//            mFlockInfoMemberCountTextView.setVisibility(View.GONE);
+//        }
+        mFlockInfoMemberCountTextView.setText("50 members");
 
         mFlockInfoPrivacyTextView = (TextView)v.findViewById(R.id.profile_info_privacy);
-        if (mFlock.privacy != null) {
-            mFlockInfoPrivacyTextView.setText(mFlock.privacy);
-        } else {
-            mFlockInfoPrivacyTextView.setVisibility(View.GONE);
-        }
+//        if (mFlock.privacy != null) {
+//            mFlockInfoPrivacyTextView.setText(mFlock.privacy);
+//        } else {
+//            mFlockInfoPrivacyTextView.setVisibility(View.GONE);
+//        }
+        mFlockInfoPrivacyTextView.setText("Public");
 
         mFlockProfileImageView = (RoundedImageView)v.findViewById(R.id.profile_image);
         URLImageLoader profileImageLoader = new URLImageLoader(mFlockProfileImageView);
-        profileImageLoader.execute(mFlock.imageURL);
+//        profileImageLoader.execute(mFlock.imageURL);
+        profileImageLoader.execute("http://justinhackworth.com/canada-goose-01.jpg");
 
         mFlockInfoCreationDateTextView = (TextView)v.findViewById(R.id.profile_info_creation_date);
-        if (mFlock.createdDate != null) {
-            mFlockInfoCreationDateTextView.setText("Created on " + mFlock.createdDate);
-        } else {
-            mFlockInfoCreationDateTextView.setVisibility(View.GONE);
-        }
+//        if (mFlock.createdDate != null) {
+//            mFlockInfoCreationDateTextView.setText("Created on " + mFlock.createdDate);
+//        } else {
+//            mFlockInfoCreationDateTextView.setVisibility(View.GONE);
+//        }
+        mFlockInfoCreationDateTextView.setText("Created on " + "January 1, 2016");
 
         mGMapView = (MapView) v.findViewById(R.id.profile_google_map);
         mMapImageView = (ImageView)v.findViewById(R.id.profile_image_map);
@@ -115,8 +119,8 @@ public class FlockProfileFragment extends FlockFragment {
                     if (fragment == null) {
                         fragment = new FlockFullScreenMapFragment();
                     }
-                    fragment.setFlockTitle(mFlock.name);
-                    fragment.setLatLng(new LatLng(mFlock.latitude, mFlock.longitude));
+                    fragment.setFlockTitle(mFlock.getName());
+                    fragment.setLatLng(new LatLng(mFlock.getLatitude(), mFlock.getLongitude()));
                     MainActivity mainActivity = (MainActivity) getActivity();
                     mainActivity.switchFragment(
                             fragment,
@@ -134,9 +138,9 @@ public class FlockProfileFragment extends FlockFragment {
                 MapsInitializer.initialize(this.getActivity());
                 map.setMapType(GoogleMap.MAP_TYPE_NORMAL);
                 map.addMarker(new MarkerOptions()
-                                .position(new LatLng(mFlock.latitude, mFlock.longitude))
+                                .position(new LatLng(mFlock.getLatitude(), mFlock.getLongitude()))
                 );
-                map.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(mFlock.latitude, mFlock.longitude), 10));
+                map.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(mFlock.getLatitude(), mFlock.getLongitude()), 10));
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -148,12 +152,12 @@ public class FlockProfileFragment extends FlockFragment {
             //http://maps.google.com/maps/api/staticmap?center=48.858235,2.294571&zoom=15&size=1000x200&sensor=false
             URLImageLoader imageLoader = new URLImageLoader(mMapImageView);
             //TODO size should be based on size of ImageView
-            imageLoader.execute("http://maps.google.com/maps/api/staticmap?center=" + mFlock.latitude + "," + mFlock.longitude + "&zoom=15&size=1000x200&sensor=false");
+            imageLoader.execute("http://maps.google.com/maps/api/staticmap?center=" + mFlock.getLatitude() + "," + mFlock.getLongitude() + "&zoom=15&size=1000x200&sensor=false");
         }
 
         mFlockInfoDescriptionTextView = (TextView)v.findViewById(R.id.profile_description);
-        if (mFlock.description != null) {
-            mFlockInfoDescriptionTextView.setText(mFlock.description);
+        if (mFlock.getDescription() != null) {
+            mFlockInfoDescriptionTextView.setText(mFlock.getDescription());
         } else {
             mFlockInfoDescriptionTextView.setVisibility(View.GONE);
         }

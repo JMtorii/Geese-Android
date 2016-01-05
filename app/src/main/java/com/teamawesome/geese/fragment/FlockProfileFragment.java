@@ -1,8 +1,6 @@
 package com.teamawesome.geese.fragment;
 
-import android.app.FragmentManager;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,7 +18,6 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.teamawesome.geese.R;
 import com.teamawesome.geese.activity.MainActivity;
-import com.teamawesome.geese.fragment.debug.FlockFullScreenMapFragment;
 import com.teamawesome.geese.task.URLImageLoader;
 import com.teamawesome.geese.util.Constants;
 import com.teamawesome.geese.view.RoundedImageView;

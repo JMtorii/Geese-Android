@@ -1,6 +1,7 @@
 package com.teamawesome.geese.fragment;
 
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -35,6 +36,15 @@ public class FlockEventFragment extends FlockFragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_flock_events, container, false);
+
+        // Add listener to the fab
+        FloatingActionButton fab = (FloatingActionButton) v.findViewById(R.id.new_event_fab);
+        fab.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+
+            }
+        });
+
         getFragmentManager().beginTransaction().add(R.id.flock_event_linear_layout, eventTopicFragment).commit();
         return v;
     }

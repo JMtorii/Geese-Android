@@ -7,6 +7,8 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.teamawesome.geese.R;
+import com.teamawesome.geese.activity.MainActivity;
+import com.teamawesome.geese.util.Constants;
 
 /**
  * Created by codychung on 10/7/15.
@@ -16,6 +18,7 @@ public class FlockEventFragment extends FlockFragment {
 
     private int mPosition;
     private FlockEventTopicFragment eventTopicFragment = new FlockEventTopicFragment();
+    private FlockEventNewFragment eventNewFragment = new FlockEventNewFragment();
 
     public static FlockEventFragment newInstance(int position) {
         FlockEventFragment f = new FlockEventFragment();
@@ -41,7 +44,16 @@ public class FlockEventFragment extends FlockFragment {
         FloatingActionButton fab = (FloatingActionButton) v.findViewById(R.id.new_event_fab);
         fab.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-
+                MainActivity mainActivity = (MainActivity) getActivity();
+                mainActivity.switchFragment(
+                        eventNewFragment,
+                        R.anim.fragment_slide_in_left,
+                        R.anim.fragment_slide_out_right,
+                        Constants.FLOCK_EVENT_NEW_FRAGMENT_TAG,
+                        false,
+                        false,
+                        true
+                );
             }
         });
 

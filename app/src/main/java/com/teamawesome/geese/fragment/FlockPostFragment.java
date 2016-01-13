@@ -6,8 +6,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.FrameLayout;
 import android.widget.ListView;
+import android.widget.TextView;
 
+import com.melnykov.fab.FloatingActionButton;
 import com.teamawesome.geese.R;
 import com.teamawesome.geese.activity.MainActivity;
 import com.teamawesome.geese.adapter.FlockPostTopicAdapter;
@@ -44,7 +47,9 @@ public class FlockPostFragment extends FlockFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        ListView listView = (ListView)inflater.inflate(R.layout.fragment_flock_post_topic_list, container, false);
+        FrameLayout frameLayout = (FrameLayout)inflater.inflate(R.layout.fragment_flock_post_topic_list, container, false);
+        ListView listView = (ListView)frameLayout.findViewById(R.id.flock_post_topic_list);
+
         if (mPostTopics == null) {
             ArrayList<PostComment> comments = new ArrayList<PostComment>();
             comments.add(new PostComment("Short comment", 100));
@@ -89,6 +94,15 @@ public class FlockPostFragment extends FlockFragment {
                 );
             }
         });
-        return listView;
+        // attach floating button to listview
+        FloatingActionButton fab = (FloatingActionButton)frameLayout.findViewById(R.id.fab);
+        fab.attachToListView(listView);
+
+        // hack to add padding to bottom of listview
+        TextView empty = new TextView(getContext());
+        empty.setHeight(180);
+        listView.addFooterView(empty);
+
+        return frameLayout;
     }
 }

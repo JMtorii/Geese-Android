@@ -88,6 +88,7 @@ public class FlockPostFragment extends FlockFragment {
                         R.anim.fragment_slide_in_left,
                         R.anim.fragment_slide_out_right,
                         Constants.FLOCK_POST_DETAILS_FRAGMENT_TAG,
+                        mPostTopics.get(position).getTitle(),
                         false,
                         false,
                         true

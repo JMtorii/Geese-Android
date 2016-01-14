@@ -43,22 +43,23 @@ public class SettingsMainFragment extends Fragment {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Fragment fragment = null;
                 String tag = null;
+                String title = null;
 
                 if (position == 0) {
                     Log.v("Position", "0");
                     fragment = new SettingsRulesFragment();
                     tag = Constants.SETTINGS_RULES_TAG;
-
+                    title = Constants.SETTING_RULES_TITLE;
                 } else if (position == 1) {
                     Log.v("Position", "1");
                     fragment = new SettingsTermsServiceFragment();
                     tag = Constants.SETTINGS_TERMS_SERVICE_TAG;
-
+                    title = Constants.SETTING_TERMS_OF_SERVICE_TITLE;
                 } else if (position == 2) {
                     Log.v("Position", "2");
                     fragment = new SettingsPrivacyPolicyFragment();
                     tag = Constants.SETTINGS_PRIVACY_POLICTY_TAG;
-
+                    title = Constants.SETTING_PRIVACY_POLICY_TITLE;
                 }
 
                 MainActivity mainActivity = (MainActivity) getActivity();
@@ -67,6 +68,7 @@ public class SettingsMainFragment extends Fragment {
                         R.anim.fragment_slide_in_left,
                         R.anim.fragment_slide_out_right,
                         tag,
+                        title,
                         false,
                         false,
                         true

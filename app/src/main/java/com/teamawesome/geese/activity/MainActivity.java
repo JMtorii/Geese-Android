@@ -312,6 +312,8 @@ public class MainActivity extends AppCompatActivity {
 
         if (isReplace) {
             ft.replace(R.id.content_frame, fragment, tag);
+            if (!customBackStack.empty()) customBackStack.pop();
+            customBackStack.push(new CustomFragment(tag, title));
         } else {
             ft.add(R.id.content_frame, fragment, tag);
             customBackStack.push(new CustomFragment(tag, title));

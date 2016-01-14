@@ -65,6 +65,7 @@ public class FlockEventTopicFragment extends ListFragment {
                 R.anim.fragment_slide_in_left,
                 R.anim.fragment_slide_out_right,
                 Constants.FLOCK_EVENT_DETAILS_FRAGMENT_TAG,
+                ((EventTopic) events.get(position)).getTitle(),
                 false,
                 false,
                 true

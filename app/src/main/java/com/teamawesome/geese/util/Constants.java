@@ -9,6 +9,12 @@ public final class Constants {
     public static final String PREF_SETTINGS = "PREF_SETTINGS";
     public static final String PREF_ID = "PREF_ID";
 
+    public static final String HOME_TITLE = "Home";
+    public static final String FAVOURITE_TITLE = "Favourite";
+    public static final String SETTING_TITLE = "Setting";
+    public static final String SIGN_UP_TITLE = "Sign Up";
+    public static final String NEW_EVENT_TITLE = "New Event";
+
     public static final String HOME_FRAGMENT_TAG = "HOME_FRAGMENT";
     public static final String FAVOURITE_FLOCKS_FRAGMENT_TAG = "SIGNUP_FRAGMENT_TAG";
     public static final String SETTINGS_MAIN_FRAGMENT_TAG = "SETTINGS_MAIN_FRAGMENT";

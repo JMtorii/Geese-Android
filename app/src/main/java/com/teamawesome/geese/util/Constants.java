@@ -10,6 +10,7 @@ public final class Constants {
     public static final String PREF_ID = "PREF_ID";
 
     public static final String HOME_FRAGMENT_TAG = "HOME_FRAGMENT";
+    public static final String FAVOURITE_FLOCKS_FRAGMENT_TAG = "SIGNUP_FRAGMENT_TAG";
     public static final String SETTINGS_MAIN_FRAGMENT_TAG = "SETTINGS_MAIN_FRAGMENT";
     public static final String SIGNUP_FRAGMENT_TAG = "SIGNUP_FRAGMENT_TAG";
 

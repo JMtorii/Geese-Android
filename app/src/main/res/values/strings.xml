@@ -38,7 +38,7 @@
 
     <string-array name="nav_drawer_array">
         <item>Home</item>
-        <item>Nearby</item>
+        <item>Favourited Flocks</item>
         <item>Settings</item>
         <item>Signup</item>
         <item>DEBUG LOGOUT</item>

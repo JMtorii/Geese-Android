@@ -25,6 +25,7 @@ import com.facebook.GraphResponse;
 import com.facebook.HttpMethod;
 import com.facebook.login.LoginManager;
 import com.teamawesome.geese.R;
+import com.teamawesome.geese.fragment.FavouriteFlocksFragment;
 import com.teamawesome.geese.fragment.HomeFragment;
 import com.teamawesome.geese.fragment.SignupFragment;
 import com.teamawesome.geese.fragment.settings.SettingsMainFragment;
@@ -191,8 +192,8 @@ public class MainActivity extends AppCompatActivity {
                 tag = Constants.HOME_FRAGMENT_TAG;
                 break;
             case 1:         // Nearby but Home for now
-                fragment = new HomeFragment();
-                tag = "";
+                fragment = new FavouriteFlocksFragment();
+                tag = Constants.FAVOURITE_FLOCKS_FRAGMENT_TAG;
                 break;
             case 2:         // Setting
                 fragment = new SettingsMainFragment();

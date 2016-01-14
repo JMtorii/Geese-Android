@@ -28,13 +28,16 @@ import com.teamawesome.geese.R;
 import com.teamawesome.geese.fragment.HomeFragment;
 import com.teamawesome.geese.fragment.SignupFragment;
 import com.teamawesome.geese.fragment.settings.SettingsMainFragment;
+import com.teamawesome.geese.rest.service.FlockService;
 import com.teamawesome.geese.util.Constants;
 import com.teamawesome.geese.util.SessionManager;
 
 import java.util.Stack;
 
 import retrofit.GsonConverterFactory;
+import retrofit.JacksonConverterFactory;
 import retrofit.Retrofit;
+import retrofit.RxJavaCallAdapterFactory;
 
 /*
  * MainActivity is responsible for holding all fragments and managing them through
@@ -65,6 +68,13 @@ public class MainActivity extends AppCompatActivity {
     // Retrofit client
     private Retrofit retrofitClient;
 
+    // Retrofit observable client
+    private Retrofit retrofitReactiveClient;
+
+    // REST services
+    public FlockService flockService;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -78,6 +88,14 @@ public class MainActivity extends AppCompatActivity {
                 .baseUrl(Constants.GEESE_SERVER_ADDRESS)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
+
+        retrofitReactiveClient = new Retrofit.Builder()
+                .baseUrl(Constants.GEESE_SERVER_ADDRESS)
+                .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
+                .addConverterFactory(JacksonConverterFactory.create())
+                .build();
+
+        flockService = retrofitReactiveClient.create(FlockService.class);
 
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         setContentView(R.layout.activity_main);

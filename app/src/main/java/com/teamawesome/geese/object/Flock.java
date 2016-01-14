@@ -44,6 +44,7 @@ public class Flock {
         private String privacy;
         private int members;
         private String imageURL;
+        private Bitmap imageData;
 
         public FlockBuilder() {
             //defaults
@@ -63,6 +64,12 @@ public class Flock {
         public FlockBuilder privacy(String s) { privacy = s; return this; }
         public FlockBuilder members(int m) { members = m; return this; }
         public FlockBuilder imageURL(String s) { imageURL = s; return this; }
+        public Bitmap getImageData() {
+            return imageData;
+        }
+        public void setImageData(Bitmap imageData) {
+            this.imageData = imageData;
+        }
         public Flock build() {
             return new Flock(this);
         }

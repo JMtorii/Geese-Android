@@ -76,6 +76,7 @@ public class FlockAdapter extends ArrayAdapter<FlockV2> {
 
         URLImageLoader profileImageLoader = new URLImageLoader(viewHolder.image);
         //profileImageLoader.execute(flock.imageURL);
+        // TODO Implement caching of image after implementation of image of FlockV2
         profileImageLoader.execute("http://justinhackworth.com/canada-goose-01.jpg");
 
         return convertView;

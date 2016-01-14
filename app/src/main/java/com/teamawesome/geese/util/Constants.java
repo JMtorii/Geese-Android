@@ -21,6 +21,7 @@ public final class Constants {
     public static final String FLOCK_FRAGMENT_TAG = "FLOCK_FRAGMENT";
     public static final String FLOCK_EVENT_DETAILS_FRAGMENT_TAG = "FLOCK_EVENT_DETAILS_FRAGMENT";
     public static final String FLOCK_POST_DETAILS_FRAGMENT_TAG = "FLOCK_POST_DETAILS_FRAGMENT";
+    public static final String FLOCK_POST_TOPIC_CREATE_FRAGMENT = "FLOCK_POST_TOPIC_CREATE_FRAGMENT";
     public static final String FLOCK_FULL_SCREEN_MAP_FRAGMENT_TAG = "FLOCK_FULL_SCREEN_MAP_FRAGMENT";
 
     public static final String SETTINGS_RULES_TAG = "SETTINGS_RULES_TAG";

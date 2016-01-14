@@ -97,6 +97,25 @@ public class FlockPostFragment extends FlockFragment {
         // attach floating button to listview
         FloatingActionButton fab = (FloatingActionButton)frameLayout.findViewById(R.id.fab);
         fab.attachToListView(listView);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FlockPostTopicCreateFragment fragment = (FlockPostTopicCreateFragment) getFragmentManager().findFragmentByTag(Constants.FLOCK_POST_TOPIC_CREATE_FRAGMENT);
+                if (fragment == null) {
+                    fragment = new FlockPostTopicCreateFragment();
+                }
+                MainActivity mainActivity = (MainActivity) getActivity();
+                mainActivity.switchFragment(
+                        fragment,
+                        R.anim.fragment_slide_in_left,
+                        R.anim.fragment_slide_out_right,
+                        Constants.FLOCK_POST_TOPIC_CREATE_FRAGMENT,
+                        false,
+                        false,
+                        true
+                );
+            }
+        });
 
         // hack to add padding to bottom of listview
         TextView empty = new TextView(getContext());

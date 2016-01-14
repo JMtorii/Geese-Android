@@ -246,6 +246,10 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
+        popFragment();
+    }
+
+    public void popFragment() {
         Fragment f = getSupportFragmentManager().findFragmentByTag(curFragmentTag);
 
         // This is a temporary fix due to the viewpager being weird

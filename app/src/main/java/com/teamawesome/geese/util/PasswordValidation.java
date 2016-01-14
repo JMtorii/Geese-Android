@@ -8,7 +8,7 @@ import static android.text.TextUtils.isEmpty;
 /**
  * Created by lcolam on 10/20/15.
  */
-public class Utilities {
+public class PasswordValidation {
 
     private static final String USERNAME_PATTERN = "^[A-Za-z0-9]{3,15}$";
     private static final String PASSWORD_PATTERN = "^[a-zA-Z0-9~!@.#$%^&*_&\\\\]{8,20}$";

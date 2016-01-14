@@ -41,6 +41,17 @@ public class Goose {
         this.salt = salt;
     }
 
+    public Goose(String name, String email, String password) {
+        this.name = name;
+        this.email = email;
+        this.password = password;
+    }
+
+    public Goose(String email, String password) {
+        this.email = email;
+        this.password = password;
+    }
+
     public void print() {
         Log.d("Goose", "Name<" + name + "> Email<" + email + "> Verified<" + verified
                 + "> Password<" + password + "> Salt<" + salt + ">");

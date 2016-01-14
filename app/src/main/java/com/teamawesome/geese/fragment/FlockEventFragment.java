@@ -50,6 +50,7 @@ public class FlockEventFragment extends FlockFragment {
                         R.anim.fragment_slide_in_left,
                         R.anim.fragment_slide_out_right,
                         Constants.FLOCK_EVENT_NEW_FRAGMENT_TAG,
+                        Constants.NEW_EVENT_TITLE,
                         false,
                         false,
                         true

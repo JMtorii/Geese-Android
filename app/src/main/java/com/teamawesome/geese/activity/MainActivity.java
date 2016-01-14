@@ -66,11 +66,12 @@ public class MainActivity extends AppCompatActivity {
     private SessionManager sessionManager;
 
     // Custom back stack
-    private Stack<String> customBackStack;
+    private Stack<CustomFragment> customBackStack;
 
     // Retrofit client
     // TODO Remove later
     private Retrofit retrofitClient;
+
 
     // Retrofit observable client
     private Retrofit retrofitReactiveClient;
@@ -80,13 +81,34 @@ public class MainActivity extends AppCompatActivity {
     public GeeseService geeseService;
     public LoginService loginService;
 
+    // Fragment information useful for the custom back stack
+    private class CustomFragment {
+        // Fragment tag used to find the fragment
+        private String tag;
+        // Title to display on the toolbar
+        private String title;
+
+        CustomFragment(String tag, String title) {
+            this.tag = tag;
+            this.title = title;
+        }
+
+        String getTag() {
+            return this.tag;
+        }
+
+        String getTitle() {
+            return this.title;
+        }
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         sessionManager = new SessionManager(getApplicationContext());
         customBackStack = new Stack<>();
-        customBackStack.push(Constants.HOME_FRAGMENT_TAG);
+        customBackStack.push(new CustomFragment(Constants.HOME_FRAGMENT_TAG, Constants.HOME_TITLE));
         FacebookSdk.sdkInitialize(getApplicationContext());
 
         retrofitClient = new Retrofit.Builder()
@@ -191,23 +213,28 @@ public class MainActivity extends AppCompatActivity {
         // update the main content by replacing fragments
         Fragment fragment;
         String tag;
+        String title;
 
         switch (position) {
             case 0:         // Home
                 fragment = new HomeFragment();
                 tag = Constants.HOME_FRAGMENT_TAG;
+                title = Constants.HOME_TITLE;
                 break;
             case 1:         // Nearby but Home for now
                 fragment = new FavouriteFlocksFragment();
                 tag = Constants.FAVOURITE_FLOCKS_FRAGMENT_TAG;
+                title = Constants.FAVOURITE_TITLE;
                 break;
             case 2:         // Setting
                 fragment = new SettingsMainFragment();
                 tag = Constants.SETTINGS_MAIN_FRAGMENT_TAG;
+                title = Constants.SETTING_TITLE;
                 break;
             case 3:         // Signup
                 fragment = new SignupFragment();
                 tag = Constants.SIGNUP_FRAGMENT_TAG;
+                title = Constants.SIGN_UP_TITLE;
                 break;
             case 4:         // DEBUG SIGNOUT
                 if (AccessToken.getCurrentAccessToken() != null) {
@@ -224,6 +251,7 @@ public class MainActivity extends AppCompatActivity {
             default:        // this should never happen
                 fragment = null;
                 tag = "";
+                title = "";
                 break;
         }
 
@@ -238,6 +266,7 @@ public class MainActivity extends AppCompatActivity {
                     R.anim.fragment_slide_in_left,
                     R.anim.fragment_slide_out_right,
                     tag,
+                    title,
                     true,
                     true,
                     true
@@ -259,14 +288,18 @@ public class MainActivity extends AppCompatActivity {
         Fragment f = getSupportFragmentManager().findFragmentByTag(curFragmentTag);
 
         // This is a temporary fix due to the viewpager being weird
-        if (f != null && !f.getTag().equals(Constants.HOME_FRAGMENT_TAG)) {
+        if (f != null && !f.getTag().equals(Constants.HOME_FRAGMENT_TAG) && customBackStack.size() > 1) {
             super.onBackPressed();
+
             customBackStack.pop();
-            curFragmentTag = customBackStack.peek();
+            CustomFragment curFragment = customBackStack.peek();
+            curFragmentTag = curFragment.getTag();
+            mToolbar.setTitle(curFragment.getTitle());
+
         }
     }
 
-    public void switchFragment(Fragment fragment, int enterAnim, int exitAnim, String tag,
+    public void switchFragment(Fragment fragment, int enterAnim, int exitAnim, String tag, String title,
                                boolean isReplace, boolean clearBackStack, boolean isAddedToBackStack) {
         FragmentManager fm = getSupportFragmentManager();
 
@@ -281,7 +314,7 @@ public class MainActivity extends AppCompatActivity {
             ft.replace(R.id.content_frame, fragment, tag);
         } else {
             ft.add(R.id.content_frame, fragment, tag);
-            customBackStack.push(tag);
+            customBackStack.push(new CustomFragment(tag, title));
         }
 
         if (isAddedToBackStack) {
@@ -290,6 +323,7 @@ public class MainActivity extends AppCompatActivity {
 
         ft.commit();
         curFragmentTag = tag;
+        mToolbar.setTitle(title);
     }
 
     public SessionManager getSessionManager() {

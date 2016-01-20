@@ -78,6 +78,13 @@ public class FlockPostDetailsFragment extends Fragment {
                 image.setImageBitmap(mPostTopic.getImageData());
             }
         }
+        View header = view.findViewById(R.id.flock_post_topic_item);
+        //remove from parent since that's just a placeholder spot
+        ((ViewGroup)header.getParent()).removeView(header);
+        // Add layout param or it crashes
+        // http://stackoverflow.com/questions/4393775/android-classcastexception-when-adding-a-header-view-to-expandablelistview
+        header.setLayoutParams(new ListView.LayoutParams(ListView.LayoutParams.FILL_PARENT, ListView.LayoutParams.WRAP_CONTENT));
+        listView.addHeaderView(header);
         listView.setAdapter(new FlockPostCommentAdapter(getActivity(), mPostTopic.getPostComments()));
 
         // attach floating button to listview

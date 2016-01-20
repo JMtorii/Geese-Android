@@ -10,11 +10,14 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.melnykov.fab.FloatingActionButton;
 import com.teamawesome.geese.R;
+import com.teamawesome.geese.activity.MainActivity;
 import com.teamawesome.geese.adapter.FlockPostCommentAdapter;
 import com.teamawesome.geese.object.PostTopic;
 import com.teamawesome.geese.task.OnImageLoaded;
 import com.teamawesome.geese.task.URLImageLoader;
+import com.teamawesome.geese.util.Constants;
 import com.teamawesome.geese.view.UpvoteDownvoteListener;
 import com.teamawesome.geese.view.UpvoteDownvoteView;
 
@@ -76,6 +79,34 @@ public class FlockPostDetailsFragment extends Fragment {
             }
         }
         listView.setAdapter(new FlockPostCommentAdapter(getActivity(), mPostTopic.getPostComments()));
+
+        // attach floating button to listview
+        FloatingActionButton fab = (FloatingActionButton)view.findViewById(R.id.fab);
+        fab.attachToListView(listView);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FlockPostCommentCreateFragment fragment = (FlockPostCommentCreateFragment) getFragmentManager().findFragmentByTag(Constants.FLOCK_POST_COMMENT_CREATE_FRAGMENT);
+                if (fragment == null) {
+                    fragment = new FlockPostCommentCreateFragment();
+                }
+                MainActivity mainActivity = (MainActivity) getActivity();
+                mainActivity.switchFragment(
+                        fragment,
+                        R.anim.fragment_slide_in_left,
+                        R.anim.fragment_slide_out_right,
+                        Constants.FLOCK_POST_COMMENT_CREATE_FRAGMENT,
+                        false,
+                        false,
+                        true
+                );
+            }
+        });
+
+        // hack to add padding to bottom of listview
+        TextView empty = new TextView(getContext());
+        empty.setHeight(180);
+        listView.addFooterView(empty);
         return view;
     }
 

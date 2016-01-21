@@ -106,36 +106,41 @@ public class HomeFragment extends GeeseFragment {
     }
 
     private void getNearbyFlocks() {
-        // TODO paste token from SessionManager
-        String token = "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0ZXN0QGVtYWlsLmNvbSJ9.qufWHyPzMLAwaF_1QARepchXGRTx5fsuHOJXcfnF6OLTBbcD6PyD575geXdU2zwbwIYL_5ThGRSMlb7Qa_rpxw";
-        Observable<List<FlockV2>> observable = parentActivity.flockService.getNearbyFlocks(token, 43.471086f, -80.541875f);
-        observable.subscribeOn(Schedulers.newThread())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Subscriber<List<FlockV2>>() {
-                    @Override
-                    public void onCompleted() {
-                        // nothing to do here
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-                        Log.e("HomeFragment", "Something happened: " + e.getMessage());
-                    }
-
-                    @Override
-                    public void onNext(List<FlockV2> flocks) {
-                        Log.i("HomeFragment", "onNext called");
-
-                        flockAdapter.clear();
-                        if (flocks != null) {
-                            for(FlockV2 flock : flocks) {
-                                flockAdapter.insert(flock, flockAdapter.getCount());
-                            }
+        // TODO use interceptor instead to add token to all REST calls
+        if (mainActivity.getSessionManager().checkLogin()) {
+            String token = mainActivity.getSessionManager().getUserDetails().get("Token");
+            Observable<List<FlockV2>> observable = parentActivity.flockService.getNearbyFlocks(token, 43.471086f, -80.541875f);
+            observable.subscribeOn(Schedulers.newThread())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(new Subscriber<List<FlockV2>>() {
+                        @Override
+                        public void onCompleted() {
+                            // nothing to do here
                         }
 
-                        flockAdapter.notifyDataSetChanged();
-                        swipeContainer.setRefreshing(false);
-                    }
-                });
+                        @Override
+                        public void onError(Throwable e) {
+                            Log.e("HomeFragment", "Something happened: " + e.getMessage());
+                        }
+
+                        @Override
+                        public void onNext(List<FlockV2> flocks) {
+                            Log.i("HomeFragment", "onNext called");
+
+                            flockAdapter.clear();
+                            if (flocks != null) {
+                                for(FlockV2 flock : flocks) {
+                                    flockAdapter.insert(flock, flockAdapter.getCount());
+                                }
+                            }
+
+                            flockAdapter.notifyDataSetChanged();
+                            swipeContainer.setRefreshing(false);
+                        }
+                    });
+        } else {
+            // TODO stuff
+        }
+
     }
 }

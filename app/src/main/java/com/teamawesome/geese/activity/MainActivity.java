@@ -68,10 +68,6 @@ public class MainActivity extends AppCompatActivity {
     // Custom back stack
     private Stack<String> customBackStack;
 
-    // Retrofit client
-    // TODO Remove later
-    private Retrofit retrofitClient;
-
     // Retrofit observable client
     private Retrofit retrofitReactiveClient;
 
@@ -88,11 +84,6 @@ public class MainActivity extends AppCompatActivity {
         customBackStack = new Stack<>();
         customBackStack.push(Constants.HOME_FRAGMENT_TAG);
         FacebookSdk.sdkInitialize(getApplicationContext());
-
-        retrofitClient = new Retrofit.Builder()
-                .baseUrl(Constants.GEESE_SERVER_ADDRESS)
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
 
         retrofitReactiveClient = new Retrofit.Builder()
                 .baseUrl(Constants.GEESE_SERVER_ADDRESS)
@@ -294,9 +285,5 @@ public class MainActivity extends AppCompatActivity {
 
     public SessionManager getSessionManager() {
         return sessionManager;
-    }
-
-    public Retrofit getRetrofitClient() {
-        return retrofitClient;
     }
 }

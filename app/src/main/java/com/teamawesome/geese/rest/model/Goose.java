@@ -52,6 +52,7 @@ public class Goose {
     public Goose(String email, String password) {
         this.email = email;
         this.password = password;
+        this.name = email;
     }
 
     public void print() {

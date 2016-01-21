@@ -225,12 +225,8 @@ public class SignupFragment extends Fragment {
                 if (response.isSuccess()) {
                     attemptLogin(username, email, hashedPassword);
                 } else {
-                    try {
-                        Log.e(loggingTag, response.errorBody().string());
-                        attemptLogin(username, email, hashedPassword);
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
+                    Log.e(loggingTag, "Signup failed");
+                    Toast.makeText(getActivity().getApplicationContext(), "Signup failed...", Toast.LENGTH_SHORT).show();
                 }
             }
 

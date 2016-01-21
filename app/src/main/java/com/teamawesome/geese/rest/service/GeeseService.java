@@ -40,7 +40,7 @@ public interface GeeseService {
         "Cache-Control: no-cache",
         "Content-Type: application/json"
     })
-    Call<Goose> createGoose(@Body Goose goose);
+    Call<Void> createGoose(@Body Goose goose);
 
     @PUT("/goose/{gooseId}")
     @Headers({

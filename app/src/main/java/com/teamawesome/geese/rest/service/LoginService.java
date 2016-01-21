@@ -1,5 +1,6 @@
 package com.teamawesome.geese.rest.service;
 
+import com.squareup.okhttp.ResponseBody;
 import com.teamawesome.geese.rest.model.Goose;
 
 import retrofit.Call;
@@ -17,5 +18,5 @@ public interface LoginService {
             "Cache-Control: no-cache",
             "Content-Type: application/json"
     })
-    Call<String> attemptLogin(@Body Goose goose);
+    Call<ResponseBody> attemptLogin(@Body Goose goose);
 }

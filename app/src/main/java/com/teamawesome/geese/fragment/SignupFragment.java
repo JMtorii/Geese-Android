@@ -15,6 +15,7 @@ import android.widget.Toast;
 import com.facebook.AccessToken;
 import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
+import com.squareup.okhttp.ResponseBody;
 import com.teamawesome.geese.R;
 import com.teamawesome.geese.activity.MainActivity;
 import com.teamawesome.geese.rest.model.Goose;
@@ -129,10 +130,12 @@ public class SignupFragment extends Fragment {
                         new GraphRequest.GraphJSONObjectCallback() {
                             @Override
                             public void onCompleted(JSONObject object, GraphResponse graphResponsesponse) {
+                                Log.e(loggingTag, "Facebook sign in success");
                                 try {
                                     String firstName = object.getString("first_name");
                                     String lastName = object.getString("last_name");
                                     String email = object.getString("email");
+
 //                                    loginUserComplete(firstName + " " + lastName, email, );
                                 } catch (org.json.JSONException e) {
                                     e.printStackTrace();
@@ -217,7 +220,6 @@ public class SignupFragment extends Fragment {
 
     private void attemptSignup(final String username, final String email, final String hashedPassword) {
         Goose goose = new Goose(username, email, hashedPassword);
-        goose.print();
         Call<Void> call = ((MainActivity) getActivity()).geeseService.createGoose(goose);
         call.enqueue(new Callback<Void>() {
             @Override
@@ -241,12 +243,16 @@ public class SignupFragment extends Fragment {
 
     private void attemptLogin(final String username, final String email, final String hashedPassword) {
         Goose goose = new Goose(email, hashedPassword);
-        Call<String> call = ((MainActivity) getActivity()).loginService.attemptLogin(goose);
-        call.enqueue(new Callback<String>() {
+        Call<ResponseBody> call = ((MainActivity) getActivity()).loginService.attemptLogin(goose);
+        call.enqueue(new Callback<ResponseBody>() {
             @Override
-            public void onResponse(Response<String> response, Retrofit retrofit) {
+            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
                 if (response.isSuccess()) {
-                    loginUserComplete(username, email, response.body());
+                    try {
+                        loginUserComplete(username, email, response.body().string());
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
                 } else {
                     Log.e(loggingTag, "Login failed");
                     Toast.makeText(getActivity().getApplicationContext(), "Login failed...", Toast.LENGTH_SHORT).show();

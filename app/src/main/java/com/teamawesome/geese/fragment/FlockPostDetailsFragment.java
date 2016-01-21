@@ -103,6 +103,7 @@ public class FlockPostDetailsFragment extends Fragment {
                         R.anim.fragment_slide_in_left,
                         R.anim.fragment_slide_out_right,
                         Constants.FLOCK_POST_COMMENT_CREATE_FRAGMENT,
+                        Constants.NEW_POST_COMMENT_TITLE,
                         false,
                         false,
                         true

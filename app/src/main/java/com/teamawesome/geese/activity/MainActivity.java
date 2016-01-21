@@ -221,7 +221,7 @@ public class MainActivity extends AppCompatActivity {
                 tag = Constants.HOME_FRAGMENT_TAG;
                 title = Constants.HOME_TITLE;
                 break;
-            case 1:         // Nearby but Home for now
+            case 1:         // Favourites
                 fragment = new FavouriteFlocksFragment();
                 tag = Constants.FAVOURITE_FLOCKS_FRAGMENT_TAG;
                 title = Constants.FAVOURITE_TITLE;

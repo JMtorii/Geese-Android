@@ -8,7 +8,9 @@
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:id="@+id/flock_post_details_list"
-        android:background="@color/whiteBackground"/>
+        android:background="@color/whiteBackground"
+        android:divider="@color/separatorColour"
+        android:dividerHeight="1px"/>
     <com.melnykov.fab.FloatingActionButton
         android:id="@+id/fab"
         android:layout_width="wrap_content"

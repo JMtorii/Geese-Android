@@ -17,6 +17,8 @@ public final class Constants {
     public static final String SETTING_PRIVACY_POLICY_TITLE = "Privacy Policy";
     public static final String SIGN_UP_TITLE = "Sign Up";
     public static final String NEW_EVENT_TITLE = "New Event";
+    public static final String NEW_POST_TITLE = "New Post";
+    public static final String NEW_POST_COMMENT_TITLE = "New Comment";
 
     public static final String HOME_FRAGMENT_TAG = "HOME_FRAGMENT";
     public static final String FAVOURITE_FLOCKS_FRAGMENT_TAG = "SIGNUP_FRAGMENT_TAG";

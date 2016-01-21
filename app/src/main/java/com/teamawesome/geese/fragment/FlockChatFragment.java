@@ -9,6 +9,8 @@ import com.teamawesome.geese.R;
 
 /**
  * Created by MichaelQ on 2015-07-18.
+ *
+ * Unused, not doing chat anymore
  */
 public class FlockChatFragment extends FlockFragment {
     private static final String ARG_POSITION = "position";

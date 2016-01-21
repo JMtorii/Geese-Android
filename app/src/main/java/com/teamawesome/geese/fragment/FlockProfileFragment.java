@@ -124,6 +124,7 @@ public class FlockProfileFragment extends FlockFragment {
                             R.anim.fragment_slide_in_left,
                             R.anim.fragment_slide_out_right,
                             Constants.FLOCK_FULL_SCREEN_MAP_FRAGMENT_TAG,
+                            mFlock.getName(),
                             false,
                             false,
                             true

@@ -49,11 +49,11 @@ public class FlockEventTopicAdapter extends ArrayAdapter<EventItem> {
             switch (getItemViewType(position)) {
                 case 0:
                     // Header
-                    convertView = mInflater.inflate(R.layout.flock_event_topic_header, null);
+                    convertView = mInflater.inflate(R.layout.flock_event_topic_header, parent, false);
                     break;
                 case 1:
                     // Topic
-                    convertView = mInflater.inflate(R.layout.flock_event_topic_item, null);
+                    convertView = mInflater.inflate(R.layout.flock_event_topic_item, parent, false);
                     break;
             }
             holder.view = getItem(position).getView(mInflater, convertView);

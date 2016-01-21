@@ -9,6 +9,17 @@ public final class Constants {
     public static final String PREF_SETTINGS = "PREF_SETTINGS";
     public static final String PREF_ID = "PREF_ID";
 
+    public static final String HOME_TITLE = "Home";
+    public static final String FAVOURITE_TITLE = "Favourite";
+    public static final String SETTING_TITLE = "Setting";
+    public static final String SETTING_RULES_TITLE = "Rules";
+    public static final String SETTING_TERMS_OF_SERVICE_TITLE = "Terms of Service";
+    public static final String SETTING_PRIVACY_POLICY_TITLE = "Privacy Policy";
+    public static final String SIGN_UP_TITLE = "Sign Up";
+    public static final String NEW_EVENT_TITLE = "New Event";
+    public static final String NEW_POST_TITLE = "New Post";
+    public static final String NEW_POST_COMMENT_TITLE = "New Comment";
+
     public static final String HOME_FRAGMENT_TAG = "HOME_FRAGMENT";
     public static final String FAVOURITE_FLOCKS_FRAGMENT_TAG = "SIGNUP_FRAGMENT_TAG";
     public static final String SETTINGS_MAIN_FRAGMENT_TAG = "SETTINGS_MAIN_FRAGMENT";
@@ -19,6 +30,7 @@ public final class Constants {
     public static final String FLOCK_PROFILE_FRAGMENT_TAG = "FLOCK_PROFILE_FRAGMENT";
 
     public static final String FLOCK_FRAGMENT_TAG = "FLOCK_FRAGMENT";
+    public static final String FLOCK_EVENT_NEW_FRAGMENT_TAG = "FLOCK_EVENT_NEW_FRAGMENT";
     public static final String FLOCK_EVENT_DETAILS_FRAGMENT_TAG = "FLOCK_EVENT_DETAILS_FRAGMENT";
     public static final String FLOCK_POST_DETAILS_FRAGMENT_TAG = "FLOCK_POST_DETAILS_FRAGMENT";
     public static final String FLOCK_POST_TOPIC_CREATE_FRAGMENT = "FLOCK_POST_TOPIC_CREATE_FRAGMENT";

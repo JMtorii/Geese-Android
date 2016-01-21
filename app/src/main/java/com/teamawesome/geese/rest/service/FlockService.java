@@ -60,7 +60,6 @@ public interface FlockService {
             "Accept: */*",
             "Cache-Control: no-cache",
             "Content-Type: application/json",
-            "X-AUTH-TOKEN: eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0ZXN0QGVtYWlsLmNvbSJ9.qufWHyPzMLAwaF_1QARepchXGRTx5fsuHOJXcfnF6OLTBbcD6PyD575geXdU2zwbwIYL_5ThGRSMlb7Qa_rpxw"
     })
     Observable<List<FlockV2>> getNearbyFlocks(@Header("X-AUTH-TOKEN") String token, @Query("latitude") float latitude, @Query("longitude") float longitude);
 }

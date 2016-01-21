@@ -87,6 +87,7 @@ public class HomeFragment extends GeeseFragment {
                         R.anim.fragment_slide_in_left,
                         R.anim.fragment_slide_out_right,
                         Constants.FLOCK_FRAGMENT_TAG,
+                        flocks.get(position).getName(),
                         false,
                         false,
                         true

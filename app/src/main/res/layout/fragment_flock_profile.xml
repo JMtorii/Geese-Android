@@ -72,9 +72,9 @@
 
             <View
                 android:layout_width="match_parent"
-                android:layout_height="2dp"
+                android:layout_height="1px"
                 android:layout_marginBottom="2dp"
-                android:background="@color/grey"
+                android:background="@color/separatorColour"
                 />
 
             <com.google.android.gms.maps.MapView

@@ -44,8 +44,6 @@ public class SignupFragment extends Fragment {
     private static String loggingTag = "Signup Fragment";
 
     private CallbackManager callbackManager;
-    private GeeseService geeseService = ((MainActivity) getActivity()).getRetrofitClient().create(GeeseService.class);
-    private LoginService loginService = ((MainActivity) getActivity()).getRetrofitClient().create(LoginService.class);
 
     private Button signupButton;
     private LoginButton facebookLoginButton;
@@ -108,7 +106,7 @@ public class SignupFragment extends Fragment {
                     HashingAlgorithm ha = new HashingAlgorithm();
                     try {
                         String hashedPassword = ha.sha256(password);
-                        attemptLogin(username, email, hashedPassword);
+                        attemptSignup(username, email, hashedPassword);
                     } catch (Exception e) {
                         Log.e(loggingTag, "Failed to hash password");
                     }
@@ -219,10 +217,11 @@ public class SignupFragment extends Fragment {
 
     private void attemptSignup(final String username, final String email, final String hashedPassword) {
         Goose goose = new Goose(username, email, hashedPassword);
-        Call<Goose> call = geeseService.createGoose(goose);
-        call.enqueue(new Callback<Goose>() {
+        goose.print();
+        Call<Void> call = ((MainActivity) getActivity()).geeseService.createGoose(goose);
+        call.enqueue(new Callback<Void>() {
             @Override
-            public void onResponse(Response<Goose> response, Retrofit retrofit) {
+            public void onResponse(Response<Void> response, Retrofit retrofit) {
                 if (response.isSuccess()) {
                     attemptLogin(username, email, hashedPassword);
                 } else {
@@ -246,7 +245,7 @@ public class SignupFragment extends Fragment {
 
     private void attemptLogin(final String username, final String email, final String hashedPassword) {
         Goose goose = new Goose(email, hashedPassword);
-        Call<String> call = loginService.attemptLogin(goose);
+        Call<String> call = ((MainActivity) getActivity()).loginService.attemptLogin(goose);
         call.enqueue(new Callback<String>() {
             @Override
             public void onResponse(Response<String> response, Retrofit retrofit) {

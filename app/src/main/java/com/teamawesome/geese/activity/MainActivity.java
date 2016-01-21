@@ -30,6 +30,8 @@ import com.teamawesome.geese.fragment.HomeFragment;
 import com.teamawesome.geese.fragment.SignupFragment;
 import com.teamawesome.geese.fragment.settings.SettingsMainFragment;
 import com.teamawesome.geese.rest.service.FlockService;
+import com.teamawesome.geese.rest.service.GeeseService;
+import com.teamawesome.geese.rest.service.LoginService;
 import com.teamawesome.geese.util.Constants;
 import com.teamawesome.geese.util.SessionManager;
 
@@ -67,6 +69,7 @@ public class MainActivity extends AppCompatActivity {
     private Stack<String> customBackStack;
 
     // Retrofit client
+    // TODO Remove later
     private Retrofit retrofitClient;
 
     // Retrofit observable client
@@ -74,7 +77,8 @@ public class MainActivity extends AppCompatActivity {
 
     // REST services
     public FlockService flockService;
-
+    public GeeseService geeseService;
+    public LoginService loginService;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -97,6 +101,8 @@ public class MainActivity extends AppCompatActivity {
                 .build();
 
         flockService = retrofitReactiveClient.create(FlockService.class);
+        geeseService = retrofitReactiveClient.create(GeeseService.class);
+        loginService = retrofitReactiveClient.create(LoginService.class);
 
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         setContentView(R.layout.activity_main);

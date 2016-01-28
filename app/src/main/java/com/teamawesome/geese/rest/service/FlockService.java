@@ -58,4 +58,13 @@ public interface FlockService {
             "X-AUTH-TOKEN: eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0ZXN0QGVtYWlsLmNvbSJ9.qufWHyPzMLAwaF_1QARepchXGRTx5fsuHOJXcfnF6OLTBbcD6PyD575geXdU2zwbwIYL_5ThGRSMlb7Qa_rpxw"
     })
     Observable<List<FlockV2>> getNearbyFlocks(@Query("latitude") float latitude, @Query("longitude") float longitude);
+
+    @GET("/flock/getFavourited")
+    @Headers({
+            "Accept: */*",
+            "Cache-Control: no-cache",
+            "Content-Type: application/json",
+            "X-AUTH-TOKEN: eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0ZXN0QGVtYWlsLmNvbSJ9.qufWHyPzMLAwaF_1QARepchXGRTx5fsuHOJXcfnF6OLTBbcD6PyD575geXdU2zwbwIYL_5ThGRSMlb7Qa_rpxw"
+    })
+    Observable<List<FlockV2>> getFavourited();
 }

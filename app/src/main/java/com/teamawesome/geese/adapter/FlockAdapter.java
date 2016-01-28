@@ -1,9 +1,9 @@
 package com.teamawesome.geese.adapter;
 
 import android.content.Context;
-import android.graphics.Bitmap;
 import android.location.Address;
 import android.location.Geocoder;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,9 +11,9 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.github.ivbaranov.mfb.MaterialFavoriteButton;
 import com.teamawesome.geese.R;
 import com.teamawesome.geese.rest.model.FlockV2;
-import com.teamawesome.geese.task.OnImageLoaded;
 import com.teamawesome.geese.task.URLImageLoader;
 
 import java.util.List;
@@ -30,6 +30,7 @@ public class FlockAdapter extends ArrayAdapter<FlockV2> {
         TextView members;
         TextView privacy;
         ImageView image;
+        MaterialFavoriteButton favoriteButton;
         int position;
     }
 
@@ -50,6 +51,7 @@ public class FlockAdapter extends ArrayAdapter<FlockV2> {
             viewHolder.members = (TextView)convertView.findViewById(R.id.flock_list_item_members);
             viewHolder.privacy = (TextView)convertView.findViewById(R.id.flock_list_item_privacy);
             viewHolder.image = (ImageView)convertView.findViewById(R.id.flock_list_item_image);
+            viewHolder.favoriteButton = (MaterialFavoriteButton) convertView.findViewById(R.id.flock_list_item_fav_btn);
             convertView.setTag(viewHolder);
         } else {
             viewHolder = (ViewHolder) convertView.getTag();
@@ -77,6 +79,13 @@ public class FlockAdapter extends ArrayAdapter<FlockV2> {
         URLImageLoader profileImageLoader = new URLImageLoader(viewHolder.image);
         //profileImageLoader.execute(flock.imageURL);
         profileImageLoader.execute("http://justinhackworth.com/canada-goose-01.jpg");
+
+        viewHolder.favoriteButton.setOnFavoriteChangeListener(new MaterialFavoriteButton.OnFavoriteChangeListener() {
+            @Override
+            public void onFavoriteChanged(MaterialFavoriteButton buttonView, boolean favorite) {
+                Log.i("FlockAdapter", Boolean.toString(favorite));
+            }
+        });
 
         return convertView;
     }

@@ -1,54 +1,66 @@
 package com.teamawesome.geese.util;
 
-import java.util.HashMap;
-
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
+import android.preference.PreferenceManager;
+
+import java.util.HashMap;
 
 /**
  * Created by lcolam on 10/12/15.
- * Manages login session of user.
+ * Manages all session-related data
  */
 public class SessionManager {
-    private SharedPreferences pref;
-    private Editor editor;
-    private Context context;
-    private int PRIVATE_MODE = 0;
+    private static Editor editor;
+    private static Context context;
 
+    private static final String PREF_IP_ADDRESS = "ip_address";
     private static final String PREF_NAME = "LoginPref";
     private static final String IS_LOGINED = "IsLoggedIn";
     private static final String KEY_NAME = "Name";
     private static final String KEY_EMAIL = "Email";
 
-    public SessionManager(Context context) {
-        this.context = context;
-        pref = context.getSharedPreferences(PREF_NAME, PRIVATE_MODE);
-        editor = pref.edit();
+    public static void init(Context applicationContext) {
+        context = applicationContext;
+        editor = getSharedPreferences().edit();
     }
 
-    public void createLoginSession(String name, String email) {
+    private static SharedPreferences getSharedPreferences() {
+        return PreferenceManager.getDefaultSharedPreferences(context);
+    }
+
+    public static void createLoginSession(String name, String email) {
         editor.putBoolean(IS_LOGINED, true);
         editor.putString(KEY_NAME, name);
         editor.putString(KEY_EMAIL, email);
         editor.commit();
     }
 
-    public void deleteLoginSession() {
+    public static void deleteLoginSession() {
         editor.putBoolean(IS_LOGINED, false);
         editor.putString(KEY_NAME, null);
         editor.putString(KEY_EMAIL, null);
         editor.commit();
     }
 
-    public boolean checkLogin() {
-        return pref.getBoolean(IS_LOGINED, false);
+    public static boolean checkLogin() {
+        return getSharedPreferences().getBoolean(IS_LOGINED, false);
     }
 
-    public HashMap<String, String> getUserDetails() {
+    public static HashMap<String, String> getUserDetails() {
         HashMap<String, String> user = new HashMap<String, String>();
-        user.put(KEY_NAME, pref.getString(KEY_NAME, null));
-        user.put(KEY_EMAIL, pref.getString(KEY_EMAIL, null));
+        user.put(KEY_NAME, getSharedPreferences().getString(KEY_NAME, null));
+        user.put(KEY_EMAIL, getSharedPreferences().getString(KEY_EMAIL, null));
         return user;
+    }
+
+    public static void setIPAddress(String address) {
+        editor.putString(PREF_IP_ADDRESS, address);
+        editor.apply();
+    }
+
+    public static String getIPAddress() {
+        return getSharedPreferences().getString(PREF_IP_ADDRESS, "");
     }
 }

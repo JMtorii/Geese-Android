@@ -1,9 +1,8 @@
 package com.teamawesome.geese.fragment;
 
-import android.support.v4.app.DialogFragment;
 import android.os.Bundle;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,38 +12,22 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.facebook.AccessToken;
-import com.facebook.GraphRequest;
-import com.facebook.GraphResponse;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.reflect.TypeToken;
-import com.teamawesome.geese.R;
-import com.teamawesome.geese.activity.MainActivity;
-import com.teamawesome.geese.rest.RestExamples;
-import com.teamawesome.geese.rest.model.Goose;
-import com.teamawesome.geese.rest.service.GeeseService;
-import com.teamawesome.geese.util.Utilities;
-
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
+import com.facebook.GraphRequest;
+import com.facebook.GraphResponse;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
+import com.teamawesome.geese.R;
+import com.teamawesome.geese.rest.RestExamples;
+import com.teamawesome.geese.util.SessionManager;
+import com.teamawesome.geese.util.Utilities;
 
 import org.json.JSONObject;
 
-import java.io.IOException;
-import java.lang.reflect.Type;
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Iterator;
 import java.util.List;
-
-import retrofit.Call;
-import retrofit.Callback;
-import retrofit.GsonConverterFactory;
-import retrofit.Response;
-import retrofit.Retrofit;
 
 public class SignupFragment extends Fragment {
     private CallbackManager callbackManager;
@@ -224,7 +207,7 @@ public class SignupFragment extends Fragment {
 
     private void loginUserComplete(String user, String email) {
         Toast.makeText(getActivity().getApplicationContext(), "Welcome ".concat(user).concat("! Redirecting..."), Toast.LENGTH_SHORT).show();
-        ((MainActivity) getActivity()).getSessionManager().createLoginSession(user, email);
+        SessionManager.createLoginSession(user, email);
         getFragmentManager().popBackStack();
     }
 }

@@ -1,10 +1,5 @@
 package com.teamawesome.geese.object;
 
-import android.view.LayoutInflater;
-import android.view.View;
-import android.widget.TextView;
-
-import com.teamawesome.geese.R;
 import com.teamawesome.geese.adapter.FlockEventTopicAdapter;
 
 /**
@@ -18,20 +13,12 @@ public class EventHeader implements EventItem {
     }
 
     @Override
-    public int getViewType() {
-        return FlockEventTopicAdapter.RowType.Header.ordinal();
+    public String getTitle() {
+        return title;
     }
 
     @Override
-    public View getView(LayoutInflater inflater, View convertView) {
-        View view;
-        if (convertView == null) {
-            view = inflater.inflate(R.layout.flock_event_topic_header, null);
-        } else {
-            view = convertView;
-        }
-        TextView titleTextView = (TextView) view.findViewById(R.id.flock_event_topic_header_text);
-        titleTextView.setText(title);
-        return view;
+    public int getViewType() {
+        return FlockEventTopicAdapter.RowType.Header.ordinal();
     }
 }

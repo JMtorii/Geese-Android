@@ -5,9 +5,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.TextView;
 
 import com.teamawesome.geese.R;
 import com.teamawesome.geese.object.EventItem;
+import com.teamawesome.geese.object.EventTopic;
 
 import java.util.ArrayList;
 
@@ -21,7 +23,10 @@ public class FlockEventTopicAdapter extends ArrayAdapter<EventItem> {
     }
 
     private static class ViewHolder {
-        View view;
+        TextView title;
+        TextView eventDateTime;
+        TextView numGuests;
+        TextView description;
     }
 
     private LayoutInflater mInflater;
@@ -34,6 +39,11 @@ public class FlockEventTopicAdapter extends ArrayAdapter<EventItem> {
     @Override
     public int getItemViewType(int position) {
         return getItem(position).getViewType();
+    }
+
+    @Override
+    public int getViewTypeCount() {
+        return RowType.values().length;
     }
 
     @Override
@@ -50,14 +60,25 @@ public class FlockEventTopicAdapter extends ArrayAdapter<EventItem> {
                 case 0:
                     // Header
                     convertView = mInflater.inflate(R.layout.flock_event_topic_header, parent, false);
+                    holder.title = (TextView) convertView.findViewById(R.id.flock_event_topic_header_text);
                     break;
                 case 1:
                     // Topic
                     convertView = mInflater.inflate(R.layout.flock_event_topic_item, parent, false);
+                    holder.title = (TextView) convertView.findViewById(R.id.flock_event_topic_name);
+                    holder.eventDateTime = (TextView) convertView.findViewById(R.id.flock_event_topic_time);
+                    holder.numGuests = (TextView) convertView.findViewById(R.id.flock_event_topic_attendance);
                     break;
             }
-            holder.view = getItem(position).getView(mInflater, convertView);
             convertView.setTag(holder);
+        } else {
+            holder = (ViewHolder) convertView.getTag();
+        }
+
+        holder.title.setText(getItem(position).getTitle());
+        if (getItemViewType(position) == RowType.Topic.ordinal()) {
+            holder.eventDateTime.setText(((EventTopic) getItem(position)).getEventDateTime().toString());
+            holder.numGuests.setText(String.valueOf(((EventTopic) getItem(position)).getNumGuests()));
         }
         return convertView;
     }

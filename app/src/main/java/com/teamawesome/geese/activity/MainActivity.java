@@ -11,6 +11,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
@@ -60,9 +61,6 @@ public class MainActivity extends AppCompatActivity {
     // Fragment manager
     private String curFragmentTag = Constants.HOME_FRAGMENT_TAG;
 
-    // Session manager
-    private SessionManager sessionManager;
-
     // Custom back stack
     private Stack<String> customBackStack;
 
@@ -80,10 +78,11 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        sessionManager = new SessionManager(getApplicationContext());
         customBackStack = new Stack<>();
         customBackStack.push(Constants.HOME_FRAGMENT_TAG);
         FacebookSdk.sdkInitialize(getApplicationContext());
+
+        Log.i("Main Activity", SessionManager.getIPAddress());
 
         retrofitClient = new Retrofit.Builder()
                 .baseUrl(Constants.GEESE_SERVER_ADDRESS)
@@ -91,7 +90,7 @@ public class MainActivity extends AppCompatActivity {
                 .build();
 
         retrofitReactiveClient = new Retrofit.Builder()
-                .baseUrl(Constants.GEESE_SERVER_ADDRESS)
+                .baseUrl(SessionManager.getIPAddress())
                 .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
                 .addConverterFactory(JacksonConverterFactory.create())
                 .build();
@@ -214,14 +213,14 @@ public class MainActivity extends AppCompatActivity {
                         }
                     }).executeAsync();
                 }
-                sessionManager.deleteLoginSession();
+                SessionManager.deleteLoginSession();
             default:        // this should never happen
                 fragment = null;
                 tag = "";
                 break;
         }
 
-        if (position == 3 && sessionManager.checkLogin()) {
+        if (position == 3 && SessionManager.checkLogin()) {
             Toast.makeText(getApplicationContext(), "Already login-ed", Toast.LENGTH_SHORT).show();
             return;
         }
@@ -284,10 +283,6 @@ public class MainActivity extends AppCompatActivity {
 
         ft.commit();
         curFragmentTag = tag;
-    }
-
-    public SessionManager getSessionManager() {
-        return sessionManager;
     }
 
     public Retrofit getRetrofitClient() {

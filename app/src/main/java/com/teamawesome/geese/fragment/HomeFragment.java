@@ -68,8 +68,6 @@ public class HomeFragment extends GeeseFragment {
                 android.R.color.holo_orange_light,
                 android.R.color.holo_red_light);
 
-        getNearbyFlocks();
-
         listView.setAdapter(flockAdapter);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -94,6 +92,9 @@ public class HomeFragment extends GeeseFragment {
             }
         });
 
+        getNearbyFlocks();
+
+
         return view;
     }
 
@@ -106,6 +107,40 @@ public class HomeFragment extends GeeseFragment {
 
     private void getNearbyFlocks() {
         Observable<List<FlockV2>> observable = parentActivity.flockService.getNearbyFlocks(43.471086f, -80.541875f);
+        observable.subscribeOn(Schedulers.newThread())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Subscriber<List<FlockV2>>() {
+                    @Override
+                    public void onCompleted() {
+                        // nothing to do here
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        Log.e("HomeFragment", "Something happened: " + e.getMessage());
+                    }
+
+                    @Override
+                    public void onNext(List<FlockV2> flocks) {
+                        Log.i("HomeFragment", "onNext called");
+
+                        flockAdapter.clear();
+                        if (flocks != null) {
+                            for (FlockV2 flock : flocks) {
+                                flockAdapter.insert(flock, flockAdapter.getCount());
+                            }
+                        }
+
+                        flockAdapter.notifyDataSetChanged();
+                        swipeContainer.setRefreshing(false);
+                    }
+                });
+    }
+
+    private void getFavouritedFlocks() {
+        List<FlockV2> favouritedFlocks = new ArrayList<>();
+
+        Observable<List<FlockV2>> observable = parentActivity.flockService.getFavourited();
         observable.subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Subscriber<List<FlockV2>>() {

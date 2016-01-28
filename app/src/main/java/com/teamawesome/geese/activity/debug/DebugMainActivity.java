@@ -3,6 +3,7 @@ package com.teamawesome.geese.activity.debug;
 import android.app.ListActivity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -10,13 +11,14 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.teamawesome.geese.R;
-import com.teamawesome.geese.fragment.SignupFragment;
 import com.teamawesome.geese.activity.GeeseActivity;
 import com.teamawesome.geese.task.debug.PostRequestTask;
+import com.teamawesome.geese.util.Constants;
+import com.teamawesome.geese.util.SessionManager;
 
 public class DebugMainActivity extends ListActivity {
 
-    String[] values = new String[] { "Actual Application", "Login", "Server", "ViewPager" };
+    String[] values = new String[] { "Actual Application", "Login", "Server", "ViewPager", "Change to Mark's IP Address" };
     String rawCard = "{ " +
             "'card': {" +
                 "'templateId': 1, " +
@@ -43,7 +45,8 @@ public class DebugMainActivity extends ListActivity {
                 android.R.layout.simple_list_item_1, values);
         setListAdapter(adapter);
         setTitle("CHOOSE YOUR CHARACTER!!!");
-
+        SessionManager.init(getApplicationContext());
+        SessionManager.setIPAddress(Constants.GEESE_SERVER_ADDRESS);
     }
 
     @Override
@@ -68,6 +71,9 @@ public class DebugMainActivity extends ListActivity {
             Intent i = new Intent( this, DebugViewPagerActivity.class);
             startActivity(i);
 
+        } else if (id == 4) {   // Set to Mark's IP address
+            SessionManager.setIPAddress(Constants.MARK_SERVER_ADDRESS);
+            Log.i("DebugMainActivity", SessionManager.getIPAddress());
         }
     }
 

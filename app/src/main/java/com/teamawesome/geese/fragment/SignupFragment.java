@@ -240,7 +240,7 @@ public class SignupFragment extends Fragment {
     private void loginUserComplete(String user, String email, String token) {
         Toast.makeText(getActivity().getApplicationContext(), "Welcome ".concat(user).concat("! Redirecting..."), Toast.LENGTH_SHORT).show();
         ((MainActivity) getActivity()).getSessionManager().createLoginSession(user, email, token);
-        ((MainActivity) getActivity()).createRetrofitClient();
+        ((MainActivity) getActivity()).getHeaderInterceptor().addTokenHeader(token);
         getFragmentManager().popBackStack();
     }
 }

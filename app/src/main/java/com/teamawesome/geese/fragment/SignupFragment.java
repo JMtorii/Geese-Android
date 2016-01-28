@@ -15,6 +15,7 @@ import android.widget.Toast;
 import com.facebook.AccessToken;
 import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
+import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.ResponseBody;
 import com.teamawesome.geese.R;
 import com.teamawesome.geese.activity.MainActivity;
@@ -26,6 +27,7 @@ import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
+import com.teamawesome.geese.util.HeaderInterceptor;
 
 import org.json.JSONObject;
 
@@ -238,6 +240,7 @@ public class SignupFragment extends Fragment {
     private void loginUserComplete(String user, String email, String token) {
         Toast.makeText(getActivity().getApplicationContext(), "Welcome ".concat(user).concat("! Redirecting..."), Toast.LENGTH_SHORT).show();
         ((MainActivity) getActivity()).getSessionManager().createLoginSession(user, email, token);
+        ((MainActivity) getActivity()).createRetrofitClient();
         getFragmentManager().popBackStack();
     }
 }

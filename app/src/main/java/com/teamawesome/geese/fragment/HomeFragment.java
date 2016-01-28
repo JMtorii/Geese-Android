@@ -108,8 +108,7 @@ public class HomeFragment extends GeeseFragment {
     private void getNearbyFlocks() {
         // TODO use interceptor instead to add token to all REST calls
         if (mainActivity.getSessionManager().checkLogin()) {
-            String token = mainActivity.getSessionManager().getUserDetails().get("Token");
-            Observable<List<FlockV2>> observable = parentActivity.flockService.getNearbyFlocks(token, 43.471086f, -80.541875f);
+            Observable<List<FlockV2>> observable = parentActivity.flockService.getNearbyFlocks(43.471086f, -80.541875f);
             observable.subscribeOn(Schedulers.newThread())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(new Subscriber<List<FlockV2>>() {

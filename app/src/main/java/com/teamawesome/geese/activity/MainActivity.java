@@ -24,6 +24,7 @@ import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
 import com.facebook.HttpMethod;
 import com.facebook.login.LoginManager;
+import com.squareup.okhttp.OkHttpClient;
 import com.teamawesome.geese.R;
 import com.teamawesome.geese.fragment.FavouriteFlocksFragment;
 import com.teamawesome.geese.fragment.HomeFragment;
@@ -33,6 +34,7 @@ import com.teamawesome.geese.rest.service.FlockService;
 import com.teamawesome.geese.rest.service.GeeseService;
 import com.teamawesome.geese.rest.service.LoginService;
 import com.teamawesome.geese.util.Constants;
+import com.teamawesome.geese.util.HeaderInterceptor;
 import com.teamawesome.geese.util.SessionManager;
 
 import java.util.Stack;
@@ -106,15 +108,7 @@ public class MainActivity extends AppCompatActivity {
         customBackStack.push(new CustomFragment(Constants.HOME_FRAGMENT_TAG, Constants.HOME_TITLE));
         FacebookSdk.sdkInitialize(getApplicationContext());
 
-        retrofitReactiveClient = new Retrofit.Builder()
-                .baseUrl(Constants.GEESE_SERVER_ADDRESS)
-                .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
-                .addConverterFactory(JacksonConverterFactory.create())
-                .build();
-
-        flockService = retrofitReactiveClient.create(FlockService.class);
-        geeseService = retrofitReactiveClient.create(GeeseService.class);
-        loginService = retrofitReactiveClient.create(LoginService.class);
+        createRetrofitClient();
 
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         setContentView(R.layout.activity_main);
@@ -170,6 +164,31 @@ public class MainActivity extends AppCompatActivity {
         if (savedInstanceState == null) {
             selectDrawerItem(0);
         }
+    }
+
+    // TODO unsafe?/I'm probably doing something wrong
+    public void createRetrofitClient() {
+        HeaderInterceptor headerInterceptor = new HeaderInterceptor();
+        String token = sessionManager.getUserDetails().get("Token");
+        if (sessionManager.checkLogin()) {
+            headerInterceptor.addTokenHeader(token);
+        } else {
+            headerInterceptor.removeTokenHeader();
+        }
+
+        OkHttpClient client = new OkHttpClient();
+        client.interceptors().add(headerInterceptor);
+
+        retrofitReactiveClient = new Retrofit.Builder()
+                .baseUrl(Constants.GEESE_SERVER_ADDRESS)
+                .client(client)
+                .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
+                .addConverterFactory(JacksonConverterFactory.create())
+                .build();
+
+        flockService = retrofitReactiveClient.create(FlockService.class);
+        geeseService = retrofitReactiveClient.create(GeeseService.class);
+        loginService = retrofitReactiveClient.create(LoginService.class);
     }
 
     /**
@@ -238,6 +257,7 @@ public class MainActivity extends AppCompatActivity {
                     }).executeAsync();
                 }
                 sessionManager.deleteLoginSession();
+                createRetrofitClient();
             default:        // this should never happen
                 fragment = null;
                 tag = "";

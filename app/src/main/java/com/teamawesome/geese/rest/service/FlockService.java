@@ -20,46 +20,17 @@ import rx.Observable;
  */
 public interface FlockService {
     @GET("/flock/{flockId}")
-    @Headers({
-        "Accept: */*",
-        "Cache-Control: no-cache",
-        "Content-Type: application/json",
-        "X-AUTH-TOKEN: eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0ZXN0QGVtYWlsLmNvbSJ9.qufWHyPzMLAwaF_1QARepchXGRTx5fsuHOJXcfnF6OLTBbcD6PyD575geXdU2zwbwIYL_5ThGRSMlb7Qa_rpxw"
-    })
     Call<Flock> getFlock(@Path("flockId") int flockId);
 
     @GET("/flock")
-    @Headers({
-        "Accept: */*",
-        "Cache-Control: no-cache",
-        "Content-Type: application/json",
-        "X-AUTH-TOKEN: eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0ZXN0QGVtYWlsLmNvbSJ9.qufWHyPzMLAwaF_1QARepchXGRTx5fsuHOJXcfnF6OLTBbcD6PyD575geXdU2zwbwIYL_5ThGRSMlb7Qa_rpxw"
-    })
     Call<List<Flock>> getFlocks();
 
     @PUT("/flock/{flockId}")
-    @Headers({
-        "Accept: */*",
-        "Cache-Control: no-cache",
-        "Content-Type: application/json",
-        "X-AUTH-TOKEN: eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0ZXN0QGVtYWlsLmNvbSJ9.qufWHyPzMLAwaF_1QARepchXGRTx5fsuHOJXcfnF6OLTBbcD6PyD575geXdU2zwbwIYL_5ThGRSMlb7Qa_rpxw"
-    })
     Call<Flock> updateFlock(@Path("flockId") int flockId, Flock flock);
 
     @DELETE("/flock/{flockId}")
-    @Headers({
-            "Accept: */*",
-            "Cache-Control: no-cache",
-            "Content-Type: application/json",
-            "X-AUTH-TOKEN: eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0ZXN0QGVtYWlsLmNvbSJ9.qufWHyPzMLAwaF_1QARepchXGRTx5fsuHOJXcfnF6OLTBbcD6PyD575geXdU2zwbwIYL_5ThGRSMlb7Qa_rpxw"
-    })
     Call<Flock> deleteFlock(@Path("flockId") int flockId);
 
     @GET("/flock/getNearbyFlocks")
-    @Headers({
-            "Accept: */*",
-            "Cache-Control: no-cache",
-            "Content-Type: application/json",
-    })
-    Observable<List<FlockV2>> getNearbyFlocks(@Header("X-AUTH-TOKEN") String token, @Query("latitude") float latitude, @Query("longitude") float longitude);
+    Observable<List<FlockV2>> getNearbyFlocks(@Query("latitude") float latitude, @Query("longitude") float longitude);
 }

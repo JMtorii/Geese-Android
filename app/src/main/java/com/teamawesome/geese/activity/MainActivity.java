@@ -11,7 +11,6 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
@@ -25,6 +24,7 @@ import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
 import com.facebook.HttpMethod;
 import com.facebook.login.LoginManager;
+import com.squareup.okhttp.OkHttpClient;
 import com.teamawesome.geese.R;
 import com.teamawesome.geese.fragment.FavouriteFlocksFragment;
 import com.teamawesome.geese.fragment.HomeFragment;
@@ -34,14 +34,15 @@ import com.teamawesome.geese.rest.service.FlockService;
 import com.teamawesome.geese.rest.service.GeeseService;
 import com.teamawesome.geese.rest.service.LoginService;
 import com.teamawesome.geese.util.Constants;
+import com.teamawesome.geese.util.HeaderInterceptor;
 import com.teamawesome.geese.util.SessionManager;
 
 import java.util.Stack;
 
-import retrofit.GsonConverterFactory;
 import retrofit.JacksonConverterFactory;
 import retrofit.Retrofit;
 import retrofit.RxJavaCallAdapterFactory;
+import retrofit.http.HEAD;
 
 /*
  * MainActivity is responsible for holding all fragments and managing them through
@@ -65,6 +66,9 @@ public class MainActivity extends AppCompatActivity {
 
     // Custom back stack
     private Stack<CustomFragment> customBackStack;
+
+    // Interceptor for headers for REST
+    private HeaderInterceptor headerInterceptor;
 
     // Retrofit observable client
     private Retrofit retrofitReactiveClient;
@@ -103,8 +107,20 @@ public class MainActivity extends AppCompatActivity {
         customBackStack.push(new CustomFragment(Constants.HOME_FRAGMENT_TAG, Constants.HOME_TITLE));
         FacebookSdk.sdkInitialize(getApplicationContext());
 
+        headerInterceptor = new HeaderInterceptor();
+        String token = SessionManager.getUserDetails().get("Token");
+        if (SessionManager.checkLogin()) {
+            headerInterceptor.addTokenHeader(token);
+        } else {
+            headerInterceptor.removeTokenHeader();
+        }
+
+        OkHttpClient client = new OkHttpClient();
+        client.interceptors().add(headerInterceptor);
+
         retrofitReactiveClient = new Retrofit.Builder()
                 .baseUrl(SessionManager.getIPAddress())
+                .client(client)
                 .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
                 .addConverterFactory(JacksonConverterFactory.create())
                 .build();
@@ -234,7 +250,10 @@ public class MainActivity extends AppCompatActivity {
                         }
                     }).executeAsync();
                 }
+
                 SessionManager.deleteLoginSession();
+                headerInterceptor.removeTokenHeader();
+
             default:        // this should never happen
                 fragment = null;
                 tag = "";
@@ -313,5 +332,9 @@ public class MainActivity extends AppCompatActivity {
         ft.commit();
         curFragmentTag = tag;
         mToolbar.setTitle(title);
+    }
+
+    public HeaderInterceptor getHeaderInterceptor() {
+        return headerInterceptor;
     }
 }

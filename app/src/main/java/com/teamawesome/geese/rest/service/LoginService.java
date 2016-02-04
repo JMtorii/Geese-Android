@@ -13,10 +13,5 @@ import retrofit.http.Body;
  */
 public interface LoginService {
     @POST("/login")
-    @Headers({
-            "Accept: */*",
-            "Cache-Control: no-cache",
-            "Content-Type: application/json"
-    })
     Call<ResponseBody> attemptLogin(@Body Goose goose);
 }

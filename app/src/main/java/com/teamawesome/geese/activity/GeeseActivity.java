@@ -7,7 +7,7 @@ import android.os.Bundle;
 
 import com.teamawesome.geese.R;
 import com.teamawesome.geese.util.Constants;
-
+import com.teamawesome.geese.util.SessionManager;
 
 /*
  * Handle splash screen loading and other loading activities here. MainActivity holds begins the
@@ -30,12 +30,15 @@ public class GeeseActivity extends Activity {
             editor.apply();
         }
 
-
-        // for now, forward the user directly into MainActivity
-        Intent i = new Intent(this, MainActivity.class);
+        // Check if logged in and forward to login or main
+        Intent i;
+        if (true) {
+//        if (sessionManager.checkLogin()) {
+            i = new Intent(this, MainActivity.class);
+        } else {
+            i = new Intent(this, LoginActivity.class);
+        }
         startActivity(i);
-
-        // this may not be necessary
-        setContentView(R.layout.activity_geese);
+        finish();
     }
 }

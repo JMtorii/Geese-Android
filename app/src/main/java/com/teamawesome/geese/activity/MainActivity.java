@@ -239,23 +239,28 @@ public class MainActivity extends AppCompatActivity {
                 title = Constants.SETTING_TITLE;
                 break;
             case 3:         // Signup
-                fragment = new SignupFragment();
-                tag = Constants.SIGNUP_FRAGMENT_TAG;
-                title = Constants.SIGN_UP_TITLE;
-                break;
-            case 4:         // DEBUG SIGNOUT
-                if (AccessToken.getCurrentAccessToken() != null) {
-                    new GraphRequest(AccessToken.getCurrentAccessToken(), "/me/permissions/", null, HttpMethod.DELETE, new GraphRequest
-                            .Callback() {
+                if (!sessionManager.checkLogin()) {
+                    fragment = new SignupFragment();
+                    tag = Constants.SIGNUP_FRAGMENT_TAG;
+                    title = Constants.SIGN_UP_TITLE;
+                } else {
+                    fragment = null;
+                    tag = "";
+                    title = "";
+                    if (AccessToken.getCurrentAccessToken() != null) {
+                        new GraphRequest(AccessToken.getCurrentAccessToken(), "/me/permissions/", null, HttpMethod.DELETE, new GraphRequest
+                                .Callback() {
 
-                        @Override
-                        public void onCompleted(GraphResponse graphResponse) {
-                            LoginManager.getInstance().logOut();
-                        }
-                    }).executeAsync();
+                            @Override
+                            public void onCompleted(GraphResponse graphResponse) {
+                                LoginManager.getInstance().logOut();
+                            }
+                        }).executeAsync();
+                    }
+                    sessionManager.deleteLoginSession();
+                    headerInterceptor.removeTokenHeader();
                 }
-                sessionManager.deleteLoginSession();
-                headerInterceptor.removeTokenHeader();
+                break;
             default:        // this should never happen
                 fragment = null;
                 tag = "";

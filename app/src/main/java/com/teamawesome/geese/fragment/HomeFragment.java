@@ -15,6 +15,7 @@ import com.teamawesome.geese.activity.MainActivity;
 import com.teamawesome.geese.adapter.FlockAdapter;
 import com.teamawesome.geese.rest.model.FlockV2;
 import com.teamawesome.geese.util.Constants;
+import com.teamawesome.geese.util.SessionManager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -107,36 +108,55 @@ public class HomeFragment extends GeeseFragment {
     }
 
     private void getNearbyFlocks() {
-        // TODO: remove token
-        Observable<List<FlockV2>> observable = parentActivity.flockService.getNearbyFlocks("eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0ZXN0QGVtYWlsLmNvbSJ9.qufWHyPzMLAwaF_1QARepchXGRTx5fsuHOJXcfnF6OLTBbcD6PyD575geXdU2zwbwIYL_5ThGRSMlb7Qa_rpxw", 43.471086f, -80.541875f);
-        observable.subscribeOn(Schedulers.newThread())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Subscriber<List<FlockV2>>() {
-                    @Override
-                    public void onCompleted() {
-                        // nothing to do here
-                    }
 
-                    @Override
-                    public void onError(Throwable e) {
-                        Log.e("HomeFragment", "Something happened: " + e.getMessage());
-                    }
-
-                    @Override
-                    public void onNext(List<FlockV2> flocks) {
-                        Log.i("HomeFragment", "onNext called");
-
-                        flockAdapter.clear();
-                        if (flocks != null) {
-                            for (FlockV2 flock : flocks) {
-                                flockAdapter.insert(flock, flockAdapter.getCount());
-                            }
+        // TODO use interceptor instead to add token to all REST calls
+        if (useDummyData) {
+            // fix for when network requests fail
+            flockAdapter.clear();
+            FlockV2 f = new FlockV2.Builder().name("Network Failed")
+                    .description("So here's a dummy one instead")
+                    .latitude(43.4707224f)
+                    .longitude(80.5429343f)
+                    .radius(1)
+                    .id(1)
+                    .authorid(1)
+                    .build();
+            flockAdapter.insert(f, 0);
+            flockAdapter.notifyDataSetChanged();
+            swipeContainer.setRefreshing(false);
+            return;
+        }
+        if (SessionManager.checkLogin()) {
+            Observable<List<FlockV2>> observable = parentActivity.flockService.getNearbyFlocks(43.471086f, -80.541875f);
+            observable.subscribeOn(Schedulers.newThread())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(new Subscriber<List<FlockV2>>() {
+                        @Override
+                        public void onCompleted() {
+                            // nothing to do here
                         }
 
-                        flockAdapter.notifyDataSetChanged();
-                        swipeContainer.setRefreshing(false);
-                    }
-                });
+                        @Override
+                        public void onError(Throwable e) {
+                            Log.e("HomeFragment", "Something happened: " + e.getMessage());
+                        }
+
+                        @Override
+                        public void onNext(List<FlockV2> flocks) {
+                            Log.i("HomeFragment", "onNext called");
+
+                            flockAdapter.clear();
+                            if (flocks != null) {
+                                for (FlockV2 flock : flocks) {
+                                    flockAdapter.insert(flock, flockAdapter.getCount());
+                                }
+                            }
+
+                            flockAdapter.notifyDataSetChanged();
+                            swipeContainer.setRefreshing(false);
+                        }
+                    });
+        }
     }
 
     private void getFavouritedFlocks() {

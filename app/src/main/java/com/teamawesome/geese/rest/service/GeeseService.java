@@ -19,42 +19,17 @@ import retrofit.http.Query;
  */
 public interface GeeseService {
     @GET("/goose/{gooseId}")
-    @Headers({
-        "Accept: */*",
-        "Cache-Control: no-cache",
-        "Content-Type: application/json"
-    })
     Call<Goose> getGoose(@Path("gooseId") int gooseId);
 
     @GET("/goose")
-    @Headers({
-        "Accept: */*",
-        "Cache-Control: no-cache",
-        "Content-Type: application/json"
-    })
     Call<List<Goose>> getGeese();
 
     @POST("/goose")
-    @Headers({
-        "Accept: */*",
-        "Cache-Control: no-cache",
-        "Content-Type: application/json"
-    })
     Call<Void> createGoose(@Body Goose goose);
 
     @PUT("/goose/{gooseId}")
-    @Headers({
-        "Accept: */*",
-        "Cache-Control: no-cache",
-        "Content-Type: application/json"
-    })
     Call<Goose> updateGoose(@Path("gooseId") int gooseId, @Body Goose goose);
 
     @DELETE("/goose/{gooseId}")
-    @Headers({
-        "Accept: */*",
-        "Cache-Control: no-cache",
-        "Content-Type: application/json"
-    })
     Call<Goose> deleteGoose(@Path("gooseId") int gooseId);
 }

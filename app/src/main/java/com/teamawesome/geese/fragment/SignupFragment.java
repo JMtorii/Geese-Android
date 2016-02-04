@@ -25,7 +25,6 @@ import com.teamawesome.geese.R;
 import com.teamawesome.geese.activity.MainActivity;
 import com.teamawesome.geese.rest.model.Goose;
 import com.teamawesome.geese.util.HashingAlgorithm;
-import com.teamawesome.geese.util.PasswordValidation;
 import com.teamawesome.geese.util.SessionManager;
 
 import org.json.JSONObject;
@@ -102,14 +101,12 @@ public class SignupFragment extends Fragment {
                 emailText.setText(email);
                 password = passwordText.getText().toString();
 
-                if (validateFormValues(username, email, password, true)) {
-                    HashingAlgorithm ha = new HashingAlgorithm();
-                    try {
-                        String hashedPassword = ha.sha256(password);
-                        attemptSignup(username, email, hashedPassword);
-                    } catch (Exception e) {
-                        Log.e(loggingTag, "Failed to hash password");
-                    }
+                HashingAlgorithm ha = new HashingAlgorithm();
+                try {
+                    String hashedPassword = ha.sha256(password);
+                    attemptSignup(username, email, hashedPassword);
+                } catch (Exception e) {
+                    Log.e(loggingTag, "Failed to hash password");
                 }
             }
         });
@@ -177,44 +174,15 @@ public class SignupFragment extends Fragment {
                 emailText.setText(email);
                 password = passwordText.getText().toString();
 
-                if (validateFormValues(username, email, password, false)) {
-                    HashingAlgorithm ha = new HashingAlgorithm();
-                    try {
-                        String hashedPassword = ha.sha256(password);
-                        attemptLogin(username, email, hashedPassword);
-                    } catch (Exception e) {
-                        Log.e(loggingTag, "Failed to hash password");
-                    }
+                HashingAlgorithm ha = new HashingAlgorithm();
+                try {
+                    String hashedPassword = ha.sha256(password);
+                    attemptLogin(username, email, hashedPassword);
+                } catch (Exception e) {
+                    Log.e(loggingTag, "Failed to hash password");
                 }
             }
         });
-    }
-
-    private boolean validateFormValues(String username, String email, String password, boolean fromSignUp) {
-        // Only requires either username or password for login vs both for signup
-        boolean validUsername = true;
-        if (!PasswordValidation.isValidUsername(username)) {
-            if (fromSignUp) {
-                Toast.makeText(getActivity().getApplicationContext(), getString(R.string.invalid_username), Toast.LENGTH_LONG).show();
-                return false;
-            } else {
-                validUsername = false;
-            }
-        }
-        if (!PasswordValidation.isValidEmail(email)) {
-            if (fromSignUp) {
-                Toast.makeText(getActivity().getApplicationContext(), getString(R.string.invalid_email), Toast.LENGTH_LONG).show();
-                return false;
-            } else if (!validUsername) {
-                Toast.makeText(getActivity().getApplicationContext(), getString(R.string.invalid_username), Toast.LENGTH_LONG).show();
-                return false;
-            }
-        }
-        if (!PasswordValidation.isValidPassword(password) && fromSignUp) {
-            Toast.makeText(getActivity().getApplicationContext(), getString(R.string.invalid_password), Toast.LENGTH_LONG).show();
-            return false;
-        }
-        return true;
     }
 
     private void attemptSignup(final String username, final String email, final String hashedPassword) {
@@ -248,7 +216,8 @@ public class SignupFragment extends Fragment {
             public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
                 if (response.isSuccess()) {
                     try {
-                        loginUserComplete(username, email, response.body().string());
+                        String token = response.body().string();
+                        loginUserComplete(username, email, token);
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
@@ -270,8 +239,8 @@ public class SignupFragment extends Fragment {
     private void loginUserComplete(String user, String email, String token) {
         Toast.makeText(getActivity().getApplicationContext(), "Welcome ".concat(user).concat("! Redirecting..."), Toast.LENGTH_SHORT).show();
 
-        // TODO: remove token
         SessionManager.createLoginSession(user, email, token);
+        ((MainActivity) getActivity()).getHeaderInterceptor().addTokenHeader(token);
         getFragmentManager().popBackStack();
     }
 }

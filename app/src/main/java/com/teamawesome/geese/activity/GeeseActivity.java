@@ -5,9 +5,11 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 
+import com.facebook.FacebookSdk;
 import com.teamawesome.geese.R;
 import com.teamawesome.geese.util.Constants;
-
+import com.teamawesome.geese.util.RestClient;
+import com.teamawesome.geese.util.SessionManager;
 
 /*
  * Handle splash screen loading and other loading activities here. MainActivity holds begins the
@@ -28,14 +30,23 @@ public class GeeseActivity extends Activity {
             SharedPreferences.Editor editor = settings.edit();
             editor.putInt(Constants.PREF_ID, 1);
             editor.apply();
+
         }
+        SessionManager.init(getApplicationContext());
+        SessionManager.setIPAddress(Constants.GEESE_SERVER_ADDRESS);
 
+        RestClient.init();
 
-        // for now, forward the user directly into MainActivity
-        Intent i = new Intent(this, MainActivity.class);
+        FacebookSdk.sdkInitialize(getApplicationContext());
+
+        // Check if logged in and forward to login or main
+        Intent i;
+        if (SessionManager.checkLogin()) {
+            i = new Intent(this, MainActivity.class);
+        } else {
+            i = new Intent(this, LoginActivity.class);
+        }
         startActivity(i);
-
-        // this may not be necessary
-        setContentView(R.layout.activity_geese);
+        finish();
     }
 }

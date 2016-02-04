@@ -89,7 +89,7 @@ public class FlockEventFragment extends FlockFragment {
         });
 
         // Add listener to the fab
-        FloatingActionButton fab = (FloatingActionButton) v.findViewById(R.id.new_event_fab);
+        FloatingActionButton fab = (FloatingAxctionButton) v.findViewById(R.id.fab);
         fab.attachToListView((ListView) v.findViewById(R.id.flock_event_topic_list));
         fab.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {

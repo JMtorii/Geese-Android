@@ -15,6 +15,8 @@ import com.teamawesome.geese.activity.MainActivity;
 import com.teamawesome.geese.adapter.FlockAdapter;
 import com.teamawesome.geese.rest.model.FlockV2;
 import com.teamawesome.geese.util.Constants;
+import com.teamawesome.geese.util.RestClient;
+import com.teamawesome.geese.util.SessionManager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -68,8 +70,6 @@ public class HomeFragment extends GeeseFragment {
                 android.R.color.holo_orange_light,
                 android.R.color.holo_red_light);
 
-        getNearbyFlocks();
-
         listView.setAdapter(flockAdapter);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -95,6 +95,9 @@ public class HomeFragment extends GeeseFragment {
             }
         });
 
+        getNearbyFlocks();
+
+
         return view;
     }
 
@@ -106,6 +109,7 @@ public class HomeFragment extends GeeseFragment {
     }
 
     private void getNearbyFlocks() {
+
         // TODO use interceptor instead to add token to all REST calls
         if (useDummyData) {
             // fix for when network requests fail
@@ -123,8 +127,8 @@ public class HomeFragment extends GeeseFragment {
             swipeContainer.setRefreshing(false);
             return;
         }
-        if (mainActivity.getSessionManager().checkLogin()) {
-            Observable<List<FlockV2>> observable = parentActivity.flockService.getNearbyFlocks(43.471086f, -80.541875f);
+        if (SessionManager.checkLogin()) {
+            Observable<List<FlockV2>> observable = RestClient.flockService.getNearbyFlocks(43.471086f, -80.541875f);
             observable.subscribeOn(Schedulers.newThread())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(new Subscriber<List<FlockV2>>() {
@@ -144,7 +148,7 @@ public class HomeFragment extends GeeseFragment {
 
                             flockAdapter.clear();
                             if (flocks != null) {
-                                for(FlockV2 flock : flocks) {
+                                for (FlockV2 flock : flocks) {
                                     flockAdapter.insert(flock, flockAdapter.getCount());
                                 }
                             }
@@ -153,9 +157,41 @@ public class HomeFragment extends GeeseFragment {
                             swipeContainer.setRefreshing(false);
                         }
                     });
-        } else {
-            // TODO stuff
         }
+    }
+
+    private void getFavouritedFlocks() {
+        List<FlockV2> favouritedFlocks = new ArrayList<>();
+
+        Observable<List<FlockV2>> observable = RestClient.flockService.getFavourited();
+        observable.subscribeOn(Schedulers.newThread())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Subscriber<List<FlockV2>>() {
+                    @Override
+                    public void onCompleted() {
+                        // nothing to do here
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        Log.e("HomeFragment", "Something happened: " + e.getMessage());
+                    }
+
+                    @Override
+                    public void onNext(List<FlockV2> flocks) {
+                        Log.i("HomeFragment", "onNext called");
+
+                        flockAdapter.clear();
+                        if (flocks != null) {
+                            for (FlockV2 flock : flocks) {
+                                flockAdapter.insert(flock, flockAdapter.getCount());
+                            }
+                        }
+
+                        flockAdapter.notifyDataSetChanged();
+                        swipeContainer.setRefreshing(false);
+                    }
+                });
 
     }
 }

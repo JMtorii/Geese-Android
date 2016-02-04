@@ -36,6 +36,9 @@ public class FlockV2 {
     @JsonProperty("score")
     private int score;
 
+    @JsonIgnore
+    private boolean favourited = false;
+
     // TODO: implement me
 //    @JsonIgnoreProperties("createdTime")
 //    private String createdTime;
@@ -106,6 +109,14 @@ public class FlockV2 {
 
     public void setMapImage200x200(Bitmap mapImage200x200) {
         this.mapImage200x200 = mapImage200x200;
+    }
+
+    public boolean getFavourited() {
+        return favourited;
+    }
+
+    public void setFavourited(boolean favourited) {
+        this.favourited = favourited;
     }
 
     // TODO: implement me

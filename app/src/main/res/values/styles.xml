@@ -19,12 +19,29 @@
         <item name="android:colorLongPressedHighlight">@android:color/holo_blue_light</item>
     </style>
 
+    <style name="SplashTheme" parent="Theme.AppCompat.NoActionBar">
+        <item name="android:windowBackground">@drawable/splash</item>
+    </style>
+
+    <style name="LoginTheme" parent="Theme.AppCompat.NoActionBar">
+        <item name="colorPrimary">@color/primary</item>
+        <item name="colorPrimaryDark">@color/primaryDark</item>
+        <item name="android:windowBackground">@color/whiteBackground</item>
+        <item name="windowActionBar">false</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="colorControlNormal">@color/black</item>
+        <item name="colorControlActivated">@color/primary</item>
+        <item name="colorControlHighlight">@color/primaryLight</item>
+        <item name="android:colorPressedHighlight">@android:color/holo_blue_light</item>
+        <item name="android:colorLongPressedHighlight">@android:color/holo_blue_light</item>
+    </style>
+
     <style name="FlockSmallTextStyle" parent="android:Widget.TextView">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_marginTop">1dp</item>
         <item name="android:textAppearance">?android:attr/textAppearanceSmall</item>
-        <item name ="android:singleLine">true</item>
+        <item name="android:singleLine">true</item>
     </style>
 
     <style name="CustomEditTextStyle" parent="android:Widget.EditText">
@@ -49,5 +66,12 @@
     <style name="GeeseDialogBoxTheme" parent="@android:style/Theme.Holo.Light">
         <item name="android:textAppearanceMedium">@style/GeeseTextAppearance</item>
     </style>
-
+    <style name="FloatingActionButtonStyle">
+        <item name="android:id">@id/fab</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_gravity">bottom|right</item>
+        <item name="android:layout_margin">16dp</item>
+        <item name="android:src">@drawable/ic_add_black_24dp</item>
+    </style>
 </resources>

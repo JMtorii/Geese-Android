@@ -1,33 +1,31 @@
-package com.teamawesome.geese.fragment;
+package com.teamawesome.geese.activity;
 
-import android.support.v4.app.DialogFragment;
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.facebook.AccessToken;
-import com.facebook.GraphRequest;
-import com.facebook.GraphResponse;
-import com.squareup.okhttp.OkHttpClient;
-import com.squareup.okhttp.ResponseBody;
-import com.teamawesome.geese.R;
-import com.teamawesome.geese.activity.MainActivity;
-import com.teamawesome.geese.rest.model.Goose;
-import com.teamawesome.geese.util.HashingAlgorithm;
-
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
+import com.facebook.GraphRequest;
+import com.facebook.GraphResponse;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
-import com.teamawesome.geese.util.HeaderInterceptor;
+import com.squareup.okhttp.ResponseBody;
+import com.teamawesome.geese.R;
+import com.teamawesome.geese.fragment.TosDialogFragment;
+import com.teamawesome.geese.rest.model.Goose;
+import com.teamawesome.geese.util.Constants;
+import com.teamawesome.geese.util.HashingAlgorithm;
+import com.teamawesome.geese.util.RestClient;
+import com.teamawesome.geese.util.SessionManager;
 
 import org.json.JSONObject;
 
@@ -40,8 +38,12 @@ import retrofit.Callback;
 import retrofit.Response;
 import retrofit.Retrofit;
 
-public class SignupFragment extends Fragment {
-    private static String loggingTag = "Signup Fragment";
+/**
+ * Created by lcolam on 2/3/16.
+ */
+public class LoginActivity extends Activity {
+    Activity mContext = this;
+    private static String loggingTag = "Login Activity";
 
     private CallbackManager callbackManager;
 
@@ -51,18 +53,12 @@ public class SignupFragment extends Fragment {
     private TextView tosText, loginText;
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         callbackManager = CallbackManager.Factory.create();
-    }
+        setContentView(R.layout.activity_login);
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_signup, container, false);
-
-        findWidgetsInView(view);
+        findWidgets(this);
         setupSignupButton();
         setupFacebookLogin();
         setupTextClickables();
@@ -71,24 +67,16 @@ public class SignupFragment extends Fragment {
         usernameText.setText("lcolam");
         emailText.setText("lcolam@uwaterloo.ca");
         passwordText.setText("this#is*a&PassworD2");
-        //
-
-        return view;
     }
 
-    @Override
-    public void onActivityCreated(Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-    }
-
-    private void findWidgetsInView(View view) {
-        signupButton = (Button) view.findViewById(R.id.email_sign_up_button);
-        facebookLoginButton = (LoginButton) view.findViewById(R.id.facebook_login_button);
-        usernameText = (EditText) view.findViewById(R.id.username_entry);
-        emailText = (EditText) view.findViewById(R.id.email_entry);
-        passwordText = (EditText) view.findViewById(R.id.password_entry);
-        tosText = (TextView) view.findViewById(R.id.creation_ToS);
-        loginText = (TextView) view.findViewById(R.id.login);
+    private void findWidgets(Activity activity) {
+        signupButton = (Button) activity.findViewById(R.id.email_sign_up_button);
+        facebookLoginButton = (LoginButton) activity.findViewById(R.id.facebook_login_button);
+        usernameText = (EditText) activity.findViewById(R.id.username_entry);
+        emailText = (EditText) activity.findViewById(R.id.email_entry);
+        passwordText = (EditText) activity.findViewById(R.id.password_entry);
+        tosText = (TextView) activity.findViewById(R.id.creation_ToS);
+        loginText = (TextView) activity.findViewById(R.id.login);
     }
 
     private void setupSignupButton() {
@@ -145,13 +133,13 @@ public class SignupFragment extends Fragment {
             @Override
             public void onCancel() {
                 // App code
-                Toast.makeText(getActivity().getApplicationContext(), "Cancelled", Toast.LENGTH_SHORT).show();
+                Toast.makeText(mContext.getApplicationContext(), "Cancelled", Toast.LENGTH_SHORT).show();
             }
 
             @Override
             public void onError(FacebookException exception) {
                 // App code
-                Toast.makeText(getActivity().getApplicationContext(), "Error while attempting to login.", Toast.LENGTH_SHORT).show();
+                Toast.makeText(mContext.getApplicationContext(), "Error while attempting to login.", Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -160,8 +148,9 @@ public class SignupFragment extends Fragment {
         tosText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                DialogFragment tosDialogFragment = TosDialogFragment.newInstance();
-                tosDialogFragment.show(getFragmentManager(), "tosDialog");
+                // TODO
+                /*DialogFragment tosDialogFragment = TosDialogFragment.newInstance();
+                tosDialogFragment.show(getFragmentManager(), "tosDialog");*/
             }
         });
 
@@ -188,7 +177,7 @@ public class SignupFragment extends Fragment {
 
     private void attemptSignup(final String username, final String email, final String hashedPassword) {
         Goose goose = new Goose(username, email, hashedPassword);
-        Call<Void> call = ((MainActivity) getActivity()).geeseService.createGoose(goose);
+        Call<Void> call = RestClient.geeseService.createGoose(goose);
         call.enqueue(new Callback<Void>() {
             @Override
             public void onResponse(Response<Void> response, Retrofit retrofit) {
@@ -196,7 +185,7 @@ public class SignupFragment extends Fragment {
                     attemptLogin(username, email, hashedPassword);
                 } else {
                     Log.e(loggingTag, "Signup failed");
-                    Toast.makeText(getActivity().getApplicationContext(), "Signup failed...", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(mContext.getApplicationContext(), "Signup failed...", Toast.LENGTH_SHORT).show();
                 }
             }
 
@@ -211,7 +200,7 @@ public class SignupFragment extends Fragment {
 
     private void attemptLogin(final String username, final String email, final String hashedPassword) {
         Goose goose = new Goose(email, hashedPassword);
-        Call<ResponseBody> call = ((MainActivity) getActivity()).loginService.attemptLogin(goose);
+        Call<ResponseBody> call = RestClient.loginService.attemptLogin(goose);
         call.enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
@@ -224,7 +213,7 @@ public class SignupFragment extends Fragment {
                     }
                 } else {
                     Log.e(loggingTag, "Login failed");
-                    Toast.makeText(getActivity().getApplicationContext(), "Login failed...", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(mContext.getApplicationContext(), "Login failed...", Toast.LENGTH_SHORT).show();
                 }
             }
 
@@ -238,9 +227,13 @@ public class SignupFragment extends Fragment {
     }
 
     private void loginUserComplete(String user, String email, String token) {
-        Toast.makeText(getActivity().getApplicationContext(), "Welcome ".concat(user).concat("! Redirecting..."), Toast.LENGTH_SHORT).show();
-        ((MainActivity) getActivity()).getSessionManager().createLoginSession(user, email, token);
-        ((MainActivity) getActivity()).getHeaderInterceptor().addTokenHeader(token);
-        getFragmentManager().popBackStack();
+        Toast.makeText(this.getApplicationContext(), "Welcome ".concat(user).concat("! Redirecting..."), Toast.LENGTH_SHORT).show();
+
+        SessionManager.createLoginSession(user, email, token);
+        RestClient.headerInterceptor.addTokenHeader(token);
+
+        Intent i = new Intent(this, MainActivity.class);
+        startActivity(i);
+        finish();
     }
 }

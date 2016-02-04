@@ -36,7 +36,9 @@
 
         <TextView
             android:id="@+id/flock_post_topic_description"
-            style="@style/FlockSmallTextStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
             android:text="Description"
             />
 
@@ -45,9 +47,10 @@
     <com.teamawesome.geese.view.UpvoteDownvoteView
         android:id="@+id/flock_post_topic_upvote_downvote"
         layout="@layout/upvote_downvote_view"
-        android:layout_width="100dp"
-        android:layout_height="70dp"
-        android:layout_margin="5dp"
+        android:layout_width="60dp"
+        android:layout_height="50dp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginTop="5dp"
         android:layout_alignParentRight="true"
         />
 

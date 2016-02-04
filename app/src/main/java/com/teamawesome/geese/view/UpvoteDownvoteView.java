@@ -4,7 +4,7 @@ import android.content.Context;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -18,16 +18,16 @@ public class UpvoteDownvoteView extends RelativeLayout {
     UpvoteDownvoteListener mListener;
 
     TextView mVotesText;
-    Button mUpvoteButton;
-    Button mDownvoteButton;
+    ImageButton mUpvoteButton;
+    ImageButton mDownvoteButton;
 
     public UpvoteDownvoteView(Context context, AttributeSet attrs) {
         super(context, attrs);
         LayoutInflater layoutInflater = LayoutInflater.from(context);
         View v = layoutInflater.inflate(R.layout.upvote_downvote_view, this);
         mVotesText = (TextView)v.findViewById(R.id.upvote_downvote_view_text);
-        mUpvoteButton = (Button)v.findViewById(R.id.upvote_downvote_view_upvote);
-        mDownvoteButton = (Button)v.findViewById(R.id.upvote_downvote_view_downvote);
+        mUpvoteButton = (ImageButton)v.findViewById(R.id.upvote_downvote_view_upvote);
+        mDownvoteButton = (ImageButton)v.findViewById(R.id.upvote_downvote_view_downvote);
 
         final UpvoteDownvoteView referenceView = this;
 

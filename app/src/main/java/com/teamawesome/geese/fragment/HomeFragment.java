@@ -85,6 +85,7 @@ public class HomeFragment extends GeeseFragment {
                         R.anim.fragment_slide_in_left,
                         R.anim.fragment_slide_out_right,
                         Constants.FLOCK_FRAGMENT_TAG,
+                        flocks.get(position).getName(),
                         false,
                         false,
                         true
@@ -106,7 +107,8 @@ public class HomeFragment extends GeeseFragment {
     }
 
     private void getNearbyFlocks() {
-        Observable<List<FlockV2>> observable = parentActivity.flockService.getNearbyFlocks(43.471086f, -80.541875f);
+        // TODO: remove token
+        Observable<List<FlockV2>> observable = parentActivity.flockService.getNearbyFlocks("eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0ZXN0QGVtYWlsLmNvbSJ9.qufWHyPzMLAwaF_1QARepchXGRTx5fsuHOJXcfnF6OLTBbcD6PyD575geXdU2zwbwIYL_5ThGRSMlb7Qa_rpxw", 43.471086f, -80.541875f);
         observable.subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Subscriber<List<FlockV2>>() {
@@ -160,7 +162,7 @@ public class HomeFragment extends GeeseFragment {
 
                         flockAdapter.clear();
                         if (flocks != null) {
-                            for(FlockV2 flock : flocks) {
+                            for (FlockV2 flock : flocks) {
                                 flockAdapter.insert(flock, flockAdapter.getCount());
                             }
                         }
@@ -169,5 +171,6 @@ public class HomeFragment extends GeeseFragment {
                         swipeContainer.setRefreshing(false);
                     }
                 });
+
     }
 }

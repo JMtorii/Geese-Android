@@ -118,10 +118,10 @@ public final class RestExamples {
     // Post with argument Body
     public static void createGoose(Goose goose) {
         // Goose goose = new Goose(100, "Leotest", "130.leo@gmail.com", true, "P@ssword", "NaCl");
-        Call<Goose> call = geeseService.createGoose(goose);
-        call.enqueue(new Callback<Goose>() {
+        Call<Void> call = geeseService.createGoose(goose);
+        call.enqueue(new Callback<Void>() {
             @Override
-            public void onResponse(Response<Goose> response, Retrofit retrofit) {
+            public void onResponse(Response<Void> response, Retrofit retrofit) {
                 Log.d("Test", String.valueOf(response.raw()));
                 Log.d("Test", String.valueOf(response.body()));
                 if (response.isSuccess()) {

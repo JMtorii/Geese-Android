@@ -10,7 +10,9 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/home_listview"
-        android:background="@color/whiteBackground">
+        android:background="@color/whiteBackground"
+        android:divider="@color/separatorColour"
+        android:dividerHeight="1px">
     </ListView>
 
 </android.support.v4.widget.SwipeRefreshLayout>

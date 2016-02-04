@@ -2,35 +2,37 @@ package com.teamawesome.geese.rest.model;
 
 import android.util.Log;
 
-import com.google.gson.annotations.SerializedName;
-import org.parceler.Parcel;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 
 /**
  * Created by lcolam on 11/1/15.
  */
-@Parcel
+@JsonIgnoreProperties(ignoreUnknown = true)
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class Goose {
-    @SerializedName("id")
+    @JsonProperty("id")
     public int id;
 
-    @SerializedName("name")
+    @JsonProperty("name")
     public String name;
 
-    @SerializedName("email")
+    @JsonProperty("email")
     public String email;
 
-    @SerializedName("verified")
+    @JsonProperty("verified")
     public boolean verified;
 
-    @SerializedName("password")
+    @JsonProperty("password")
     public String password;
 
-    @SerializedName("salt")
+    @JsonProperty("salt")
     public String salt;
 
     public Goose() {}
-
-    // TODO smaller constructor for Goose keys
 
     public Goose(int id, String name, String email, boolean verified, String password, String salt) {
         this.id = id;
@@ -41,8 +43,20 @@ public class Goose {
         this.salt = salt;
     }
 
+    public Goose(String name, String email, String password) {
+        this.name = name;
+        this.email = email;
+        this.password = password;
+    }
+
+    public Goose(String email, String password) {
+        this.email = email;
+        this.password = password;
+        this.name = email;
+    }
+
     public void print() {
-        Log.d("Goose", "Name<" + name + "> Email<" + email + "> Verified<" + verified
+        Log.d("Goose", "ID<" + id + "> Name<" + name + "> Email<" + email + "> Verified<" + verified
                 + "> Password<" + password + "> Salt<" + salt + ">");
     }
 }

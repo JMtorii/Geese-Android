@@ -13,11 +13,7 @@
     </ListView>
 
     <com.melnykov.fab.FloatingActionButton
-        android:id="@+id/new_event_fab"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom|right"
-        android:layout_margin="16dp"
+        style="@style/FloatingActionButtonStyle"
         fab:fab_colorNormal="@color/primary" />
 </FrameLayout>
 

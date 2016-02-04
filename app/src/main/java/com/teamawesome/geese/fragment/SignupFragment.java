@@ -25,6 +25,7 @@ import com.teamawesome.geese.R;
 import com.teamawesome.geese.activity.MainActivity;
 import com.teamawesome.geese.rest.model.Goose;
 import com.teamawesome.geese.util.HashingAlgorithm;
+import com.teamawesome.geese.util.RestClient;
 import com.teamawesome.geese.util.SessionManager;
 
 import org.json.JSONObject;
@@ -187,7 +188,7 @@ public class SignupFragment extends Fragment {
 
     private void attemptSignup(final String username, final String email, final String hashedPassword) {
         Goose goose = new Goose(username, email, hashedPassword);
-        Call<Void> call = ((MainActivity) getActivity()).geeseService.createGoose(goose);
+        Call<Void> call = RestClient.geeseService.createGoose(goose);
         call.enqueue(new Callback<Void>() {
             @Override
             public void onResponse(Response<Void> response, Retrofit retrofit) {
@@ -210,7 +211,7 @@ public class SignupFragment extends Fragment {
 
     private void attemptLogin(final String username, final String email, final String hashedPassword) {
         Goose goose = new Goose(email, hashedPassword);
-        Call<ResponseBody> call = ((MainActivity) getActivity()).loginService.attemptLogin(goose);
+        Call<ResponseBody> call = RestClient.loginService.attemptLogin(goose);
         call.enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
@@ -240,7 +241,7 @@ public class SignupFragment extends Fragment {
         Toast.makeText(getActivity().getApplicationContext(), "Welcome ".concat(user).concat("! Redirecting..."), Toast.LENGTH_SHORT).show();
 
         SessionManager.createLoginSession(user, email, token);
-        ((MainActivity) getActivity()).getHeaderInterceptor().addTokenHeader(token);
+        RestClient.headerInterceptor.addTokenHeader(token);
         getFragmentManager().popBackStack();
     }
 }

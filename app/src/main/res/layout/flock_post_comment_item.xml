@@ -9,7 +9,11 @@
         android:layout_height="match_parent"
         android:layout_alignParentLeft="true"
         android:text="Comment"
-        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:paddingTop="2dp"
+        android:paddingLeft="2dp"
+        android:paddingBottom="2dp"
+        android:paddingRight="2dp"
         android:id="@+id/flock_post_comment"
         android:layout_toStartOf="@+id/flock_post_comment_upvote_downvote"
         android:layout_toLeftOf="@+id/flock_post_comment_upvote_downvote" />

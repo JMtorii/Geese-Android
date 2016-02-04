@@ -41,6 +41,6 @@ public final class Constants {
     public static final String SETTINGS_PRIVACY_POLICTY_TAG = "SETTINGS_PRIVACY_POLICTY_TAG";
     public static final String SETTINGS_TERMS_SERVICE_TAG = "SETTINGS_TERMS_SERVICE_TAG";
 
-    public static final String GEESE_SERVER_ADDRESS = "http://geese-app-test-2.elasticbeanstalk.com:8080";
+    public static final String GEESE_SERVER_ADDRESS = "https://geeseapp.com";
     public static final String MARK_SERVER_ADDRESS = "http://192.168.57.1:8080";
 }

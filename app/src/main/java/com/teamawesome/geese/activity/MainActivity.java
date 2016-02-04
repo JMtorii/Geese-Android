@@ -1,5 +1,6 @@
 package com.teamawesome.geese.activity;
 
+import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
 import android.os.Bundle;
@@ -19,31 +20,19 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.facebook.AccessToken;
-import com.facebook.FacebookSdk;
 import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
 import com.facebook.HttpMethod;
 import com.facebook.login.LoginManager;
-import com.squareup.okhttp.OkHttpClient;
 import com.teamawesome.geese.R;
 import com.teamawesome.geese.fragment.FavouriteFlocksFragment;
 import com.teamawesome.geese.fragment.HomeFragment;
-import com.teamawesome.geese.fragment.SignupFragment;
 import com.teamawesome.geese.fragment.settings.SettingsMainFragment;
-import com.teamawesome.geese.rest.service.FlockService;
-import com.teamawesome.geese.rest.service.GeeseService;
-import com.teamawesome.geese.rest.service.LoginService;
 import com.teamawesome.geese.util.Constants;
-import com.teamawesome.geese.util.HeaderInterceptor;
 import com.teamawesome.geese.util.RestClient;
 import com.teamawesome.geese.util.SessionManager;
 
 import java.util.Stack;
-
-import retrofit.JacksonConverterFactory;
-import retrofit.Retrofit;
-import retrofit.RxJavaCallAdapterFactory;
-import retrofit.http.HEAD;
 
 /*
  * MainActivity is responsible for holding all fragments and managing them through
@@ -95,7 +84,6 @@ public class MainActivity extends AppCompatActivity {
 
         customBackStack = new Stack<>();
         customBackStack.push(new CustomFragment(Constants.HOME_FRAGMENT_TAG, Constants.HOME_TITLE));
-        FacebookSdk.sdkInitialize(getApplicationContext());
 
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         setContentView(R.layout.activity_main);
@@ -202,28 +190,25 @@ public class MainActivity extends AppCompatActivity {
                 tag = Constants.SETTINGS_MAIN_FRAGMENT_TAG;
                 title = Constants.SETTING_TITLE;
                 break;
-            case 3:         // Signup
-                if (!SessionManager.checkLogin()) {
-                    fragment = new SignupFragment();
-                    tag = Constants.SIGNUP_FRAGMENT_TAG;
-                    title = Constants.SIGN_UP_TITLE;
-                } else {
-                    fragment = null;
-                    tag = "";
-                    title = "";
-                    if (AccessToken.getCurrentAccessToken() != null) {
-                        new GraphRequest(AccessToken.getCurrentAccessToken(), "/me/permissions/", null, HttpMethod.DELETE, new GraphRequest
-                                .Callback() {
+            case 3:         // Logout
+                fragment = null;
+                tag = "";
+                title = "";
+                if (AccessToken.getCurrentAccessToken() != null) {
+                    new GraphRequest(AccessToken.getCurrentAccessToken(), "/me/permissions/", null, HttpMethod.DELETE, new GraphRequest
+                            .Callback() {
 
-                            @Override
-                            public void onCompleted(GraphResponse graphResponse) {
-                                LoginManager.getInstance().logOut();
-                            }
-                        }).executeAsync();
-                    }
-                    SessionManager.deleteLoginSession();
-                    RestClient.headerInterceptor.removeTokenHeader();
+                        @Override
+                        public void onCompleted(GraphResponse graphResponse) {
+                            LoginManager.getInstance().logOut();
+                        }
+                    }).executeAsync();
                 }
+                SessionManager.deleteLoginSession();
+                RestClient.headerInterceptor.removeTokenHeader();
+                Intent i = new Intent(this, LoginActivity.class);
+                startActivity(i);
+                finish();
                 break;
             default:        // this should never happen
                 fragment = null;

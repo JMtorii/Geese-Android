@@ -42,7 +42,6 @@ public final class Constants {
     public static final String SETTINGS_TERMS_SERVICE_TAG = "SETTINGS_TERMS_SERVICE_TAG";
 
     // TODO change this to SSL/geeseapp
-    // Currently points to own machine (en0 interface)
     public static final String GEESE_SERVER_ADDRESS = "http://geeseapp.elasticbeanstalk.com";
     public static final String MARK_SERVER_ADDRESS = "http://192.168.57.1:8080";
 }

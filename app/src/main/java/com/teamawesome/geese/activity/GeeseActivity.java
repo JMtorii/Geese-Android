@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 
+import com.facebook.FacebookSdk;
 import com.teamawesome.geese.R;
 import com.teamawesome.geese.util.Constants;
 import com.teamawesome.geese.util.RestClient;
@@ -36,8 +37,15 @@ public class GeeseActivity extends Activity {
 
         RestClient.init();
 
+        FacebookSdk.sdkInitialize(getApplicationContext());
+
         // Check if logged in and forward to login or main
-        Intent i = new Intent(this, MainActivity.class);
+        Intent i;
+        if (SessionManager.checkLogin()) {
+            i = new Intent(this, MainActivity.class);
+        } else {
+            i = new Intent(this, LoginActivity.class);
+        }
         startActivity(i);
         finish();
     }

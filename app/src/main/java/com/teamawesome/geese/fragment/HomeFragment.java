@@ -107,6 +107,22 @@ public class HomeFragment extends GeeseFragment {
 
     private void getNearbyFlocks() {
         // TODO use interceptor instead to add token to all REST calls
+        if (useDummyData) {
+            // fix for when network requests fail
+            flockAdapter.clear();
+            FlockV2 f = new FlockV2.Builder().name("Network Failed")
+                    .description("So here's a dummy one instead")
+                    .latitude(43.4707224f)
+                    .longitude(80.5429343f)
+                    .radius(1)
+                    .id(1)
+                    .authorid(1)
+                    .build();
+            flockAdapter.insert(f, 0);
+            flockAdapter.notifyDataSetChanged();
+            swipeContainer.setRefreshing(false);
+            return;
+        }
         if (mainActivity.getSessionManager().checkLogin()) {
             Observable<List<FlockV2>> observable = parentActivity.flockService.getNearbyFlocks(43.471086f, -80.541875f);
             observable.subscribeOn(Schedulers.newThread())

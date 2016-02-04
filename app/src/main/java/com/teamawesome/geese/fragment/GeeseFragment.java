@@ -11,6 +11,9 @@ import com.teamawesome.geese.activity.MainActivity;
 public class GeeseFragment extends Fragment {
     protected MainActivity parentActivity;
 
+    // Dont commit this as true
+    protected boolean useDummyData = false;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

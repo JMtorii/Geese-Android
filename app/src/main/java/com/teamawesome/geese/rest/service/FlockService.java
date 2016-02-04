@@ -8,7 +8,6 @@ import java.util.List;
 import retrofit.Call;
 import retrofit.http.DELETE;
 import retrofit.http.GET;
-import retrofit.http.Header;
 import retrofit.http.Headers;
 import retrofit.http.PUT;
 import retrofit.http.Path;
@@ -33,4 +32,7 @@ public interface FlockService {
 
     @GET("/flock/getNearbyFlocks")
     Observable<List<FlockV2>> getNearbyFlocks(@Query("latitude") float latitude, @Query("longitude") float longitude);
+
+    @GET("/flock/getFavourited")
+    Observable<List<FlockV2>> getFavourited();
 }

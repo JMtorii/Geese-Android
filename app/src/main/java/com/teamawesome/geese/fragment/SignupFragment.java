@@ -1,7 +1,7 @@
 package com.teamawesome.geese.fragment;
 
-import android.support.v4.app.DialogFragment;
 import android.os.Bundle;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -13,21 +13,19 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.facebook.AccessToken;
+import com.facebook.CallbackManager;
+import com.facebook.FacebookCallback;
+import com.facebook.FacebookException;
 import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
-import com.squareup.okhttp.OkHttpClient;
+import com.facebook.login.LoginResult;
+import com.facebook.login.widget.LoginButton;
 import com.squareup.okhttp.ResponseBody;
 import com.teamawesome.geese.R;
 import com.teamawesome.geese.activity.MainActivity;
 import com.teamawesome.geese.rest.model.Goose;
 import com.teamawesome.geese.util.HashingAlgorithm;
-
-import com.facebook.CallbackManager;
-import com.facebook.FacebookCallback;
-import com.facebook.FacebookException;
-import com.facebook.login.LoginResult;
-import com.facebook.login.widget.LoginButton;
-import com.teamawesome.geese.util.HeaderInterceptor;
+import com.teamawesome.geese.util.SessionManager;
 
 import org.json.JSONObject;
 
@@ -39,6 +37,7 @@ import retrofit.Call;
 import retrofit.Callback;
 import retrofit.Response;
 import retrofit.Retrofit;
+
 
 public class SignupFragment extends Fragment {
     private static String loggingTag = "Signup Fragment";
@@ -239,7 +238,8 @@ public class SignupFragment extends Fragment {
 
     private void loginUserComplete(String user, String email, String token) {
         Toast.makeText(getActivity().getApplicationContext(), "Welcome ".concat(user).concat("! Redirecting..."), Toast.LENGTH_SHORT).show();
-        ((MainActivity) getActivity()).getSessionManager().createLoginSession(user, email, token);
+
+        SessionManager.createLoginSession(user, email, token);
         ((MainActivity) getActivity()).getHeaderInterceptor().addTokenHeader(token);
         getFragmentManager().popBackStack();
     }

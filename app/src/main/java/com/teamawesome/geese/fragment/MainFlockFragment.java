@@ -26,8 +26,7 @@ public class MainFlockFragment extends Fragment {
     public FlockFragment fragments[] = {
             FlockProfileFragment.newInstance(0),
             FlockPostFragment.newInstance(1),
-            FlockChatFragment.newInstance(2),
-            FlockEventFragment.newInstance(3)
+            FlockEventFragment.newInstance(2)
     };
 
 
@@ -56,7 +55,7 @@ public class MainFlockFragment extends Fragment {
     public void onDestroyView() {
         super.onDestroyView();
         // remove all child fragments, otherwise fragment manager tries to reuse the fragments and fucks up.
-        getFragmentManager().beginTransaction().remove(fragments[0]).remove(fragments[1]).remove(fragments[2]).remove(fragments[3]).commit();
+        getFragmentManager().beginTransaction().remove(fragments[0]).remove(fragments[1]).remove(fragments[2]).commit();
     }
 
     public void setFlock(FlockV2 f) {
@@ -68,7 +67,6 @@ public class MainFlockFragment extends Fragment {
         private final String[] TITLES = {
                 "Profile",
                 "Post",
-                "Chat",
                 "Events"
         };
 

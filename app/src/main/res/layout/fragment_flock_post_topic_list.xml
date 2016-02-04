@@ -7,7 +7,9 @@
     <ListView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/flock_post_topic_list"/>
+        android:id="@+id/flock_post_topic_list"
+        android:divider="@color/separatorColour"
+        android:dividerHeight="1px"/>
     <com.melnykov.fab.FloatingActionButton
         android:id="@+id/fab"
         android:layout_width="wrap_content"

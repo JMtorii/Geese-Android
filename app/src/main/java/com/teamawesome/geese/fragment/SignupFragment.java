@@ -3,6 +3,7 @@ package com.teamawesome.geese.fragment;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,18 +20,31 @@ import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
+import com.squareup.okhttp.ResponseBody;
 import com.teamawesome.geese.R;
-import com.teamawesome.geese.rest.RestExamples;
+import com.teamawesome.geese.activity.MainActivity;
+import com.teamawesome.geese.rest.model.Goose;
+import com.teamawesome.geese.util.HashingAlgorithm;
+import com.teamawesome.geese.util.PasswordValidation;
 import com.teamawesome.geese.util.SessionManager;
-import com.teamawesome.geese.util.Utilities;
 
 import org.json.JSONObject;
 
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
+import retrofit.Call;
+import retrofit.Callback;
+import retrofit.Response;
+import retrofit.Retrofit;
+
+
 public class SignupFragment extends Fragment {
+    private static String loggingTag = "Signup Fragment";
+
     private CallbackManager callbackManager;
+
     private Button signupButton;
     private LoginButton facebookLoginButton;
     private EditText usernameText, emailText, passwordText;
@@ -89,7 +103,13 @@ public class SignupFragment extends Fragment {
                 password = passwordText.getText().toString();
 
                 if (validateFormValues(username, email, password, true)) {
-                    attemptSignup(username, email, password);
+                    HashingAlgorithm ha = new HashingAlgorithm();
+                    try {
+                        String hashedPassword = ha.sha256(password);
+                        attemptSignup(username, email, hashedPassword);
+                    } catch (Exception e) {
+                        Log.e(loggingTag, "Failed to hash password");
+                    }
                 }
             }
         });
@@ -109,11 +129,13 @@ public class SignupFragment extends Fragment {
                         new GraphRequest.GraphJSONObjectCallback() {
                             @Override
                             public void onCompleted(JSONObject object, GraphResponse graphResponsesponse) {
+                                Log.e(loggingTag, "Facebook sign in success");
                                 try {
                                     String firstName = object.getString("first_name");
                                     String lastName = object.getString("last_name");
                                     String email = object.getString("email");
-                                    loginUserComplete(firstName + " " + lastName, email);
+
+//                                    loginUserComplete(firstName + " " + lastName, email, );
                                 } catch (org.json.JSONException e) {
                                     e.printStackTrace();
                                 }
@@ -155,8 +177,14 @@ public class SignupFragment extends Fragment {
                 emailText.setText(email);
                 password = passwordText.getText().toString();
 
-                if (validateFormValues(username, email, password, true)) {
-                    attemptLogin(username, email, password);
+                if (validateFormValues(username, email, password, false)) {
+                    HashingAlgorithm ha = new HashingAlgorithm();
+                    try {
+                        String hashedPassword = ha.sha256(password);
+                        attemptLogin(username, email, hashedPassword);
+                    } catch (Exception e) {
+                        Log.e(loggingTag, "Failed to hash password");
+                    }
                 }
             }
         });
@@ -165,7 +193,7 @@ public class SignupFragment extends Fragment {
     private boolean validateFormValues(String username, String email, String password, boolean fromSignUp) {
         // Only requires either username or password for login vs both for signup
         boolean validUsername = true;
-        if (!Utilities.isValidUsername(username)) {
+        if (!PasswordValidation.isValidUsername(username)) {
             if (fromSignUp) {
                 Toast.makeText(getActivity().getApplicationContext(), getString(R.string.invalid_username), Toast.LENGTH_LONG).show();
                 return false;
@@ -173,7 +201,7 @@ public class SignupFragment extends Fragment {
                 validUsername = false;
             }
         }
-        if (!Utilities.isValidEmail(email)) {
+        if (!PasswordValidation.isValidEmail(email)) {
             if (fromSignUp) {
                 Toast.makeText(getActivity().getApplicationContext(), getString(R.string.invalid_email), Toast.LENGTH_LONG).show();
                 return false;
@@ -182,32 +210,68 @@ public class SignupFragment extends Fragment {
                 return false;
             }
         }
-        if (!Utilities.isValidPassword(password)) {
+        if (!PasswordValidation.isValidPassword(password) && fromSignUp) {
             Toast.makeText(getActivity().getApplicationContext(), getString(R.string.invalid_password), Toast.LENGTH_LONG).show();
             return false;
         }
         return true;
     }
 
-    private void attemptSignup(String username, String email, String password) {
-//         TODO shenanigans here to attempt a signup and setup callback
-//         Failure callback:
-//         attemptLogin(username, email, password);
-//         Successful:
-//        loginUserComplete(username, email);
+    private void attemptSignup(final String username, final String email, final String hashedPassword) {
+        Goose goose = new Goose(username, email, hashedPassword);
+        Call<Void> call = ((MainActivity) getActivity()).geeseService.createGoose(goose);
+        call.enqueue(new Callback<Void>() {
+            @Override
+            public void onResponse(Response<Void> response, Retrofit retrofit) {
+                if (response.isSuccess()) {
+                    attemptLogin(username, email, hashedPassword);
+                } else {
+                    Log.e(loggingTag, "Signup failed");
+                    Toast.makeText(getActivity().getApplicationContext(), "Signup failed...", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Throwable t) {
+                Log.e(loggingTag, "Failed to create goose");
+                Log.e(loggingTag, t.getMessage().toString());
+                t.printStackTrace();
+            }
+        });
     }
 
-    private void attemptLogin(String username, String email, String password) {
-//      TODO send request to attempt login
-//      loginUserComplete(username, email);
+    private void attemptLogin(final String username, final String email, final String hashedPassword) {
+        Goose goose = new Goose(email, hashedPassword);
+        Call<ResponseBody> call = ((MainActivity) getActivity()).loginService.attemptLogin(goose);
+        call.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+                if (response.isSuccess()) {
+                    try {
+                        loginUserComplete(username, email, response.body().string());
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                } else {
+                    Log.e(loggingTag, "Login failed");
+                    Toast.makeText(getActivity().getApplicationContext(), "Login failed...", Toast.LENGTH_SHORT).show();
+                }
+            }
 
-        // TODO I love testing
-        RestExamples.testAllGoose();
+            @Override
+            public void onFailure(Throwable t) {
+                Log.e(loggingTag, "Login attempt failed");
+                Log.e(loggingTag, t.getMessage().toString());
+                t.printStackTrace();
+            }
+        });
     }
 
-    private void loginUserComplete(String user, String email) {
+    private void loginUserComplete(String user, String email, String token) {
         Toast.makeText(getActivity().getApplicationContext(), "Welcome ".concat(user).concat("! Redirecting..."), Toast.LENGTH_SHORT).show();
-        SessionManager.createLoginSession(user, email);
+
+        // TODO: remove token
+        SessionManager.createLoginSession(user, email, token);
         getFragmentManager().popBackStack();
     }
 }

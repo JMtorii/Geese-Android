@@ -20,6 +20,7 @@ public class SessionManager {
     private static final String IS_LOGINED = "IsLoggedIn";
     private static final String KEY_NAME = "Name";
     private static final String KEY_EMAIL = "Email";
+    private static final String KEY_TOKEN = "Token";
 
     public static void init(Context applicationContext) {
         context = applicationContext;
@@ -30,10 +31,11 @@ public class SessionManager {
         return PreferenceManager.getDefaultSharedPreferences(context);
     }
 
-    public static void createLoginSession(String name, String email) {
+    public static void createLoginSession(String name, String email, String token) {
         editor.putBoolean(IS_LOGINED, true);
         editor.putString(KEY_NAME, name);
         editor.putString(KEY_EMAIL, email);
+        editor.putString(KEY_TOKEN, token);
         editor.commit();
     }
 
@@ -41,6 +43,7 @@ public class SessionManager {
         editor.putBoolean(IS_LOGINED, false);
         editor.putString(KEY_NAME, null);
         editor.putString(KEY_EMAIL, null);
+        editor.putString(KEY_TOKEN, null);
         editor.commit();
     }
 
@@ -50,8 +53,11 @@ public class SessionManager {
 
     public static HashMap<String, String> getUserDetails() {
         HashMap<String, String> user = new HashMap<String, String>();
+
         user.put(KEY_NAME, getSharedPreferences().getString(KEY_NAME, null));
         user.put(KEY_EMAIL, getSharedPreferences().getString(KEY_EMAIL, null));
+        user.put(KEY_EMAIL, getSharedPreferences().getString(KEY_TOKEN, null));
+
         return user;
     }
 

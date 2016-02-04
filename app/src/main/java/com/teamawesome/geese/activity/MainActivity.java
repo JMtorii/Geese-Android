@@ -39,10 +39,10 @@ import com.teamawesome.geese.util.SessionManager;
 
 import java.util.Stack;
 
-import retrofit.GsonConverterFactory;
 import retrofit.JacksonConverterFactory;
 import retrofit.Retrofit;
 import retrofit.RxJavaCallAdapterFactory;
+import retrofit.http.HEAD;
 
 /*
  * MainActivity is responsible for holding all fragments and managing them through
@@ -63,9 +63,6 @@ public class MainActivity extends AppCompatActivity {
 
     // Fragment manager
     private String curFragmentTag = Constants.HOME_FRAGMENT_TAG;
-
-    // Session manager
-    private SessionManager sessionManager;
 
     // Custom back stack
     private Stack<CustomFragment> customBackStack;
@@ -106,14 +103,13 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        sessionManager = new SessionManager(getApplicationContext());
         customBackStack = new Stack<>();
         customBackStack.push(new CustomFragment(Constants.HOME_FRAGMENT_TAG, Constants.HOME_TITLE));
         FacebookSdk.sdkInitialize(getApplicationContext());
 
         headerInterceptor = new HeaderInterceptor();
-        String token = sessionManager.getUserDetails().get("Token");
-        if (sessionManager.checkLogin()) {
+        String token = SessionManager.getUserDetails().get("Token");
+        if (SessionManager.checkLogin()) {
             headerInterceptor.addTokenHeader(token);
         } else {
             headerInterceptor.removeTokenHeader();
@@ -123,7 +119,7 @@ public class MainActivity extends AppCompatActivity {
         client.interceptors().add(headerInterceptor);
 
         retrofitReactiveClient = new Retrofit.Builder()
-                .baseUrl(Constants.GEESE_SERVER_ADDRESS)
+                .baseUrl(SessionManager.getIPAddress())
                 .client(client)
                 .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
                 .addConverterFactory(JacksonConverterFactory.create())
@@ -239,7 +235,7 @@ public class MainActivity extends AppCompatActivity {
                 title = Constants.SETTING_TITLE;
                 break;
             case 3:         // Signup
-                if (!sessionManager.checkLogin()) {
+                if (!SessionManager.checkLogin()) {
                     fragment = new SignupFragment();
                     tag = Constants.SIGNUP_FRAGMENT_TAG;
                     title = Constants.SIGN_UP_TITLE;
@@ -257,7 +253,7 @@ public class MainActivity extends AppCompatActivity {
                             }
                         }).executeAsync();
                     }
-                    sessionManager.deleteLoginSession();
+                    SessionManager.deleteLoginSession();
                     headerInterceptor.removeTokenHeader();
                 }
                 break;
@@ -268,7 +264,7 @@ public class MainActivity extends AppCompatActivity {
                 break;
         }
 
-        if (position == 3 && sessionManager.checkLogin()) {
+        if (position == 3 && SessionManager.checkLogin()) {
             Toast.makeText(getApplicationContext(), "Already login-ed", Toast.LENGTH_SHORT).show();
             return;
         }
@@ -339,10 +335,6 @@ public class MainActivity extends AppCompatActivity {
         ft.commit();
         curFragmentTag = tag;
         mToolbar.setTitle(title);
-    }
-
-    public SessionManager getSessionManager() {
-        return sessionManager;
     }
 
     public HeaderInterceptor getHeaderInterceptor() {

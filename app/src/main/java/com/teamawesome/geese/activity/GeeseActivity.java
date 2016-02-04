@@ -7,6 +7,7 @@ import android.os.Bundle;
 
 import com.teamawesome.geese.R;
 import com.teamawesome.geese.util.Constants;
+import com.teamawesome.geese.util.RestClient;
 import com.teamawesome.geese.util.SessionManager;
 
 /*
@@ -28,16 +29,15 @@ public class GeeseActivity extends Activity {
             SharedPreferences.Editor editor = settings.edit();
             editor.putInt(Constants.PREF_ID, 1);
             editor.apply();
+
         }
+        SessionManager.init(getApplicationContext());
+        SessionManager.setIPAddress(Constants.GEESE_SERVER_ADDRESS);
+
+        RestClient.init();
 
         // Check if logged in and forward to login or main
-        Intent i;
-        if (true) {
-//        if (sessionManager.checkLogin()) {
-            i = new Intent(this, MainActivity.class);
-        } else {
-            i = new Intent(this, LoginActivity.class);
-        }
+        Intent i = new Intent(this, MainActivity.class);
         startActivity(i);
         finish();
     }

@@ -15,6 +15,7 @@ import com.teamawesome.geese.activity.MainActivity;
 import com.teamawesome.geese.adapter.FlockAdapter;
 import com.teamawesome.geese.rest.model.FlockV2;
 import com.teamawesome.geese.util.Constants;
+import com.teamawesome.geese.util.RestClient;
 import com.teamawesome.geese.util.SessionManager;
 
 import java.util.ArrayList;
@@ -127,7 +128,7 @@ public class HomeFragment extends GeeseFragment {
             return;
         }
         if (SessionManager.checkLogin()) {
-            Observable<List<FlockV2>> observable = parentActivity.flockService.getNearbyFlocks(43.471086f, -80.541875f);
+            Observable<List<FlockV2>> observable = RestClient.flockService.getNearbyFlocks(43.471086f, -80.541875f);
             observable.subscribeOn(Schedulers.newThread())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(new Subscriber<List<FlockV2>>() {
@@ -162,7 +163,7 @@ public class HomeFragment extends GeeseFragment {
     private void getFavouritedFlocks() {
         List<FlockV2> favouritedFlocks = new ArrayList<>();
 
-        Observable<List<FlockV2>> observable = parentActivity.flockService.getFavourited();
+        Observable<List<FlockV2>> observable = RestClient.flockService.getFavourited();
         observable.subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Subscriber<List<FlockV2>>() {

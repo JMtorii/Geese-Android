@@ -35,6 +35,7 @@ import com.teamawesome.geese.rest.service.GeeseService;
 import com.teamawesome.geese.rest.service.LoginService;
 import com.teamawesome.geese.util.Constants;
 import com.teamawesome.geese.util.HeaderInterceptor;
+import com.teamawesome.geese.util.RestClient;
 import com.teamawesome.geese.util.SessionManager;
 
 import java.util.Stack;
@@ -67,17 +68,6 @@ public class MainActivity extends AppCompatActivity {
     // Custom back stack
     private Stack<CustomFragment> customBackStack;
 
-    // Interceptor for headers for REST
-    private HeaderInterceptor headerInterceptor;
-
-    // Retrofit observable client
-    private Retrofit retrofitReactiveClient;
-
-    // REST services
-    public FlockService flockService;
-    public GeeseService geeseService;
-    public LoginService loginService;
-
     // Fragment information useful for the custom back stack
     private class CustomFragment {
         // Fragment tag used to find the fragment
@@ -106,28 +96,6 @@ public class MainActivity extends AppCompatActivity {
         customBackStack = new Stack<>();
         customBackStack.push(new CustomFragment(Constants.HOME_FRAGMENT_TAG, Constants.HOME_TITLE));
         FacebookSdk.sdkInitialize(getApplicationContext());
-
-        headerInterceptor = new HeaderInterceptor();
-        String token = SessionManager.getUserDetails().get("Token");
-        if (SessionManager.checkLogin()) {
-            headerInterceptor.addTokenHeader(token);
-        } else {
-            headerInterceptor.removeTokenHeader();
-        }
-
-        OkHttpClient client = new OkHttpClient();
-        client.interceptors().add(headerInterceptor);
-
-        retrofitReactiveClient = new Retrofit.Builder()
-                .baseUrl(SessionManager.getIPAddress())
-                .client(client)
-                .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
-                .addConverterFactory(JacksonConverterFactory.create())
-                .build();
-
-        flockService = retrofitReactiveClient.create(FlockService.class);
-        geeseService = retrofitReactiveClient.create(GeeseService.class);
-        loginService = retrofitReactiveClient.create(LoginService.class);
 
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         setContentView(R.layout.activity_main);
@@ -254,7 +222,7 @@ public class MainActivity extends AppCompatActivity {
                         }).executeAsync();
                     }
                     SessionManager.deleteLoginSession();
-                    headerInterceptor.removeTokenHeader();
+                    RestClient.headerInterceptor.removeTokenHeader();
                 }
                 break;
             default:        // this should never happen
@@ -335,9 +303,5 @@ public class MainActivity extends AppCompatActivity {
         ft.commit();
         curFragmentTag = tag;
         mToolbar.setTitle(title);
-    }
-
-    public HeaderInterceptor getHeaderInterceptor() {
-        return headerInterceptor;
     }
 }

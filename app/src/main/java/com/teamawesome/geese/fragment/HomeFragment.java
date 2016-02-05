@@ -119,7 +119,7 @@ public class HomeFragment extends GeeseFragment {
                     .latitude(43.4707224f)
                     .longitude(80.5429343f)
                     .radius(1)
-                    .id(1)
+                    .id(9)
                     .authorid(1)
                     .build();
             flockAdapter.insert(f, 0);

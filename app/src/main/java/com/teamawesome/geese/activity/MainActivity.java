@@ -208,7 +208,6 @@ public class MainActivity extends AppCompatActivity {
                 RestClient.headerInterceptor.removeTokenHeader();
                 Intent i = new Intent(this, LoginActivity.class);
                 startActivity(i);
-                finish();
                 break;
             default:        // this should never happen
                 fragment = null;

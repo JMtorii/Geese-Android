@@ -19,6 +19,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.TextView;
+import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.facebook.AccessToken;
@@ -48,7 +50,7 @@ import java.util.Stack;
  * We should use ActionBarActivity to support Android 4. Otherwise, we have to change the minimum
  * version to 5
  */
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements TimePickerFragment.TimePickerDialogListener{
     // Toolbar
     private Toolbar mToolbar;
 
@@ -64,6 +66,35 @@ public class MainActivity extends AppCompatActivity {
 
     // Custom back stack
     private Stack<CustomFragment> customBackStack;
+
+    // Time picker
+    private static final int START_TIME_PICKER_ID = 1;
+    private static final int END_TIME_PICKER_ID = 2;
+
+    public void showStartTimePickerDialog(View v) {
+        DialogFragment newFragment = TimePickerFragment.newInstance(START_TIME_PICKER_ID);
+        newFragment.show(getSupportFragmentManager(), "timePicker");
+    }
+
+    public void showEndTimePickerDialog(View v) {
+        DialogFragment newFragment = TimePickerFragment.newInstance(END_TIME_PICKER_ID);
+        newFragment.show(getSupportFragmentManager(), "timePicker");
+    }
+
+    @Override public void onTimeSet(int id, TimePicker view, int hourOfDay, int minute) {
+        if (view.isShown()) {
+            setContentView(R.layout.fragement_flock_event_new);
+            if (id == START_TIME_PICKER_ID) {
+                TextView textView = (TextView) findViewById(R.id.flock_event_create_start_time);
+                System.out.println("1 and also :" + textView.getText().toString());
+                textView.setText(hourOfDay + ":" + minute);
+            } else if (id == END_TIME_PICKER_ID) {
+                TextView textView = (TextView) findViewById(R.id.flock_event_create_end_time);
+                System.out.println("2 and also :" + textView.getText().toString());
+                textView.setText(hourOfDay + ":" + minute);
+            }
+        }
+    }
 
     // Fragment information useful for the custom back stack
     private class CustomFragment {

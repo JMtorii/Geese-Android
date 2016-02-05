@@ -75,7 +75,7 @@
                 android:id="@+id/flock_event_create_start_time"
                 android:text="Now"
                 android:textAppearance="?android:textAppearanceMedium"
-                android:onClick="showTimePickerDialog"
+                android:onClick="showStartTimePickerDialog"
                 android:gravity="right"/>
         </LinearLayout>
 
@@ -101,7 +101,7 @@
                 android:text="End Time"
                 android:textColor="@color/grey"
                 android:textAppearance="?android:textAppearanceMedium"
-                android:onClick="showTimePickerDialog"
+                android:onClick="showEndTimePickerDialog"
                 android:gravity="right"/>
         </LinearLayout>
 

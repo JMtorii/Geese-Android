@@ -17,6 +17,7 @@ import com.teamawesome.geese.activity.MainActivity;
 import com.teamawesome.geese.adapter.FlockPostTopicAdapter;
 import com.teamawesome.geese.rest.model.Post;
 import com.teamawesome.geese.util.Constants;
+import com.teamawesome.geese.util.RestClient;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -113,7 +114,7 @@ public class FlockPostFragment extends FlockFragment {
     }
 
     private void fetchPostTopics() {
-        Observable<List<Post>> observable = parentActivity.flockService.getPostsForFlock(9);
+        Observable<List<Post>> observable = RestClient.flockService.getPostsForFlock(mFlock.getId());
         observable.subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Subscriber<List<Post>>() {

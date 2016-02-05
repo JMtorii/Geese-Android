@@ -33,7 +33,7 @@ public interface FlockService {
     @GET("/flock/getNearbyFlocks")
     Observable<List<FlockV2>> getNearbyFlocks(@Query("latitude") float latitude, @Query("longitude") float longitude);
 
-    @GET("/posts")
+    @GET("/post")
     Observable<List<Post>> getPostsForFlock(@Query("flockId") int flockId);
 
     @GET("/flock/getFavourited")

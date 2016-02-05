@@ -41,6 +41,8 @@ public class Post {
         builder.score = score;
     }
 
+    public Post() {}
+
     public int getId() {
         return id;
     }

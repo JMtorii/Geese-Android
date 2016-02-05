@@ -159,39 +159,4 @@ public class HomeFragment extends GeeseFragment {
                     });
         }
     }
-
-    private void getFavouritedFlocks() {
-        List<FlockV2> favouritedFlocks = new ArrayList<>();
-
-        Observable<List<FlockV2>> observable = RestClient.flockService.getFavourited();
-        observable.subscribeOn(Schedulers.newThread())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Subscriber<List<FlockV2>>() {
-                    @Override
-                    public void onCompleted() {
-                        // nothing to do here
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-                        Log.e("HomeFragment", "Something happened: " + e.getMessage());
-                    }
-
-                    @Override
-                    public void onNext(List<FlockV2> flocks) {
-                        Log.i("HomeFragment", "onNext called");
-
-                        flockAdapter.clear();
-                        if (flocks != null) {
-                            for (FlockV2 flock : flocks) {
-                                flockAdapter.insert(flock, flockAdapter.getCount());
-                            }
-                        }
-
-                        flockAdapter.notifyDataSetChanged();
-                        swipeContainer.setRefreshing(false);
-                    }
-                });
-
-    }
 }

@@ -1,14 +1,118 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/whiteBackground"
-    android:id="@+id/flock_event_new">
-    <TextView
-        android:layout_width="wrap_content"
+    android:paddingLeft="15dp"
+    android:paddingRight="15dp"
+    android:id="@+id/flock_event_new"
+    android:clickable="true">
+    <RelativeLayout
+        android:id="@+id/flock_event_create_option"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="Flock Chat"
-        android:id="@+id/textView2" />
-</FrameLayout>
+        android:layout_alignParentTop="true">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:orientation="horizontal">
+            <TextView android:text="X"
+                android:id="@+id/flock_event_create_exit"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="match_parent"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:paddingLeft="15dp"
+                android:gravity="left|center_vertical">
+            </TextView>
+            <TextView android:text="Save"
+                android:id="@+id/flock_event_create_save"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="match_parent"
+                android:textAllCaps="true"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:paddingRight="15dp"
+                android:gravity="right|center_vertical">
+            </TextView>
+        </LinearLayout>
+    </RelativeLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_below="@id/flock_event_create_option"
+        android:id="@+id/linearLayout"
+        android:layout_marginTop="15dp">
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:singleLine="true"
+            android:hint="Event Name"
+            android:textColorHint="@color/grey"
+            android:textColor="@color/black"
+            android:id="@+id/flock_event_create_name"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="15dp">
+            <TextView
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:id="@+id/flock_event_create_start_date"
+                android:text="Today"
+                android:textAppearance="?android:textAppearanceMedium"
+                android:onClick="showTimePickerDialog"/>
+            <TextView
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:id="@+id/flock_event_create_start_time"
+                android:text="Now"
+                android:textAppearance="?android:textAppearanceMedium"
+                android:onClick="showTimePickerDialog"
+                android:gravity="right"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:orientation="horizontal">
+            <TextView
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:id="@+id/flock_event_create_end_date"
+                android:text="End Date"
+                android:textColor="@color/grey"
+                android:textAppearance="?android:textAppearanceMedium"
+                android:onClick="showTimePickerDialog"/>
+            <TextView
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:id="@+id/flock_event_create_end_time"
+                android:text="End Time"
+                android:textColor="@color/grey"
+                android:textAppearance="?android:textAppearanceMedium"
+                android:onClick="showTimePickerDialog"
+                android:gravity="right"/>
+        </LinearLayout>
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:inputType="textMultiLine"
+            android:hint="Description"
+            android:textColorHint="@color/grey"
+            android:textColor="@color/black"
+            android:id="@+id/flock_event_create_description"/>
+    </LinearLayout>
+</RelativeLayout>

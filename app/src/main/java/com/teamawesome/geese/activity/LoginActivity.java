@@ -194,6 +194,7 @@ public class LoginActivity extends Activity {
                 Log.e(loggingTag, "Failed to create goose");
                 Log.e(loggingTag, t.getMessage().toString());
                 t.printStackTrace();
+                Toast.makeText(mContext.getApplicationContext(), "Server down, try again later...", Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -222,13 +223,12 @@ public class LoginActivity extends Activity {
                 Log.e(loggingTag, "Login attempt failed");
                 Log.e(loggingTag, t.getMessage().toString());
                 t.printStackTrace();
+                Toast.makeText(mContext.getApplicationContext(), "Server down, try again later...", Toast.LENGTH_SHORT).show();
             }
         });
     }
 
     private void loginUserComplete(String user, String email, String token) {
-        Toast.makeText(this.getApplicationContext(), "Welcome ".concat(user).concat("! Redirecting..."), Toast.LENGTH_SHORT).show();
-
         SessionManager.createLoginSession(user, email, token);
         RestClient.headerInterceptor.addTokenHeader(token);
 

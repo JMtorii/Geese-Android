@@ -1,40 +1,17 @@
 <resources>
     <string name="app_name">Geese</string>
 
-    <!-- TODO: delete this -->
-    <string name="hello_world">Hello world!</string>
-    <string name="action_settings">Settings</string>
+    <string name="facebook_app_id">1506283642997654</string>
+
     <string name="title_activity_home">HomeActivity</string>
     <string name="title_activity_goose">Geese</string>
     <string name="title_activity_login">LoginActivity</string>
     <string name="title_activity_main">MainActivity</string>
-    <string name="title_activity_debug_chat">DebugChatActivity</string>
-    <string name="title_activity_debug_user_profile">DebugUserProfileActivity</string>
+    <string name="action_settings">Settings</string>
 
-    <!-- Login Page Strings -->
-    <string name="user_name_hint">Username</string>
-    <string name="email_hint">Email</string>
-    <string name="email_sign_up"><b>Sign Up!</b></string>
-    <string name="facebook_sign_in">Continue with Facebook</string>
-    <string name="password_hint">Password</string>
-    <string name="creation_ToS">Creation of an account means you\'re a-okay with our <b>terms of services</b>.</string>
-    <string name="login">Already have an account? <b>LOGIN</b></string>
-    <string name="tos_legal_stuff">Lorem Ipsum is simply dummy text of the printing and typesetting Lorem Ipsum is simply dummy text of the printing and typesetting Lorem Ipsum is simply dummy text of the printing and typesetting Lorem Ipsum is simply dummy text of the printing and typesetting Lorem Ipsum is simply dummy text of the printing and typesetting Lorem Ipsum is simply dummy text of the printing and typesetting industry. orem Ipsum is simply dummy text of the printing and typesetting iorem Ipsum is simply dummy text of the printing and typesetting iorem Ipsum is simply dummy text of the printing and typesetting iorem Ipsum is simply dummy text of the printing and typesetting iLorem Ipsum has been the industry\'s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting</string>
-
-    <string name="facebook_app_id">1506283642997654</string>
-
-    <string name="invalid_username">Your username must be of length 3 - 15 characters and alphanumeric.</string>
-    <string name="invalid_email">Your email doesn\'t look right...</string>
-    <string name="invalid_password">Your password must be of length 8 - 20 characters and contain digits, upper and lower case letters.</string>
-    <string name="terms_of_services">Terms of Services</string>
-    <string name="ok">OK</string>
-
-    <string name="settings_rules_info_header">Information</string>
-    <string name="settings_rules_info">Geese connects you with others in your area by creating flocks. Each flock is similar to a club being held at a specific location and you have the opportunity to share content with others within each flock. Whether you\'re creating posts, chatting, or hosting events, make sure you\'re positing quality content! Try to support each other by down voting inappropriate posts and report content that violates our rules.</string>
-    <string name="settings_rules_rules_header">Rules</string>
-    <string name="settings_rules_rules">As you should know, you should not post content on Geese that harms others or the community. \n\n1. DON\'T bully others. \n\n2. DON\'T post anyone\'s personal information or identity. \n\n3. DON\'T spam others.</string>
-    <string name="settings_terms">Nothing defined yet.</string>
-    <string name="settings_privacy_policy">Nothing defined yet.</string>
+    <!-- Navigation drawer -->
+    <string name="drawer_open">Open navigation drawer</string>
+    <string name="drawer_close">Close navigation drawer</string>
 
     <string-array name="nav_drawer_array">
         <item>Home</item>
@@ -43,6 +20,24 @@
         <item>Logout</item>
     </string-array>
 
-    <string name="drawer_open">Open navigation drawer</string>
-    <string name="drawer_close">Close navigation drawer</string>
+    <!-- Login Page -->
+    <string name="user_name_hint">Username</string>
+    <string name="email_hint">Email</string>
+    <string name="email_sign_up"><b>Sign Up!</b></string>
+    <string name="facebook_sign_in">Continue with Facebook</string>
+    <string name="password_hint">Password</string>
+    <string name="creation_ToS">Creation of an account means you\'re a-okay with our <b>terms of services</b>.</string>
+    <string name="login">Already have an account? <b>LOGIN</b></string>
+    <string name="tos_legal_stuff">Lorem Ipsum is simply dummy text of the printing and typesetting Lorem Ipsum is simply dummy text of the printing and typesetting Lorem Ipsum is simply dummy text of the printing and typesetting Lorem Ipsum is simply dummy text of the printing and typesetting Lorem Ipsum is simply dummy text of the printing and typesetting Lorem Ipsum is simply dummy text of the printing and typesetting industry. orem Ipsum is simply dummy text of the printing and typesetting iorem Ipsum is simply dummy text of the printing and typesetting iorem Ipsum is simply dummy text of the printing and typesetting iorem Ipsum is simply dummy text of the printing and typesetting iLorem Ipsum has been the industry\'s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting</string>
+    <string name="terms_of_services">Terms of Services</string>
+    <string name="ok">OK</string>
+
+    <!-- Settings -->
+    <string name="settings_rules_info_header">Information</string>
+    <string name="settings_rules_info">Geese connects you with others in your area by creating flocks. Each flock is similar to a club being held at a specific location and you have the opportunity to share content with others within each flock. Whether you\'re creating posts, chatting, or hosting events, make sure you\'re positing quality content! Try to support each other by down voting inappropriate posts and report content that violates our rules.</string>
+    <string name="settings_rules_rules_header">Rules</string>
+    <string name="settings_rules_rules">As you should know, you should not post content on Geese that harms others or the community. \n\n1. DON\'T bully others. \n\n2. DON\'T post anyone\'s personal information or identity. \n\n3. DON\'T spam others.</string>
+    <string name="settings_terms">Nothing defined yet.</string>
+    <string name="settings_privacy_policy">Nothing defined yet.</string>
+
 </resources>

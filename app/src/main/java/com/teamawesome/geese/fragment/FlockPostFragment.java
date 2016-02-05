@@ -1,6 +1,7 @@
 package com.teamawesome.geese.fragment;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,11 +15,17 @@ import com.melnykov.fab.FloatingActionButton;
 import com.teamawesome.geese.R;
 import com.teamawesome.geese.activity.MainActivity;
 import com.teamawesome.geese.adapter.FlockPostTopicAdapter;
-import com.teamawesome.geese.object.PostComment;
-import com.teamawesome.geese.object.PostTopic;
+import com.teamawesome.geese.rest.model.Post;
 import com.teamawesome.geese.util.Constants;
+import com.teamawesome.geese.util.RestClient;
 
 import java.util.ArrayList;
+import java.util.List;
+
+import rx.Observable;
+import rx.Subscriber;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 
 /**
  * Created by MichaelQ on 2015-07-18.
@@ -27,7 +34,8 @@ public class FlockPostFragment extends FlockFragment {
     private static final String ARG_POSITION = "position";
 
     private int mPosition;
-    ArrayList<PostTopic> mPostTopics = null;
+    ArrayList<Post> mPostTopics = new ArrayList<>();
+    private ArrayAdapter<Post> mPostAdapter = null;
 
     public static FlockPostFragment newInstance(int position) {
         FlockPostFragment f = new FlockPostFragment();
@@ -49,50 +57,28 @@ public class FlockPostFragment extends FlockFragment {
         // Inflate the layout for this fragment
         FrameLayout frameLayout = (FrameLayout)inflater.inflate(R.layout.fragment_flock_post_topic_list, container, false);
         ListView listView = (ListView)frameLayout.findViewById(R.id.flock_post_topic_list);
-
-        if (mPostTopics == null) {
-            ArrayList<PostComment> comments = new ArrayList<PostComment>();
-            comments.add(new PostComment("Short comment", 100));
-            comments.add(new PostComment("long long long long long long long long long long long long long long long long long long long comment", 4));
-            comments.add(new PostComment("Short comment", 100));
-            comments.add(new PostComment("long long long long long long long long long long long long long long long long long long long " +
-                    "long long long long long long long long long long long long long long long long long long long comment", 4));
-            comments.add(new PostComment("Short comment", 100));
-            comments.add(new PostComment("long long long long long long long long long long long long long long long long long long long comment", 4));
-            ArrayList<PostTopic> posts = new ArrayList<PostTopic>();
-            for (int i = 0; i < 10; i++) {
-                if (i == 5) {
-                    //ITS PIKACHU!!!
-                    posts.add(new PostTopic("PIKACHU", "I CHOOSE YOU", comments, "http://www.darktheatre.net/wiki/images/8/89/Pikachu.jpg", i));
-                } else if (i == 6) {
-                    posts.add(new PostTopic("DR BALANCED", "Boom bots OP", comments, "http://hydra-media.cursecdn.com/hearthstone.gamepedia.com/thumb/f/f5/Dr._Boom_by_Alex_Garner.png/390px-Dr._Boom_by_Alex_Garner.png?version=8d87b25588cea42813c20de77a5314e2", i));
-                } else {
-                    posts.add(new PostTopic("Title " + i, "Description " + i, comments, null, i));
-                }
-            }
-            mPostTopics = posts;
-        }
-        ArrayAdapter<PostTopic> adapter = new FlockPostTopicAdapter(getActivity(), mPostTopics);
-        listView.setAdapter(adapter);
+        mPostAdapter = new FlockPostTopicAdapter(parentActivity, mPostTopics);
+        listView.setAdapter(mPostAdapter);
+        fetchPostTopics();
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                FlockPostDetailsFragment fragment = (FlockPostDetailsFragment) getFragmentManager().findFragmentByTag(Constants.FLOCK_POST_DETAILS_FRAGMENT_TAG);
-                if (fragment == null) {
-                    fragment = new FlockPostDetailsFragment();
-                }
-                fragment.setPostTopic(mPostTopics.get(position));
-                MainActivity mainActivity = (MainActivity) getActivity();
-                mainActivity.switchFragment(
-                        fragment,
-                        R.anim.fragment_slide_in_left,
-                        R.anim.fragment_slide_out_right,
-                        Constants.FLOCK_POST_DETAILS_FRAGMENT_TAG,
-                        mPostTopics.get(position).getTitle(),
-                        false,
-                        false,
-                        true
-                );
+                // uncomment when posts from server have comments
+//                FlockPostDetailsFragment fragment = (FlockPostDetailsFragment) getFragmentManager().findFragmentByTag(Constants.FLOCK_POST_DETAILS_FRAGMENT_TAG);
+//                if (fragment == null) {
+//                    fragment = new FlockPostDetailsFragment();
+//                }
+//                fragment.setPostTopic(mPostTopics.get(position));
+//                MainActivity mainActivity = (MainActivity) getActivity();
+//                mainActivity.switchFragment(
+//                        fragment,
+//                        R.anim.fragment_slide_in_left,
+//                        R.anim.fragment_slide_out_right,
+//                        Constants.FLOCK_POST_DETAILS_FRAGMENT_TAG,
+//                        false,
+//                        false,
+//                        true
+//                );
             }
         });
         // attach floating button to listview
@@ -125,5 +111,38 @@ public class FlockPostFragment extends FlockFragment {
         listView.addFooterView(empty);
 
         return frameLayout;
+    }
+
+    private void fetchPostTopics() {
+        Observable<List<Post>> observable = RestClient.flockService.getPostsForFlock(mFlock.getId());
+        observable.subscribeOn(Schedulers.newThread())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Subscriber<List<Post>>() {
+                    @Override
+                    public void onCompleted() {
+                        // nothing to do here
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        Log.e("FlockPostFragment", "error: " + e.getMessage());
+                    }
+
+                    @Override
+                    public void onNext(List<Post> posts) {
+                        Log.i("FlockPostFragment", "onNext called");
+
+                        mPostAdapter.clear();
+                        if (posts != null) {
+                            for(Post post: posts) {
+                                mPostAdapter.insert(post, mPostAdapter.getCount());
+                            }
+                        }
+
+                        mPostAdapter.notifyDataSetChanged();
+//                        swipeContainer.setRefreshing(false);
+                    }
+                });
+
     }
 }

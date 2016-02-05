@@ -140,6 +140,7 @@ public class HomeFragment extends GeeseFragment {
                         @Override
                         public void onError(Throwable e) {
                             Log.e("HomeFragment", "Something happened: " + e.getMessage());
+                            swipeContainer.setRefreshing(false);
                         }
 
                         @Override

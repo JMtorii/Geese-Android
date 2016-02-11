@@ -36,8 +36,8 @@ public class FlockV2 {
     @JsonProperty("score")
     private int score;
 
-    @JsonIgnore
-    private boolean favourited = false;
+    @JsonProperty("favourited")
+    private boolean favourited;
 
     // TODO: implement me
 //    @JsonIgnoreProperties("createdTime")

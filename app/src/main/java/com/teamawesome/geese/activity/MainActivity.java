@@ -3,6 +3,7 @@ package com.teamawesome.geese.activity;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
+import android.content.res.TypedArray;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -12,10 +13,10 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -25,13 +26,17 @@ import com.facebook.GraphResponse;
 import com.facebook.HttpMethod;
 import com.facebook.login.LoginManager;
 import com.teamawesome.geese.R;
+import com.teamawesome.geese.adapter.NavDrawerAdapter;
 import com.teamawesome.geese.fragment.FavouriteFlocksFragment;
 import com.teamawesome.geese.fragment.HomeFragment;
 import com.teamawesome.geese.fragment.settings.SettingsMainFragment;
+import com.teamawesome.geese.object.NavDrawerItem;
 import com.teamawesome.geese.util.Constants;
 import com.teamawesome.geese.util.RestClient;
 import com.teamawesome.geese.util.SessionManager;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Stack;
 
 /*
@@ -49,7 +54,8 @@ public class MainActivity extends AppCompatActivity {
     private DrawerLayout mDrawerLayout;
     private ListView mDrawerList;
     private ActionBarDrawerToggle mDrawerToggle;
-    private String[] mNavDrawerTitles;
+    private List<NavDrawerItem> mNavDrawerItems;
+    private NavDrawerAdapter mNavDrawerAdapter;
 
     // Fragment manager
     private String curFragmentTag = Constants.HOME_FRAGMENT_TAG;
@@ -107,14 +113,24 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        mNavDrawerTitles = getResources().getStringArray(R.array.nav_drawer_array);
-        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-        mDrawerList = (ListView) findViewById(R.id.left_drawer);
+        mNavDrawerItems = new ArrayList<NavDrawerItem>();
+        int defaultValue = R.drawable.ic_drawer;
+        TypedArray mNavDrawerIcons = getResources().obtainTypedArray(R.array.nav_drawer_icons);
+        String[] mNavDrawerTitles = getResources().getStringArray(R.array.nav_drawer_strings);
+        for (int i = 0; i < mNavDrawerTitles.length; ++i) {
+            NavDrawerItem item = new NavDrawerItem.Builder()
+                    .icon(mNavDrawerIcons.getResourceId(i, defaultValue))
+                    .name(mNavDrawerTitles[i])
+                    .build();
+            mNavDrawerItems.add(item);
+        }
+        mNavDrawerAdapter = new NavDrawerAdapter(this, mNavDrawerItems);
 
-        // set a custom shadow that overlays the main content when the drawer opens
+        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         mDrawerLayout.setDrawerShadow(R.drawable.drawer_shadow, GravityCompat.START);
-        // set up the drawer's list view with items and click listener
-        mDrawerList.setAdapter(new ArrayAdapter<Object>(this, R.layout.drawer_list_item, mNavDrawerTitles));
+
+        mDrawerList = (ListView) findViewById(R.id.drawer_list);
+        mDrawerList.setAdapter(mNavDrawerAdapter);
         mDrawerList.setOnItemClickListener(new DrawerItemClickListener());
 
         // ActionBarDrawerToggle ties together the the proper interactions
@@ -235,7 +251,7 @@ public class MainActivity extends AppCompatActivity {
 
             // update selected item and title, then close the drawer
             mDrawerList.setItemChecked(position, true);
-            mToolbar.setTitle(mNavDrawerTitles[position]);
+            mToolbar.setTitle(mNavDrawerItems.get(position).getName());
             mDrawerLayout.closeDrawer(mDrawerList);
         }
     }

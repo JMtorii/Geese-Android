@@ -2,13 +2,13 @@ package com.teamawesome.geese.rest.service;
 
 import com.teamawesome.geese.rest.model.Flock;
 import com.teamawesome.geese.rest.model.FlockV2;
+import com.teamawesome.geese.rest.model.Post;
 
 import java.util.List;
 
 import retrofit.Call;
 import retrofit.http.DELETE;
 import retrofit.http.GET;
-import retrofit.http.Headers;
 import retrofit.http.PUT;
 import retrofit.http.Path;
 import retrofit.http.Query;
@@ -32,6 +32,9 @@ public interface FlockService {
 
     @GET("/flock/getNearbyFlocks")
     Observable<List<FlockV2>> getNearbyFlocks(@Query("latitude") float latitude, @Query("longitude") float longitude);
+
+    @GET("/post")
+    Observable<List<Post>> getPostsForFlock(@Query("flockId") int flockId);
 
     @GET("/flock/getFavourited")
     Observable<List<FlockV2>> getFavourited();

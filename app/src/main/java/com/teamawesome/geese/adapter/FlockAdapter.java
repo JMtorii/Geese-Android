@@ -11,7 +11,6 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.github.ivbaranov.mfb.MaterialFavoriteButton;
 import com.teamawesome.geese.R;
 import com.teamawesome.geese.rest.model.FlockV2;
 import com.teamawesome.geese.task.URLImageLoader;
@@ -30,7 +29,7 @@ public class FlockAdapter extends ArrayAdapter<FlockV2> {
         TextView members;
         TextView privacy;
         ImageView image;
-        MaterialFavoriteButton favoriteButton;
+        TextView favourited;
         int position;
     }
 
@@ -51,7 +50,7 @@ public class FlockAdapter extends ArrayAdapter<FlockV2> {
             viewHolder.members = (TextView)convertView.findViewById(R.id.flock_list_item_members);
             viewHolder.privacy = (TextView)convertView.findViewById(R.id.flock_list_item_privacy);
             viewHolder.image = (ImageView)convertView.findViewById(R.id.flock_list_item_image);
-            viewHolder.favoriteButton = (MaterialFavoriteButton) convertView.findViewById(R.id.flock_list_item_fav_btn);
+            viewHolder.favourited = (TextView) convertView.findViewById(R.id.flock_list_item_fav_textview);
             convertView.setTag(viewHolder);
         } else {
             viewHolder = (ViewHolder) convertView.getTag();
@@ -81,12 +80,10 @@ public class FlockAdapter extends ArrayAdapter<FlockV2> {
         // TODO Implement caching of image after implementation of image of FlockV2
         profileImageLoader.execute("http://justinhackworth.com/canada-goose-01.jpg");
 
-        viewHolder.favoriteButton.setOnFavoriteChangeListener(new MaterialFavoriteButton.OnFavoriteChangeListener() {
-            @Override
-            public void onFavoriteChanged(MaterialFavoriteButton buttonView, boolean favorite) {
-                Log.i("FlockAdapter", Boolean.toString(favorite));
-            }
-        });
+        if (flock.getFavourited()) {
+            viewHolder.favourited.setText("JOINED");
+            Log.e("FlockAdapter", "favourite is true");
+        }
 
         return convertView;
     }

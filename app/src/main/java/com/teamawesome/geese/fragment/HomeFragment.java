@@ -119,7 +119,7 @@ public class HomeFragment extends GeeseFragment {
                     .latitude(43.4707224f)
                     .longitude(80.5429343f)
                     .radius(1)
-                    .id(1)
+                    .id(9)
                     .authorid(1)
                     .build();
             flockAdapter.insert(f, 0);
@@ -140,6 +140,7 @@ public class HomeFragment extends GeeseFragment {
                         @Override
                         public void onError(Throwable e) {
                             Log.e("HomeFragment", "Something happened: " + e.getMessage());
+                            swipeContainer.setRefreshing(false);
                         }
 
                         @Override
@@ -158,40 +159,5 @@ public class HomeFragment extends GeeseFragment {
                         }
                     });
         }
-    }
-
-    private void getFavouritedFlocks() {
-        List<FlockV2> favouritedFlocks = new ArrayList<>();
-
-        Observable<List<FlockV2>> observable = RestClient.flockService.getFavourited();
-        observable.subscribeOn(Schedulers.newThread())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Subscriber<List<FlockV2>>() {
-                    @Override
-                    public void onCompleted() {
-                        // nothing to do here
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-                        Log.e("HomeFragment", "Something happened: " + e.getMessage());
-                    }
-
-                    @Override
-                    public void onNext(List<FlockV2> flocks) {
-                        Log.i("HomeFragment", "onNext called");
-
-                        flockAdapter.clear();
-                        if (flocks != null) {
-                            for (FlockV2 flock : flocks) {
-                                flockAdapter.insert(flock, flockAdapter.getCount());
-                            }
-                        }
-
-                        flockAdapter.notifyDataSetChanged();
-                        swipeContainer.setRefreshing(false);
-                    }
-                });
-
     }
 }

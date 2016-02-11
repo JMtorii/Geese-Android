@@ -63,14 +63,12 @@
 
         </RelativeLayout>
 
-        <com.github.ivbaranov.mfb.MaterialFavoriteButton
-            android:id="@+id/flock_list_item_fav_btn"
+        <TextView
+            android:id="@+id/flock_list_item_fav_textview"
             android:layout_height="50dp"
             android:layout_width="50dp"
             android:layout_gravity="bottom"
-            android:layout_marginLeft="-60dp"
-            android:focusable="false"
-            app:mfb_color="black"/>
+            android:layout_marginLeft="-60dp"/>
     </LinearLayout>
 
 </RelativeLayout>

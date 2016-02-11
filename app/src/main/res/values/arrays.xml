@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="nav_drawer_strings">
+        <item>Home</item>
+        <item>Favourited Flocks</item>
+        <item>Settings</item>
+        <item>Logout</item>
+    </string-array>
+    <integer-array name="nav_drawer_icons">
+        <item>@mipmap/ic_launcher</item>
+        <item>@drawable/ic_action_kebab</item>
+        <item>@drawable/ic_star_black_24dp</item>
+        <item>@drawable/com_facebook_button_icon</item>
+    </integer-array>
+</resources>

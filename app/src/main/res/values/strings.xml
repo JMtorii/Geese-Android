@@ -13,13 +13,6 @@
     <string name="drawer_open">Open navigation drawer</string>
     <string name="drawer_close">Close navigation drawer</string>
 
-    <string-array name="nav_drawer_array">
-        <item>Home</item>
-        <item>Favourited Flocks</item>
-        <item>Settings</item>
-        <item>Logout</item>
-    </string-array>
-
     <!-- Login Page -->
     <string name="user_name_hint">Username</string>
     <string name="email_hint">Email</string>

@@ -1,7 +1,6 @@
 package com.teamawesome.geese.adapter;
 
 import android.content.Context;
-import android.graphics.Bitmap;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,9 +9,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.teamawesome.geese.R;
-import com.teamawesome.geese.object.PostTopic;
-import com.teamawesome.geese.task.OnImageLoaded;
-import com.teamawesome.geese.task.URLImageLoader;
+import com.teamawesome.geese.rest.model.Post;
 import com.teamawesome.geese.view.UpvoteDownvoteListener;
 import com.teamawesome.geese.view.UpvoteDownvoteView;
 
@@ -21,7 +18,7 @@ import java.util.ArrayList;
 /**
  * Created by MichaelQ on 2015-10-04.
  */
-public class FlockPostTopicAdapter extends ArrayAdapter<PostTopic> {
+public class FlockPostTopicAdapter extends ArrayAdapter<Post> {
     // View lookup cache
     private static class ViewHolder {
         TextView title;
@@ -36,25 +33,25 @@ public class FlockPostTopicAdapter extends ArrayAdapter<PostTopic> {
         @Override
         public void onUpvoteClicked(UpvoteDownvoteView v) {
             int index = (Integer)v.getTag();
-            PostTopic postTopic = getItem(index);
-            v.setVotesText(Integer.toString(postTopic.getUpvotes() + 1));
+            Post postTopic = getItem(index);
+            v.setVotesText(Integer.toString(postTopic.getScore() + 1));
         }
 
         @Override
         public void onDownvoteClicked(UpvoteDownvoteView v) {
             int index = (Integer)v.getTag();
-            PostTopic postTopic = getItem(index);
-            v.setVotesText(Integer.toString(postTopic.getUpvotes() - 1));
+            Post postTopic = getItem(index);
+            v.setVotesText(Integer.toString(postTopic.getScore() - 1));
         }
     };
 
-    public FlockPostTopicAdapter(Context context, ArrayList<PostTopic> posts) {
+    public FlockPostTopicAdapter(Context context, ArrayList<Post> posts) {
         super(context, R.layout.flock_post_topic_item, posts);
     }
 
     @Override
     public View getView(final int position, View convertView, ViewGroup parent) {
-        final PostTopic post = getItem(position);
+        final Post post = getItem(position);
         final ViewHolder viewHolder;
         if (convertView == null) {
             viewHolder = new ViewHolder();
@@ -73,26 +70,28 @@ public class FlockPostTopicAdapter extends ArrayAdapter<PostTopic> {
         viewHolder.title.setText(post.getTitle());
         viewHolder.description.setText(post.getDescription());
         viewHolder.upvoteDownvoteView.setTag(position);
-        viewHolder.upvoteDownvoteView.setVotesText(Integer.toString(getItem(position).getUpvotes()));
+        viewHolder.upvoteDownvoteView.setVotesText(Integer.toString(getItem(position).getScore()));
         // TODO: check if image scaling is off
         viewHolder.image.setImageDrawable(null);
-        if (post.getImageURL() != null) {
-            if (post.getImageData() == null) {
-                URLImageLoader imageLoader = new URLImageLoader(new OnImageLoaded() {
-                    @Override
-                    public void onImageLoaded(Bitmap bitmap) {
-                        post.setImageData(bitmap);
-                        // check if it is still the same position before setting the image, may have changed
-                        if (position == viewHolder.position) {
-                            viewHolder.image.setImageBitmap(bitmap);
-                        }
-                    }
-                });
-                imageLoader.execute(post.getImageURL());
-            } else {
-                viewHolder.image.setImageBitmap(post.getImageData());
-            }
-        }
+
+        // uncomment when posts have images
+//        if (post.getImageURL() != null) {
+//            if (post.getImageData() == null) {
+//                URLImageLoader imageLoader = new URLImageLoader(new OnImageLoaded() {
+//                    @Override
+//                    public void onImageLoaded(Bitmap bitmap) {
+//                        post.setImageData(bitmap);
+//                        // check if it is still the same position before setting the image, may have changed
+//                        if (position == viewHolder.position) {
+//                            viewHolder.image.setImageBitmap(bitmap);
+//                        }
+//                    }
+//                });
+//                imageLoader.execute(post.getImageURL());
+//            } else {
+//                viewHolder.image.setImageBitmap(post.getImageData());
+//            }
+//        }
         return convertView;
     }
 }

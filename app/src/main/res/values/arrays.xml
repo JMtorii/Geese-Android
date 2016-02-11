@@ -7,9 +7,9 @@
         <item>Logout</item>
     </string-array>
     <integer-array name="nav_drawer_icons">
-        <item>@mipmap/ic_launcher</item>
-        <item>@drawable/ic_action_kebab</item>
+        <item>@drawable/ic_home_black_24dp</item>
         <item>@drawable/ic_star_black_24dp</item>
-        <item>@drawable/com_facebook_button_icon</item>
+        <item>@drawable/ic_settings_black_24dp</item>
+        <item>@drawable/ic_exit_to_app_black_24dp</item>
     </integer-array>
 </resources>

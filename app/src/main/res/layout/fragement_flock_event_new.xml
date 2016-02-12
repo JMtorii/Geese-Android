@@ -8,42 +8,11 @@
     android:paddingRight="15dp"
     android:id="@+id/flock_event_new"
     android:clickable="true">
-    <RelativeLayout
-        android:id="@+id/flock_event_create_option"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true">
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:orientation="horizontal">
-            <TextView android:text="X"
-                android:id="@+id/flock_event_create_exit"
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:layout_height="match_parent"
-                android:textAppearance="?android:attr/textAppearanceLarge"
-                android:paddingLeft="15dp"
-                android:gravity="left|center_vertical">
-            </TextView>
-            <TextView android:text="Save"
-                android:id="@+id/flock_event_create_save"
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:layout_height="match_parent"
-                android:textAllCaps="true"
-                android:textAppearance="?android:attr/textAppearanceLarge"
-                android:paddingRight="15dp"
-                android:gravity="right|center_vertical">
-            </TextView>
-        </LinearLayout>
-    </RelativeLayout>
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:layout_below="@id/flock_event_create_option"
-        android:id="@+id/linearLayout"
+        android:id="@+id/flock_event_create_linear_layout"
         android:layout_marginTop="15dp">
 
         <EditText
@@ -51,7 +20,7 @@
             android:layout_height="wrap_content"
             android:singleLine="true"
             android:hint="Event Name"
-            android:textColorHint="@color/grey"
+            android:textColorHint="@color/black"
             android:textColor="@color/black"
             android:id="@+id/flock_event_create_name"/>
 
@@ -70,7 +39,7 @@
                 android:onClick="showStartDatePickerDialog"/>
             <TextView
                 android:layout_width="0dp"
-                android:layout_weight="1"
+                android:layout_weight=".5"
                 android:layout_height="wrap_content"
                 android:id="@+id/flock_event_create_start_time"
                 android:text="Now"
@@ -95,7 +64,7 @@
                 android:onClick="showEndDatePickerDialog"/>
             <TextView
                 android:layout_width="0dp"
-                android:layout_weight="1"
+                android:layout_weight=".5"
                 android:layout_height="wrap_content"
                 android:id="@+id/flock_event_create_end_time"
                 android:text="End Time"
@@ -110,9 +79,18 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="15dp"
             android:inputType="textMultiLine"
+            android:maxLines="10"
             android:hint="Description"
             android:textColorHint="@color/grey"
             android:textColor="@color/black"
             android:id="@+id/flock_event_create_description"/>
     </LinearLayout>
+
+    <Button
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:text="Create"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:id="@+id/flock_event_create_button"/>
 </RelativeLayout>

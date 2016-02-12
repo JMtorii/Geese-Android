@@ -2,7 +2,7 @@
 <resources>
     <string-array name="nav_drawer_strings">
         <item>Home</item>
-        <item>Favourited Flocks</item>
+        <item>Joined Flocks</item>
         <item>Settings</item>
         <item>Logout</item>
     </string-array>

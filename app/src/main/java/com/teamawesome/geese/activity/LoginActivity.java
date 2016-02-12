@@ -230,8 +230,6 @@ public class LoginActivity extends Activity {
 
     private void loginUserComplete(String user, String email, String token) {
         SessionManager.createLoginSession(user, email, token);
-        RestClient.headerInterceptor.addTokenHeader(token);
-
         Intent i = new Intent(this, MainActivity.class);
         startActivity(i);
         finish();

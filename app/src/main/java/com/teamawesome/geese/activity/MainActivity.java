@@ -223,7 +223,6 @@ public class MainActivity extends AppCompatActivity {
                     }).executeAsync();
                 }
                 SessionManager.deleteLoginSession();
-                RestClient.headerInterceptor.removeTokenHeader();
                 Intent i = new Intent(this, LoginActivity.class);
                 startActivity(i);
                 break;

@@ -5,18 +5,17 @@ import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.preference.PreferenceManager;
 
-import java.util.HashMap;
-
 /**
  * Created by lcolam on 10/12/15.
  * Manages all session-related data
  */
 public class SessionManager {
-    private static Editor editor;
     private static Context context;
+    private static SharedPreferences pref;
+    private static Editor editor;
+    private static int PRIVATE_MODE = 0;
 
     private static final String PREF_IP_ADDRESS = "ip_address";
-    private static final String PREF_NAME = "LoginPref";
     private static final String IS_LOGINED = "IsLoggedIn";
     private static final String KEY_NAME = "Name";
     private static final String KEY_EMAIL = "Email";
@@ -24,11 +23,8 @@ public class SessionManager {
 
     public static void init(Context applicationContext) {
         context = applicationContext;
-        editor = getSharedPreferences().edit();
-    }
-
-    private static SharedPreferences getSharedPreferences() {
-        return PreferenceManager.getDefaultSharedPreferences(context);
+        pref = PreferenceManager.getDefaultSharedPreferences(context);
+        editor = pref.edit();
     }
 
     public static void createLoginSession(String name, String email, String token) {
@@ -45,20 +41,23 @@ public class SessionManager {
         editor.putString(KEY_EMAIL, null);
         editor.putString(KEY_TOKEN, null);
         editor.commit();
+        editor.clear();
     }
 
     public static boolean checkLogin() {
-        return getSharedPreferences().getBoolean(IS_LOGINED, false);
+        return pref.getBoolean(IS_LOGINED, false);
     }
 
-    public static HashMap<String, String> getUserDetails() {
-        HashMap<String, String> user = new HashMap<String, String>();
+    public static String getToken() {
+        return pref.getString(KEY_TOKEN, "");
+    }
 
-        user.put(KEY_NAME, getSharedPreferences().getString(KEY_NAME, null));
-        user.put(KEY_EMAIL, getSharedPreferences().getString(KEY_EMAIL, null));
-        user.put(KEY_EMAIL, getSharedPreferences().getString(KEY_TOKEN, null));
+    public static String getUsername() {
+        return pref.getString(KEY_NAME, "");
+    }
 
-        return user;
+    public static String getUserEmail() {
+        return pref.getString(KEY_EMAIL, "");
     }
 
     public static void setIPAddress(String address) {
@@ -67,6 +66,6 @@ public class SessionManager {
     }
 
     public static String getIPAddress() {
-        return getSharedPreferences().getString(PREF_IP_ADDRESS, "");
+        return pref.getString(PREF_IP_ADDRESS, "");
     }
 }

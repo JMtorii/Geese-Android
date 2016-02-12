@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
 import android.content.res.TypedArray;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
@@ -14,7 +15,6 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
@@ -41,7 +41,9 @@ import com.teamawesome.geese.util.Constants;
 import com.teamawesome.geese.util.RestClient;
 import com.teamawesome.geese.util.SessionManager;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Stack;
 
@@ -99,21 +101,36 @@ public class MainActivity extends AppCompatActivity implements TimePickerFragmen
 
     @Override public void onTimeSet(int id, TimePicker view, int hourOfDay, int minute) {
         if (view.isShown()) {
-            setContentView(R.layout.fragement_flock_event_new);
             if (id == START_TIME_PICKER_ID) {
                 TextView textView = (TextView) findViewById(R.id.flock_event_create_start_time);
-                System.out.println("1 and also :" + textView.getText().toString());
-                textView.setText(hourOfDay + ":" + minute);
+                Date dt = new Date(0,0,0, hourOfDay, minute);
+                SimpleDateFormat sdf = new SimpleDateFormat("hh:mm aa");
+                textView.setText(sdf.format(dt));
             } else if (id == END_TIME_PICKER_ID) {
                 TextView textView = (TextView) findViewById(R.id.flock_event_create_end_time);
-                System.out.println("2 and also :" + textView.getText().toString());
-                textView.setText(hourOfDay + ":" + minute);
+                Date dt = new Date(0,0,0, hourOfDay, minute);
+                SimpleDateFormat sdf = new SimpleDateFormat("hh:mm aa");
+                textView.setText(sdf.format(dt));
+                textView.setTextColor(Color.BLACK);
             }
         }
     }
 
     @Override public void onDateSet(int id, DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-        System.out.println(dayOfMonth);
+        if (view.isShown()) {
+            if (id == START_DATE_PICKER_ID) {
+                TextView textView = (TextView) findViewById(R.id.flock_event_create_start_date);
+                SimpleDateFormat sdf = new SimpleDateFormat("E, MMMM dd, yyyy");
+                Date date = new Date(year - 1900, monthOfYear, dayOfMonth);
+                textView.setText(sdf.format(date));
+            } else if (id == END_DATE_PICKER_ID) {
+                TextView textView = (TextView) findViewById(R.id.flock_event_create_end_date);
+                SimpleDateFormat sdf = new SimpleDateFormat("E, MMMM dd, yyyy");
+                Date date = new Date(year - 1900, monthOfYear, dayOfMonth);
+                textView.setText(sdf.format(date));
+                textView.setTextColor(Color.BLACK);
+            }
+        }
     }
 
     // Fragment information useful for the custom back stack

@@ -42,8 +42,8 @@ public class TimePickerFragment extends DialogFragment implements TimePickerDial
         if (mListener != null) mListener.onTimeSet(mId, view, hourOfDay, minute);
     }
 
-    public static interface TimePickerDialogListener {
-        public void onTimeSet(int id, TimePicker view, int hourOfDay, int minute);
+    public interface TimePickerDialogListener {
+        void onTimeSet(int id, TimePicker view, int hourOfDay, int minute);
     }
 
 }

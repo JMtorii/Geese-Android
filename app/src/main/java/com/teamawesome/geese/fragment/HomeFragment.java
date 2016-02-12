@@ -34,7 +34,6 @@ public class HomeFragment extends GeeseFragment {
 
     private List<FlockV2> flocks = new ArrayList<>();
     private ArrayAdapter<FlockV2> flockAdapter;
-    private MainActivity mainActivity;
 
     private SwipeRefreshLayout swipeContainer;
     private ListView listView;
@@ -42,9 +41,7 @@ public class HomeFragment extends GeeseFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        mainActivity = (MainActivity) getActivity();
-        flockAdapter = new FlockAdapter(mainActivity, flocks);
+        flockAdapter = new FlockAdapter(parentActivity, flocks);
     }
 
     @Override
@@ -97,14 +94,12 @@ public class HomeFragment extends GeeseFragment {
 
         getNearbyFlocks();
 
-
         return view;
     }
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-//        flockAdapter = new FlockAdapter(mainActivity, flocks);
         listView.setAdapter(flockAdapter);
     }
 

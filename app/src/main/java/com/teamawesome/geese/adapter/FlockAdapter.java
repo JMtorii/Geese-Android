@@ -10,9 +10,9 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.squareup.picasso.Picasso;
 import com.teamawesome.geese.R;
 import com.teamawesome.geese.rest.model.FlockV2;
-import com.teamawesome.geese.task.URLImageLoader;
 
 import java.util.List;
 import java.util.Locale;
@@ -74,10 +74,9 @@ public class FlockAdapter extends ArrayAdapter<FlockV2> {
         viewHolder.members.setText("Members: 50");
         viewHolder.privacy.setText("Privacy: Public");
 
-        URLImageLoader profileImageLoader = new URLImageLoader(viewHolder.image);
-        //profileImageLoader.execute(flock.imageURL);
-        // TODO Implement caching of image after implementation of image of FlockV2
-        profileImageLoader.execute("http://justinhackworth.com/canada-goose-01.jpg");
+        Picasso.with(getContext())
+                .load("http://justinhackworth.com/canada-goose-01.jpg")
+                .into(viewHolder.image);
 
         if (flock.getFavourited()) {
             viewHolder.favourited.setText("JOINED");

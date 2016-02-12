@@ -103,6 +103,13 @@ public class HomeFragment extends GeeseFragment {
         listView.setAdapter(flockAdapter);
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        Log.i("HomeFragment", "onResume");
+        getNearbyFlocks();
+    }
+
     private void getNearbyFlocks() {
 
         // TODO use interceptor instead to add token to all REST calls

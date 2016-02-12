@@ -343,7 +343,7 @@ public class MainActivity extends AppCompatActivity implements TimePickerFragmen
             CustomFragment curFragment = customBackStack.peek();
             curFragmentTag = curFragment.getTag();
             mToolbar.setTitle(curFragment.getTitle());
-
+            getSupportFragmentManager().beginTransaction().replace(R.id.content_frame, f, curFragmentTag).commit();
         }
     }
 

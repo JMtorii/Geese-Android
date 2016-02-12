@@ -3,7 +3,6 @@ package com.teamawesome.geese.adapter;
 import android.content.Context;
 import android.location.Address;
 import android.location.Geocoder;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -82,7 +81,8 @@ public class FlockAdapter extends ArrayAdapter<FlockV2> {
 
         if (flock.getFavourited()) {
             viewHolder.favourited.setText("JOINED");
-            Log.e("FlockAdapter", "favourite is true");
+        } else {
+            viewHolder.favourited.setText("");
         }
 
         return convertView;

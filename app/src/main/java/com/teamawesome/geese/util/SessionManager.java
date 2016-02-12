@@ -13,13 +13,12 @@ public class SessionManager {
     private static Context context;
     private static SharedPreferences pref;
     private static Editor editor;
-    private static int PRIVATE_MODE = 0;
 
     private static final String PREF_IP_ADDRESS = "ip_address";
-    private static final String IS_LOGINED = "IsLoggedIn";
-    private static final String KEY_NAME = "Name";
-    private static final String KEY_EMAIL = "Email";
-    private static final String KEY_TOKEN = "Token";
+    private static final String IS_LOGINED = "is_logged_in";
+    private static final String KEY_NAME = "name";
+    private static final String KEY_EMAIL = "email";
+    private static final String KEY_TOKEN = "token";
 
     public static void init(Context applicationContext) {
         context = applicationContext;
@@ -36,12 +35,8 @@ public class SessionManager {
     }
 
     public static void deleteLoginSession() {
-        editor.putBoolean(IS_LOGINED, false);
-        editor.putString(KEY_NAME, null);
-        editor.putString(KEY_EMAIL, null);
-        editor.putString(KEY_TOKEN, null);
-        editor.commit();
         editor.clear();
+        editor.commit();
     }
 
     public static boolean checkLogin() {

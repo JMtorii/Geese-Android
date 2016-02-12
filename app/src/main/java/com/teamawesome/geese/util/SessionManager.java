@@ -35,7 +35,10 @@ public class SessionManager {
     }
 
     public static void deleteLoginSession() {
-        editor.clear();
+        editor.putBoolean(IS_LOGINED, false);
+        editor.putString(KEY_NAME, "");
+        editor.putString(KEY_EMAIL, "");
+        editor.putString(KEY_TOKEN, "");
         editor.commit();
     }
 

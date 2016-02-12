@@ -1,6 +1,8 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/outer_layout"
     android:layout_width="match_parent"
-    android:layout_height="48dp" >
+    android:layout_height="48dp"
+    android:background="@color/whiteBackground" >
 
     <ImageView
         android:id="@+id/nav_drawer_icon"
@@ -10,7 +12,7 @@
         android:layout_marginTop="10dp"
         android:layout_marginBottom="10dp"
         android:layout_centerVertical="true"
-        android:src="@drawable/ic_launcher" />
+        android:src="@drawable/ic_home_black_24dp" />
 
     <TextView xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/nav_drawer_option"

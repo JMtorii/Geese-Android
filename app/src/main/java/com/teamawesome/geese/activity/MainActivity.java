@@ -18,6 +18,7 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.DatePicker;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.TimePicker;
@@ -30,6 +31,7 @@ import com.facebook.HttpMethod;
 import com.facebook.login.LoginManager;
 import com.teamawesome.geese.R;
 import com.teamawesome.geese.adapter.NavDrawerAdapter;
+import com.teamawesome.geese.fragment.DatePickerFragment;
 import com.teamawesome.geese.fragment.FavouriteFlocksFragment;
 import com.teamawesome.geese.fragment.HomeFragment;
 import com.teamawesome.geese.fragment.TimePickerFragment;
@@ -50,7 +52,7 @@ import java.util.Stack;
  * We should use ActionBarActivity to support Android 4. Otherwise, we have to change the minimum
  * version to 5
  */
-public class MainActivity extends AppCompatActivity implements TimePickerFragment.TimePickerDialogListener{
+public class MainActivity extends AppCompatActivity implements TimePickerFragment.TimePickerDialogListener, DatePickerFragment.DatePickerDialogListener{
     // Toolbar
     private Toolbar mToolbar;
 
@@ -71,6 +73,10 @@ public class MainActivity extends AppCompatActivity implements TimePickerFragmen
     private static final int START_TIME_PICKER_ID = 1;
     private static final int END_TIME_PICKER_ID = 2;
 
+    // Date picker
+    private static final int START_DATE_PICKER_ID = 3;
+    private static final int END_DATE_PICKER_ID = 4;
+
     public void showStartTimePickerDialog(View v) {
         DialogFragment newFragment = TimePickerFragment.newInstance(START_TIME_PICKER_ID);
         newFragment.show(getSupportFragmentManager(), "timePicker");
@@ -79,6 +85,16 @@ public class MainActivity extends AppCompatActivity implements TimePickerFragmen
     public void showEndTimePickerDialog(View v) {
         DialogFragment newFragment = TimePickerFragment.newInstance(END_TIME_PICKER_ID);
         newFragment.show(getSupportFragmentManager(), "timePicker");
+    }
+
+    public void showStartDatePickerDialog(View v) {
+        DialogFragment newFragment = DatePickerFragment.newInstance(START_DATE_PICKER_ID);
+        newFragment.show(getSupportFragmentManager(), "datePicker");
+    }
+
+    public void showEndDatePickerDialog(View v) {
+        DialogFragment newFragment = DatePickerFragment.newInstance(END_DATE_PICKER_ID);
+        newFragment.show(getSupportFragmentManager(), "datePicker");
     }
 
     @Override public void onTimeSet(int id, TimePicker view, int hourOfDay, int minute) {
@@ -94,6 +110,10 @@ public class MainActivity extends AppCompatActivity implements TimePickerFragmen
                 textView.setText(hourOfDay + ":" + minute);
             }
         }
+    }
+
+    @Override public void onDateSet(int id, DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+        System.out.println(dayOfMonth);
     }
 
     // Fragment information useful for the custom back stack

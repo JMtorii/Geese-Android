@@ -67,7 +67,7 @@
                 android:id="@+id/flock_event_create_start_date"
                 android:text="Today"
                 android:textAppearance="?android:textAppearanceMedium"
-                android:onClick="showTimePickerDialog"/>
+                android:onClick="showStartDatePickerDialog"/>
             <TextView
                 android:layout_width="0dp"
                 android:layout_weight="1"
@@ -92,7 +92,7 @@
                 android:text="End Date"
                 android:textColor="@color/grey"
                 android:textAppearance="?android:textAppearanceMedium"
-                android:onClick="showTimePickerDialog"/>
+                android:onClick="showEndDatePickerDialog"/>
             <TextView
                 android:layout_width="0dp"
                 android:layout_weight="1"

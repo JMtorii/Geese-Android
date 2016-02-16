@@ -1,6 +1,5 @@
 package com.teamawesome.geese.fragment;
 
-import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.Log;
@@ -38,13 +37,11 @@ public class HomeFragment extends GeeseFragment {
 
     private SwipeRefreshLayout swipeContainer;
     private ListView listView;
-    private ProgressDialog mProgressDialog;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         flockAdapter = new FlockAdapter(parentActivity, flocks);
-        mProgressDialog = new ProgressDialog(getContext());
     }
 
     @Override
@@ -113,9 +110,7 @@ public class HomeFragment extends GeeseFragment {
     }
 
     private void getNearbyFlocks() {
-        mProgressDialog.setIndeterminate(true);
-        mProgressDialog.setMessage("Loading...");
-        mProgressDialog.show();
+        progressDialog.show();
 
         // TODO use interceptor instead to add token to all REST calls
         if (useDummyData) {
@@ -149,8 +144,8 @@ public class HomeFragment extends GeeseFragment {
                             Log.e("HomeFragment", "Something happened: " + e.getMessage());
                             swipeContainer.setRefreshing(false);
 
-                            if (mProgressDialog.isShowing()) {
-                                mProgressDialog.dismiss();
+                            if (progressDialog.isShowing()) {
+                                progressDialog.dismiss();
                             }
                         }
 
@@ -168,8 +163,8 @@ public class HomeFragment extends GeeseFragment {
                             flockAdapter.notifyDataSetChanged();
                             swipeContainer.setRefreshing(false);
 
-                            if (mProgressDialog.isShowing()) {
-                                mProgressDialog.dismiss();
+                            if (progressDialog.isShowing()) {
+                                progressDialog.dismiss();
                             }
                         }
                     });

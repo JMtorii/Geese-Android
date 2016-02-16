@@ -1,5 +1,6 @@
 package com.teamawesome.geese.fragment;
 
+import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 
@@ -10,6 +11,7 @@ import com.teamawesome.geese.activity.MainActivity;
  */
 public class GeeseFragment extends Fragment {
     protected MainActivity parentActivity;
+    protected ProgressDialog progressDialog;
 
     // Dont commit this as true
     protected boolean useDummyData = false;
@@ -19,6 +21,11 @@ public class GeeseFragment extends Fragment {
         super.onCreate(savedInstanceState);
 
         parentActivity = (MainActivity) getActivity();
+
+        progressDialog = new ProgressDialog(getContext());
+        progressDialog.setIndeterminate(true);
+        progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+        progressDialog.setMessage("Loading...");
     }
 
     public void update() {

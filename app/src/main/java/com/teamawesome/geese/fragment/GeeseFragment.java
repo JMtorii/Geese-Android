@@ -20,4 +20,8 @@ public class GeeseFragment extends Fragment {
 
         parentActivity = (MainActivity) getActivity();
     }
+
+    public void update() {
+        // nothing to do here
+    }
 }

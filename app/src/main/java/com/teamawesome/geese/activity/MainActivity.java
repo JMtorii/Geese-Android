@@ -38,7 +38,6 @@ import com.teamawesome.geese.fragment.TimePickerFragment;
 import com.teamawesome.geese.fragment.settings.SettingsMainFragment;
 import com.teamawesome.geese.object.NavDrawerItem;
 import com.teamawesome.geese.util.Constants;
-import com.teamawesome.geese.util.RestClient;
 import com.teamawesome.geese.util.SessionManager;
 
 import java.text.SimpleDateFormat;
@@ -227,6 +226,11 @@ public class MainActivity extends AppCompatActivity implements TimePickerFragmen
         }
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+    }
+
     /**
      * When using the ActionBarDrawerToggle, you must call it during
      * onPostCreate() and onConfigurationChanged()...
@@ -343,7 +347,6 @@ public class MainActivity extends AppCompatActivity implements TimePickerFragmen
             CustomFragment curFragment = customBackStack.peek();
             curFragmentTag = curFragment.getTag();
             mToolbar.setTitle(curFragment.getTitle());
-            getSupportFragmentManager().beginTransaction().replace(R.id.content_frame, f, curFragmentTag).commit();
         }
     }
 

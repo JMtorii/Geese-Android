@@ -128,18 +128,23 @@ public class LoginActivity extends Activity {
                             }
                         }
                 );
+                Log.e("Test", "Facebook login success");
             }
 
             @Override
             public void onCancel() {
                 // App code
                 Toast.makeText(mContext.getApplicationContext(), "Cancelled", Toast.LENGTH_SHORT).show();
+                Log.e("Test", "Facebook login cancel");
+
             }
 
             @Override
             public void onError(FacebookException exception) {
                 // App code
                 Toast.makeText(mContext.getApplicationContext(), "Error while attempting to login.", Toast.LENGTH_SHORT).show();
+                Log.e("Test", "Facebook login error");
+
             }
         });
     }

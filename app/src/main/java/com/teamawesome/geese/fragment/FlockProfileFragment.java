@@ -18,6 +18,7 @@ import com.google.android.gms.maps.MapsInitializer;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.squareup.okhttp.ResponseBody;
+import com.squareup.picasso.Picasso;
 import com.teamawesome.geese.R;
 import com.teamawesome.geese.activity.MainActivity;
 import com.teamawesome.geese.task.URLImageLoader;
@@ -91,8 +92,10 @@ public class FlockProfileFragment extends FlockFragment {
 
         mFlockProfileImageView = (RoundedImageView)v.findViewById(R.id.profile_image);
         URLImageLoader profileImageLoader = new URLImageLoader(mFlockProfileImageView);
-//        profileImageLoader.execute(mFlock.imageURL);
-        profileImageLoader.execute("http://justinhackworth.com/canada-goose-01.jpg");
+        Picasso.with(getContext())
+                .load("http://justinhackworth.com/canada-goose-01.jpg")
+//        mFlock.imageURL;
+                .into(mFlockProfileImageView);
 
         mFlockInfoCreationDateTextView = (TextView)v.findViewById(R.id.profile_info_creation_date);
 //        if (mFlock.createdDate != null) {
@@ -154,11 +157,9 @@ public class FlockProfileFragment extends FlockFragment {
             mGMapView.setVisibility(View.GONE);
             mMapImageView.setVisibility(View.VISIBLE);
 
-            //grab static image of map based on location
-            //http://maps.google.com/maps/api/staticmap?center=48.858235,2.294571&zoom=15&size=1000x200&sensor=false
-            URLImageLoader imageLoader = new URLImageLoader(mMapImageView);
-            //TODO size should be based on size of ImageView
-            imageLoader.execute("http://maps.google.com/maps/api/staticmap?center=" + mFlock.getLatitude() + "," + mFlock.getLongitude() + "&zoom=15&size=1000x200&sensor=false");
+            Picasso.with(getContext())
+                    .load("http://maps.google.com/maps/api/staticmap?center=" + mFlock.getLatitude() + "," + mFlock.getLongitude() + "&zoom=15&size=1000x200&sensor=false")
+                    .into(mMapImageView);
         }
 
         mFlockInfoDescriptionTextView = (TextView)v.findViewById(R.id.profile_description);

@@ -1,6 +1,7 @@
 package com.teamawesome.geese.fragment;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,11 +17,18 @@ import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.MapsInitializer;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.squareup.okhttp.ResponseBody;
 import com.teamawesome.geese.R;
 import com.teamawesome.geese.activity.MainActivity;
 import com.teamawesome.geese.task.URLImageLoader;
 import com.teamawesome.geese.util.Constants;
+import com.teamawesome.geese.util.RestClient;
 import com.teamawesome.geese.view.RoundedImageView;
+
+import rx.Observable;
+import rx.Subscriber;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 
 /**
  * Created by MichaelQ on 2015-07-18.
@@ -161,10 +169,17 @@ public class FlockProfileFragment extends FlockFragment {
         }
 
         mJoinFlockButton = (Button)v.findViewById(R.id.profile_join);
+
+        if (mFlock.getFavourited()) {
+            mJoinFlockButton.setVisibility(View.INVISIBLE);
+        }
+
         mJoinFlockButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //TODO: join flock plz
+                if (!mFlock.getFavourited()) {
+                    joinFlock();
+                }
             }
         });
 
@@ -189,7 +204,27 @@ public class FlockProfileFragment extends FlockFragment {
         mGMapView.onLowMemory();
     }
 
-//    public void setFlock(Flock f) {
-//        mFlock = f;
-//    }
+    private void joinFlock() {
+        Observable<ResponseBody> observable = RestClient.flockService.joinFlock(mFlock.getId());
+        observable.subscribeOn(Schedulers.newThread())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Subscriber<ResponseBody>() {
+                    @Override
+                    public void onCompleted() {
+                        // nothing to do here
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        Log.e("FlockProfileFragment", "Something happened: " + e.getMessage());
+                    }
+
+                    @Override
+                    public void onNext(ResponseBody body) {
+                        Log.i("FlockProfileFragment", "onNext called");
+                        mJoinFlockButton.setVisibility(View.INVISIBLE);
+
+                    }
+                });
+    }
 }

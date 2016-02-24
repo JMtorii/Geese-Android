@@ -91,7 +91,6 @@ public class FlockProfileFragment extends FlockFragment {
         mFlockInfoPrivacyTextView.setText("Public");
 
         mFlockProfileImageView = (RoundedImageView)v.findViewById(R.id.profile_image);
-        URLImageLoader profileImageLoader = new URLImageLoader(mFlockProfileImageView);
         Picasso.with(getContext())
                 .load("http://justinhackworth.com/canada-goose-01.jpg")
 //        mFlock.imageURL;

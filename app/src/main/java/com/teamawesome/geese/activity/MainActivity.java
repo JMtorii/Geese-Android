@@ -29,6 +29,7 @@ import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
 import com.facebook.HttpMethod;
 import com.facebook.login.LoginManager;
+import com.squareup.picasso.Picasso;
 import com.teamawesome.geese.R;
 import com.teamawesome.geese.adapter.NavDrawerAdapter;
 import com.teamawesome.geese.fragment.DatePickerFragment;
@@ -37,7 +38,6 @@ import com.teamawesome.geese.fragment.HomeFragment;
 import com.teamawesome.geese.fragment.TimePickerFragment;
 import com.teamawesome.geese.fragment.settings.SettingsMainFragment;
 import com.teamawesome.geese.object.NavDrawerItem;
-import com.teamawesome.geese.task.URLImageLoader;
 import com.teamawesome.geese.util.Constants;
 import com.teamawesome.geese.util.SessionManager;
 import com.teamawesome.geese.view.RoundedImageView;
@@ -187,8 +187,9 @@ public class MainActivity extends AppCompatActivity implements TimePickerFragmen
 
         mHeaderView = getLayoutInflater().inflate(R.layout.drawer_user_header, null);
         RoundedImageView mUserImageView = (RoundedImageView) mHeaderView.findViewById(R.id.nav_user_image);
-        URLImageLoader profileImageLoader = new URLImageLoader(mUserImageView);
-        profileImageLoader.execute("http://justinhackworth.com/canada-goose-01.jpg");
+        Picasso.with(getApplicationContext())
+                .load("http://justinhackworth.com/canada-goose-01.jpg")
+                .into(mUserImageView);
         ((TextView) mHeaderView.findViewById(R.id.nav_user_name)).setText(SessionManager.getUsername());
         ((TextView) mHeaderView.findViewById(R.id.nav_user_email)).setText(SessionManager.getUserEmail());
 

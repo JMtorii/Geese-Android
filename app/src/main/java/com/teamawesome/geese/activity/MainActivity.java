@@ -18,6 +18,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.facebook.AccessToken;
@@ -31,9 +32,10 @@ import com.teamawesome.geese.fragment.FavouriteFlocksFragment;
 import com.teamawesome.geese.fragment.HomeFragment;
 import com.teamawesome.geese.fragment.settings.SettingsMainFragment;
 import com.teamawesome.geese.object.NavDrawerItem;
+import com.teamawesome.geese.task.URLImageLoader;
 import com.teamawesome.geese.util.Constants;
-import com.teamawesome.geese.util.RestClient;
 import com.teamawesome.geese.util.SessionManager;
+import com.teamawesome.geese.view.RoundedImageView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -55,6 +57,7 @@ public class MainActivity extends AppCompatActivity {
     private ListView mDrawerList;
     private ActionBarDrawerToggle mDrawerToggle;
     private List<NavDrawerItem> mNavDrawerItems;
+    private View mHeaderView;
     private NavDrawerAdapter mNavDrawerAdapter;
 
     // Fragment manager
@@ -113,6 +116,13 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        mHeaderView = getLayoutInflater().inflate(R.layout.drawer_user_header, null);
+        RoundedImageView mUserImageView = (RoundedImageView) mHeaderView.findViewById(R.id.nav_user_image);
+        URLImageLoader profileImageLoader = new URLImageLoader(mUserImageView);
+        profileImageLoader.execute("http://justinhackworth.com/canada-goose-01.jpg");
+        ((TextView) mHeaderView.findViewById(R.id.nav_user_name)).setText(SessionManager.getUsername());
+        ((TextView) mHeaderView.findViewById(R.id.nav_user_email)).setText(SessionManager.getUserEmail());
+
         mNavDrawerItems = new ArrayList<NavDrawerItem>();
         int defaultValue = R.drawable.ic_drawer;
         TypedArray mNavDrawerIcons = getResources().obtainTypedArray(R.array.nav_drawer_icons);
@@ -130,6 +140,7 @@ public class MainActivity extends AppCompatActivity {
         mDrawerLayout.setDrawerShadow(R.drawable.drawer_shadow, GravityCompat.START);
 
         mDrawerList = (ListView) findViewById(R.id.drawer_list);
+        mDrawerList.addHeaderView(mHeaderView);
         mDrawerList.setAdapter(mNavDrawerAdapter);
         mDrawerList.setOnItemClickListener(new DrawerItemClickListener());
 
@@ -180,6 +191,10 @@ public class MainActivity extends AppCompatActivity {
     private class DrawerItemClickListener implements ListView.OnItemClickListener {
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            if (position == 0) {
+                return;
+            }
+            position--;
             selectDrawerItem(position);
             mNavDrawerAdapter.setSelectedPosition(position);
             mNavDrawerAdapter.notifyDataSetChanged();

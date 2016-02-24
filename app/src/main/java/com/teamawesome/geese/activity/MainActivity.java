@@ -4,7 +4,9 @@ import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
 import android.content.res.TypedArray;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -13,12 +15,13 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.DatePicker;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.facebook.AccessToken;
@@ -28,8 +31,10 @@ import com.facebook.HttpMethod;
 import com.facebook.login.LoginManager;
 import com.teamawesome.geese.R;
 import com.teamawesome.geese.adapter.NavDrawerAdapter;
+import com.teamawesome.geese.fragment.DatePickerFragment;
 import com.teamawesome.geese.fragment.FavouriteFlocksFragment;
 import com.teamawesome.geese.fragment.HomeFragment;
+import com.teamawesome.geese.fragment.TimePickerFragment;
 import com.teamawesome.geese.fragment.settings.SettingsMainFragment;
 import com.teamawesome.geese.object.NavDrawerItem;
 import com.teamawesome.geese.task.URLImageLoader;
@@ -37,7 +42,9 @@ import com.teamawesome.geese.util.Constants;
 import com.teamawesome.geese.util.SessionManager;
 import com.teamawesome.geese.view.RoundedImageView;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Stack;
 
@@ -48,7 +55,7 @@ import java.util.Stack;
  * We should use ActionBarActivity to support Android 4. Otherwise, we have to change the minimum
  * version to 5
  */
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements TimePickerFragment.TimePickerDialogListener, DatePickerFragment.DatePickerDialogListener{
     // Toolbar
     private Toolbar mToolbar;
 
@@ -65,6 +72,68 @@ public class MainActivity extends AppCompatActivity {
 
     // Custom back stack
     private Stack<CustomFragment> customBackStack;
+
+    // Time picker
+    private static final int START_TIME_PICKER_ID = 1;
+    private static final int END_TIME_PICKER_ID = 2;
+
+    // Date picker
+    private static final int START_DATE_PICKER_ID = 3;
+    private static final int END_DATE_PICKER_ID = 4;
+
+    public void showStartTimePickerDialog(View v) {
+        DialogFragment newFragment = TimePickerFragment.newInstance(START_TIME_PICKER_ID);
+        newFragment.show(getSupportFragmentManager(), "timePicker");
+    }
+
+    public void showEndTimePickerDialog(View v) {
+        DialogFragment newFragment = TimePickerFragment.newInstance(END_TIME_PICKER_ID);
+        newFragment.show(getSupportFragmentManager(), "timePicker");
+    }
+
+    public void showStartDatePickerDialog(View v) {
+        DialogFragment newFragment = DatePickerFragment.newInstance(START_DATE_PICKER_ID);
+        newFragment.show(getSupportFragmentManager(), "datePicker");
+    }
+
+    public void showEndDatePickerDialog(View v) {
+        DialogFragment newFragment = DatePickerFragment.newInstance(END_DATE_PICKER_ID);
+        newFragment.show(getSupportFragmentManager(), "datePicker");
+    }
+
+    @Override public void onTimeSet(int id, TimePicker view, int hourOfDay, int minute) {
+        if (view.isShown()) {
+            if (id == START_TIME_PICKER_ID) {
+                TextView textView = (TextView) findViewById(R.id.flock_event_create_start_time);
+                Date dt = new Date(0,0,0, hourOfDay, minute);
+                SimpleDateFormat sdf = new SimpleDateFormat("hh:mm aa");
+                textView.setText(sdf.format(dt));
+            } else if (id == END_TIME_PICKER_ID) {
+                TextView textView = (TextView) findViewById(R.id.flock_event_create_end_time);
+                Date dt = new Date(0,0,0, hourOfDay, minute);
+                SimpleDateFormat sdf = new SimpleDateFormat("hh:mm aa");
+                textView.setText(sdf.format(dt));
+                textView.setTextColor(Color.BLACK);
+            }
+        }
+    }
+
+    @Override public void onDateSet(int id, DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+        if (view.isShown()) {
+            if (id == START_DATE_PICKER_ID) {
+                TextView textView = (TextView) findViewById(R.id.flock_event_create_start_date);
+                SimpleDateFormat sdf = new SimpleDateFormat("E, MMMM dd, yyyy");
+                Date date = new Date(year - 1900, monthOfYear, dayOfMonth);
+                textView.setText(sdf.format(date));
+            } else if (id == END_DATE_PICKER_ID) {
+                TextView textView = (TextView) findViewById(R.id.flock_event_create_end_date);
+                SimpleDateFormat sdf = new SimpleDateFormat("E, MMMM dd, yyyy");
+                Date date = new Date(year - 1900, monthOfYear, dayOfMonth);
+                textView.setText(sdf.format(date));
+                textView.setTextColor(Color.BLACK);
+            }
+        }
+    }
 
     // Fragment information useful for the custom back stack
     private class CustomFragment {
@@ -166,6 +235,11 @@ public class MainActivity extends AppCompatActivity {
         if (savedInstanceState == null) {
             selectDrawerItem(0);
         }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
     }
 
     /**
@@ -288,7 +362,6 @@ public class MainActivity extends AppCompatActivity {
             CustomFragment curFragment = customBackStack.peek();
             curFragmentTag = curFragment.getTag();
             mToolbar.setTitle(curFragment.getTitle());
-
         }
     }
 

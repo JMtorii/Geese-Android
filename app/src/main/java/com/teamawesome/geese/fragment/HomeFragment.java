@@ -103,7 +103,14 @@ public class HomeFragment extends GeeseFragment {
         listView.setAdapter(flockAdapter);
     }
 
+    @Override
+    public void update() {
+        Log.i("HomeFragment", "update");
+        getNearbyFlocks();
+    }
+
     private void getNearbyFlocks() {
+        progressDialog.show();
 
         // TODO use interceptor instead to add token to all REST calls
         if (useDummyData) {
@@ -136,6 +143,10 @@ public class HomeFragment extends GeeseFragment {
                         public void onError(Throwable e) {
                             Log.e("HomeFragment", "Something happened: " + e.getMessage());
                             swipeContainer.setRefreshing(false);
+
+                            if (progressDialog.isShowing()) {
+                                progressDialog.dismiss();
+                            }
                         }
 
                         @Override
@@ -151,6 +162,10 @@ public class HomeFragment extends GeeseFragment {
 
                             flockAdapter.notifyDataSetChanged();
                             swipeContainer.setRefreshing(false);
+
+                            if (progressDialog.isShowing()) {
+                                progressDialog.dismiss();
+                            }
                         }
                     });
         }

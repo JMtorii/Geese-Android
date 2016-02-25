@@ -22,13 +22,12 @@ import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 import com.squareup.okhttp.ResponseBody;
 import com.teamawesome.geese.R;
-import com.teamawesome.geese.fragment.TosDialogFragment;
 import com.teamawesome.geese.rest.model.Goose;
-import com.teamawesome.geese.util.Constants;
 import com.teamawesome.geese.util.HashingAlgorithm;
 import com.teamawesome.geese.util.RestClient;
 import com.teamawesome.geese.util.SessionManager;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
@@ -222,8 +221,26 @@ public class LoginActivity extends Activity {
             public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
                 if (response.isSuccess()) {
                     try {
-                        String token = response.body().string();
-                        loginUserComplete("Facebook user", "facebook@email.com", token);
+                        final String token = response.body().string();
+                        // TODO: currents uses user information obtained from Facebook, may want to obtain user information from our own server
+                        GraphRequest request = GraphRequest.newMeRequest(
+                                AccessToken.getCurrentAccessToken(),
+                                new GraphRequest.GraphJSONObjectCallback() {
+                                    @Override
+                                    public void onCompleted(
+                                            JSONObject object,
+                                            GraphResponse response) {
+                                        try {
+                                            loginUserComplete(object.getString("name"), object.getString("email"), token);
+                                        } catch (JSONException e) {
+                                            e.printStackTrace();
+                                        }
+                                    }
+                                });
+                        Bundle parameters = new Bundle();
+                        parameters.putString("fields", "name,email");
+                        request.setParameters(parameters);
+                        request.executeAsync();
                     } catch (IOException e) {
                         e.printStackTrace();
                     }

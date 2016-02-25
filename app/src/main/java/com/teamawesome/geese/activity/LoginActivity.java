@@ -16,6 +16,8 @@ import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
 import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
+import com.facebook.HttpMethod;
+import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 import com.squareup.okhttp.ResponseBody;
@@ -69,6 +71,12 @@ public class LoginActivity extends Activity {
         passwordText.setText("this#is*a&PassworD2");
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        callbackManager.onActivityResult(requestCode, resultCode, data);
+    }
+
     private void findWidgets(Activity activity) {
         signupButton = (Button) activity.findViewById(R.id.email_sign_up_button);
         facebookLoginButton = (LoginButton) activity.findViewById(R.id.facebook_login_button);
@@ -109,42 +117,16 @@ public class LoginActivity extends Activity {
         facebookLoginButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
             @Override
             public void onSuccess(LoginResult loginResult) {
-                // App code
-                GraphRequest request = GraphRequest.newMeRequest(
-                        AccessToken.getCurrentAccessToken(),
-                        new GraphRequest.GraphJSONObjectCallback() {
-                            @Override
-                            public void onCompleted(JSONObject object, GraphResponse graphResponsesponse) {
-                                Log.e(loggingTag, "Facebook sign in success");
-                                try {
-                                    String firstName = object.getString("first_name");
-                                    String lastName = object.getString("last_name");
-                                    String email = object.getString("email");
-
-//                                    loginUserComplete(firstName + " " + lastName, email, );
-                                } catch (org.json.JSONException e) {
-                                    e.printStackTrace();
-                                }
-                            }
-                        }
-                );
-                Log.e("Test", "Facebook login success");
+                attemptFacebookLogin(AccessToken.getCurrentAccessToken().getToken());
             }
 
             @Override
             public void onCancel() {
-                // App code
-                Toast.makeText(mContext.getApplicationContext(), "Cancelled", Toast.LENGTH_SHORT).show();
-                Log.e("Test", "Facebook login cancel");
-
             }
 
             @Override
             public void onError(FacebookException exception) {
-                // App code
                 Toast.makeText(mContext.getApplicationContext(), "Error while attempting to login.", Toast.LENGTH_SHORT).show();
-                Log.e("Test", "Facebook login error");
-
             }
         });
     }
@@ -229,6 +211,54 @@ public class LoginActivity extends Activity {
                 Log.e(loggingTag, t.getMessage().toString());
                 t.printStackTrace();
                 Toast.makeText(mContext.getApplicationContext(), "Server down, try again later...", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    private void attemptFacebookLogin(final String facebookToken) {
+        Call<ResponseBody> call = RestClient.loginService.attemptFacebookLogin(facebookToken);
+        call.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+                if (response.isSuccess()) {
+                    try {
+                        String token = response.body().string();
+                        loginUserComplete("Facebook user", "facebook@email.com", token);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                } else {
+                    Log.e(loggingTag, "Login failed");
+                    Toast.makeText(mContext.getApplicationContext(), "Login failed...", Toast.LENGTH_SHORT).show();
+                    if (AccessToken.getCurrentAccessToken() != null) {
+                        new GraphRequest(AccessToken.getCurrentAccessToken(), "/me/permissions/", null, HttpMethod.DELETE, new GraphRequest
+                                .Callback() {
+
+                            @Override
+                            public void onCompleted(GraphResponse graphResponse) {
+                                LoginManager.getInstance().logOut();
+                            }
+                        }).executeAsync();
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Throwable t) {
+                Log.e(loggingTag, "Login attempt failed");
+                Log.e(loggingTag, t.getMessage().toString());
+                t.printStackTrace();
+                Toast.makeText(mContext.getApplicationContext(), "Server down, try again later...", Toast.LENGTH_SHORT).show();
+                if (AccessToken.getCurrentAccessToken() != null) {
+                    new GraphRequest(AccessToken.getCurrentAccessToken(), "/me/permissions/", null, HttpMethod.DELETE, new GraphRequest
+                            .Callback() {
+
+                        @Override
+                        public void onCompleted(GraphResponse graphResponse) {
+                            LoginManager.getInstance().logOut();
+                        }
+                    }).executeAsync();
+                }
             }
         });
     }

@@ -21,7 +21,6 @@ import com.squareup.okhttp.ResponseBody;
 import com.squareup.picasso.Picasso;
 import com.teamawesome.geese.R;
 import com.teamawesome.geese.activity.MainActivity;
-import com.teamawesome.geese.task.URLImageLoader;
 import com.teamawesome.geese.util.Constants;
 import com.teamawesome.geese.util.RestClient;
 import com.teamawesome.geese.view.RoundedImageView;

@@ -7,6 +7,7 @@ import com.squareup.okhttp.Response;
 import com.teamawesome.geese.rest.service.FlockService;
 import com.teamawesome.geese.rest.service.GeeseService;
 import com.teamawesome.geese.rest.service.LoginService;
+import com.teamawesome.geese.rest.service.PostService;
 
 import java.io.IOException;
 
@@ -47,6 +48,7 @@ public class RestClient {
     public static FlockService flockService;
     public static GeeseService geeseService;
     public static LoginService loginService;
+    public static PostService postService;
 
     public static void init() {
         OkHttpClient client = new OkHttpClient();
@@ -64,5 +66,6 @@ public class RestClient {
         flockService = retrofitReactiveClient.create(FlockService.class);
         geeseService = retrofitReactiveClient.create(GeeseService.class);
         loginService = retrofitReactiveClient.create(LoginService.class);
+        postService = retrofitReactiveClient.create(PostService.class);
     }
 }

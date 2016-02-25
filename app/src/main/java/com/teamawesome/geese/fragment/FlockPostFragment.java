@@ -91,6 +91,7 @@ public class FlockPostFragment extends FlockFragment {
                 if (fragment == null) {
                     fragment = new FlockPostTopicCreateFragment();
                 }
+                fragment.setFlockId(mFlock.getId());
                 MainActivity mainActivity = (MainActivity) getActivity();
                 mainActivity.switchFragment(
                         fragment,
@@ -114,7 +115,7 @@ public class FlockPostFragment extends FlockFragment {
     }
 
     private void fetchPostTopics() {
-        Observable<List<Post>> observable = RestClient.flockService.getPostsForFlock(mFlock.getId());
+        Observable<List<Post>> observable = RestClient.postService.getPostsForFlock(mFlock.getId());
         observable.subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Subscriber<List<Post>>() {

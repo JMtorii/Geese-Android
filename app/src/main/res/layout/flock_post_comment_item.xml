@@ -3,30 +3,33 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:id="@+id/flock_post_comment_item"
-    android:descendantFocusability="blocksDescendants">
+    android:descendantFocusability="blocksDescendants"
+    >
+
     <TextView
+        android:id="@+id/flock_post_comment"
         android:layout_width="fill_parent"
         android:layout_height="match_parent"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginBottom="5dp"
         android:layout_alignParentLeft="true"
         android:text="Comment"
         android:textAppearance="?android:attr/textAppearanceSmall"
-        android:paddingTop="2dp"
-        android:paddingLeft="2dp"
-        android:paddingBottom="2dp"
-        android:paddingRight="2dp"
-        android:id="@+id/flock_post_comment"
         android:layout_toStartOf="@+id/flock_post_comment_upvote_downvote"
-        android:layout_toLeftOf="@+id/flock_post_comment_upvote_downvote" />
+        android:layout_toLeftOf="@+id/flock_post_comment_upvote_downvote"
+        />
 
     <com.teamawesome.geese.view.UpvoteDownvoteView
+        android:id="@+id/flock_post_comment_upvote_downvote"
         layout="@layout/upvote_downvote_view"
         android:layout_width="60dp"
         android:layout_height="50dp"
-        android:layout_marginLeft="5dp"
-        android:layout_marginTop="5dp"
-        android:layout_marginBottom="5dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
+        android:layout_centerVertical="true"
         android:layout_alignParentRight="true"
-        android:id="@+id/flock_post_comment_upvote_downvote"/>
+        />
 
 
 </RelativeLayout>

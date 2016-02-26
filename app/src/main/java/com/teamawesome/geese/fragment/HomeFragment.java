@@ -153,7 +153,7 @@ public class HomeFragment extends GeeseFragment {
         }
         if (SessionManager.checkLogin()) {
             Observable<List<FlockV2>> observable;
-            Location location = ((MainActivity) getActivity()).getLatestLocation();
+            Location location = parentActivity.getLatestLocation();
             if (location != null) {
                 observable = RestClient.flockService.getNearbyFlocks((float)location.getLatitude(), (float)location.getLongitude());
             } else {

@@ -55,11 +55,6 @@ public class FlockFullScreenMapFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_full_screen_map, container, false);
 
-        mFlockTitleTextView = (TextView)view.findViewById(R.id.flock_title);
-        if (mFlockTitleTextView != null) {
-            mFlockTitleTextView.setText(flockTitle);
-        }
-
         mGMapView = (MapView) view.findViewById(R.id.google_map);
         int status = GooglePlayServicesUtil.isGooglePlayServicesAvailable(getActivity());
         int googleVersionCode = getResources().getInteger(R.integer.google_play_services_version);

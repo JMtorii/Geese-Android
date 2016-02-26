@@ -34,6 +34,9 @@ public class Post {
     //TODO: temp thing till we get what the user has voted for back from the server
     public int vote;
 
+    //TODO: temp comment count. should be getting this from the server
+    public int comments = 4;
+
     private Post(Builder builder) {
         builder.id = id;
         builder.flockid = flockid;

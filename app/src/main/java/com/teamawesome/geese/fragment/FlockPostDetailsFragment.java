@@ -47,23 +47,56 @@ public class FlockPostDetailsFragment extends Fragment {
         TextView title = (TextView)view.findViewById(R.id.flock_post_topic_title);
         TextView description = (TextView)view.findViewById(R.id.flock_post_topic_description);
         final ImageView image = (ImageView)view.findViewById(R.id.flock_post_topic_image);
+        TextView comments = (TextView)view.findViewById(R.id.flock_post_topic_comment_count);
         UpvoteDownvoteView upvoteDownvoteView = (UpvoteDownvoteView)view.findViewById(R.id.flock_post_topic_upvote_downvote);
         upvoteDownvoteView.setUpvoteDownvoteListener(new UpvoteDownvoteListener() {
-            // TODO: vote
             @Override
             public void onUpvoteClicked(UpvoteDownvoteView v) {
-                v.setVotesText(Integer.toString(mPostTopic.getScore() + 1));
+                if (mPostTopic.vote != 1) {
+                    mPostTopic.vote = 1;
+                    v.setUpVoted();
+//                    voteForPost(postTopic.getId(), 1);
+                } else {
+                    mPostTopic.vote = 0;
+                    v.setNotVoted();
+//                    voteForPost(postTopic.getId(), 0);
+                }
+                v.setVotesText(Integer.toString(mPostTopic.getScore() + mPostTopic.vote));
             }
 
             @Override
             public void onDownvoteClicked(UpvoteDownvoteView v) {
-                v.setVotesText(Integer.toString(mPostTopic.getScore() - 1));
+                if (mPostTopic.vote != -1) {
+                    mPostTopic.vote = -1;
+                    v.setDownVoted();
+//                    voteForPost(postTopic.getId(), -1);
+                } else {
+                    mPostTopic.vote = 0;
+                    v.setNotVoted();
+//                    voteForPost(postTopic.getId(), 0);
+                }
+                v.setVotesText(Integer.toString(mPostTopic.getScore() + mPostTopic.vote));
             }
         });
-        upvoteDownvoteView.setVotesText(Integer.toString(mPostTopic.getScore()));
+        upvoteDownvoteView.setVotesText(Integer.toString(mPostTopic.getScore() + mPostTopic.vote));
+        if (mPostTopic.vote == 1) {
+            upvoteDownvoteView.setUpVoted();
+        } else if (mPostTopic.vote == -1) {
+            upvoteDownvoteView.setDownVoted();
+        } else {
+            upvoteDownvoteView.setNotVoted();
+        }
         ListView listView = (ListView)view.findViewById(R.id.flock_post_details_list);
         title.setText(mPostTopic.getTitle());
         description.setText(mPostTopic.getDescription());
+        //hide the description if nothing to show
+        if (mPostTopic.getDescription() == null || mPostTopic.getDescription().equals("")) {
+            description.setVisibility(View.GONE);
+        } else {
+            description.setVisibility(View.VISIBLE);
+        }
+        comments.setText(String.format(getResources().getString(R.string.comment_count_format), mPostTopic.comments));
+
         //uncomment when we have images for posts
 //        if (mPostTopic.getImageURL() != null) {
 //            // Theoretically, this image is probably loaded if they clicked into the topic, but check anyway
@@ -106,6 +139,7 @@ public class FlockPostDetailsFragment extends Fragment {
                 if (fragment == null) {
                     fragment = new FlockPostCommentCreateFragment();
                 }
+                fragment.setPostId(mPostTopic.getId());
                 MainActivity mainActivity = (MainActivity) getActivity();
                 mainActivity.switchFragment(
                         fragment,

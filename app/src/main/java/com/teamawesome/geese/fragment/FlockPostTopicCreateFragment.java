@@ -28,6 +28,7 @@ public class FlockPostTopicCreateFragment extends Fragment {
 
     private EditText mTitleField;
     private EditText mDescriptionField;
+    private Button mCreatePostButton;
 
     private int mFlockId;
 
@@ -40,8 +41,8 @@ public class FlockPostTopicCreateFragment extends Fragment {
         view.setClickable(true);
         mTitleField = (EditText)view.findViewById(R.id.flock_post_topic_create_title);
         mDescriptionField = (EditText)view.findViewById(R.id.flock_post_topic_create_description);
-        Button button = (Button)view.findViewById(R.id.button);
-        button.setOnClickListener(new View.OnClickListener() {
+        mCreatePostButton = (Button)view.findViewById(R.id.button);
+        mCreatePostButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 createPost();
@@ -55,6 +56,7 @@ public class FlockPostTopicCreateFragment extends Fragment {
     }
 
     private void createPost() {
+        mCreatePostButton.setEnabled(false);
         CreatePostRequestBody requestBody = new CreatePostRequestBody(mFlockId, mTitleField.getText().toString(), mDescriptionField.getText().toString());
         Log.d("stuff", "" + requestBody.flockId + ", " + requestBody.title + ", " + requestBody.description);
         RestClient.postService
@@ -74,6 +76,7 @@ public class FlockPostTopicCreateFragment extends Fragment {
                             mainActivity.popFragment();
                         } else {
                             // TODO: better error handling
+                            mCreatePostButton.setEnabled(true);
                             Log.e("PostCreate", "Create post failed");
                         }
                     }
@@ -81,6 +84,7 @@ public class FlockPostTopicCreateFragment extends Fragment {
                     @Override
                     public void onFailure(Throwable t) {
                         // TODO: better error handling
+                        mCreatePostButton.setEnabled(true);
                         Log.e("PostCeate", "Create post failed " + t.getMessage());
                     }
                 });

@@ -24,6 +24,7 @@ public class FlockPostTopicAdapter extends ArrayAdapter<Post> {
         TextView title;
         TextView description;
         ImageView image;
+        TextView comments;
         UpvoteDownvoteView upvoteDownvoteView;
         int position;
     }
@@ -78,6 +79,7 @@ public class FlockPostTopicAdapter extends ArrayAdapter<Post> {
             viewHolder.title = (TextView)convertView.findViewById(R.id.flock_post_topic_title);
             viewHolder.description = (TextView)convertView.findViewById(R.id.flock_post_topic_description);
             viewHolder.image = (ImageView)convertView.findViewById(R.id.flock_post_topic_image);
+            viewHolder.comments = (TextView)convertView.findViewById(R.id.flock_post_topic_comment_count);
             viewHolder.upvoteDownvoteView = (UpvoteDownvoteView)convertView.findViewById(R.id.flock_post_topic_upvote_downvote);
             viewHolder.upvoteDownvoteView.setUpvoteDownvoteListener(mUpvoteDownvoteListener);
             convertView.setTag(viewHolder);
@@ -87,6 +89,15 @@ public class FlockPostTopicAdapter extends ArrayAdapter<Post> {
         viewHolder.position = position;
         viewHolder.title.setText(post.getTitle());
         viewHolder.description.setText(post.getDescription());
+        //hide the description if nothing to show
+        if (post.getDescription() == null || post.getDescription().equals("")) {
+            viewHolder.description.setVisibility(View.GONE);
+        } else {
+            viewHolder.description.setVisibility(View.VISIBLE);
+        }
+
+        viewHolder.comments.setText(String.format(getContext().getResources().getString(R.string.comment_count_format), post.comments));
+
         viewHolder.upvoteDownvoteView.setTag(position);
         viewHolder.upvoteDownvoteView.setVotesText(Integer.toString(post.getScore() + post.vote));
         if (post.vote == 1) {

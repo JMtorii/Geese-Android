@@ -15,11 +15,19 @@ import com.teamawesome.geese.R;
  */
 public class UpvoteDownvoteView extends RelativeLayout {
 
+    private enum VoteValue {
+        UpVote,
+        NoVote,
+        DownVote
+    }
+
     UpvoteDownvoteListener mListener;
 
     TextView mVotesText;
     ImageButton mUpvoteButton;
     ImageButton mDownvoteButton;
+
+    private VoteValue voteValue = VoteValue.NoVote;
 
     public UpvoteDownvoteView(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -56,5 +64,38 @@ public class UpvoteDownvoteView extends RelativeLayout {
 
     public void setVotesText(String text) {
         mVotesText.setText(text);
+    }
+
+    public void setUpVoted() {
+        voteValue = VoteValue.UpVote;
+        setUpArrowImage(true);
+        setTextColour(true);
+        setDownArrowImage(false);
+    }
+
+    public void setNotVoted() {
+        voteValue = VoteValue.NoVote;
+        setUpArrowImage(false);
+        setTextColour(false);
+        setDownArrowImage(false);
+    }
+
+    public void setDownVoted() {
+        voteValue = VoteValue.DownVote;
+        setUpArrowImage(false);
+        setTextColour(true);
+        setDownArrowImage(true);
+    }
+
+    private void setUpArrowImage(boolean coloured) {
+        mUpvoteButton.setImageDrawable(getResources().getDrawable(coloured ? R.drawable.ic_keyboard_arrow_up_teal_24dp : R.drawable.ic_keyboard_arrow_up_black_24dp));
+    }
+
+    private void setDownArrowImage(boolean coloured) {
+        mDownvoteButton.setImageDrawable(getResources().getDrawable(coloured ? R.drawable.ic_keyboard_arrow_down_teal_24dp : R.drawable.ic_keyboard_arrow_down_black_24dp));
+    }
+
+    private void setTextColour(boolean coloured) {
+        mVotesText.setTextColor(getResources().getColor(coloured ? R.color.primary : R.color.black));
     }
 }

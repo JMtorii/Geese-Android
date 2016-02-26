@@ -176,7 +176,7 @@ public class FlockProfileFragment extends FlockFragment {
             mFlockInfoDescriptionTextView.setVisibility(View.GONE);
         }
 
-        mJoinFlockButton = (Button)v.findViewById(R.id.profile_join);
+        mJoinFlockButton = (Button) v.findViewById(R.id.profile_join);
 
         if (mFlock.getFavourited()) {
             mJoinFlockButton.setText(R.string.profile_unjoin);

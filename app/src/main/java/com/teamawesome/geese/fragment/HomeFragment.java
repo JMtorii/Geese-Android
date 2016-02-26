@@ -1,5 +1,6 @@
 package com.teamawesome.geese.fragment;
 
+import android.location.Location;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.Log;
@@ -130,7 +131,15 @@ public class HomeFragment extends GeeseFragment {
             return;
         }
         if (SessionManager.checkLogin()) {
-            Observable<List<FlockV2>> observable = RestClient.flockService.getNearbyFlocks(43.471086f, -80.541875f);
+            Observable<List<FlockV2>> observable;
+            Location location = ((MainActivity) getActivity()).getLatestLocation();
+            if (location != null) {
+                Log.e("Log", "Use " + location.getLatitude() + " " + location.getLongitude());
+                observable = RestClient.flockService.getNearbyFlocks((float)location.getLatitude(), (float)location.getLongitude());
+            } else {
+                Log.e("Log", "Use default in waterloo!");
+                observable = RestClient.flockService.getNearbyFlocks(43.471086f, -80.541875f);
+            }
             observable.subscribeOn(Schedulers.newThread())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(new Subscriber<List<FlockV2>>() {

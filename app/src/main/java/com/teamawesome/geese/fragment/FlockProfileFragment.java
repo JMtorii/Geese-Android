@@ -1,5 +1,7 @@
 package com.teamawesome.geese.fragment;
 
+import android.Manifest;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -29,6 +31,8 @@ import rx.Observable;
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
+
+import static android.support.v4.content.PermissionChecker.checkSelfPermission;
 
 /**
  * Created by MichaelQ on 2015-07-18.
@@ -68,12 +72,12 @@ public class FlockProfileFragment extends FlockFragment {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_flock_profile, container, false);
 
-        mFlockTitleTextView = (TextView)v.findViewById(R.id.profile_title);
+        mFlockTitleTextView = (TextView) v.findViewById(R.id.profile_title);
         if (mFlockTitleTextView != null) {
             mFlockTitleTextView.setText(mFlock.getName());
         }
 
-        mFlockInfoMemberCountTextView = (TextView)v.findViewById(R.id.profile_info_member_count);
+        mFlockInfoMemberCountTextView = (TextView) v.findViewById(R.id.profile_info_member_count);
 //        if (mFlock.members >= 0) {
 //            mFlockInfoMemberCountTextView.setText(mFlock.members + " members");
 //        } else {
@@ -81,7 +85,7 @@ public class FlockProfileFragment extends FlockFragment {
 //        }
         mFlockInfoMemberCountTextView.setText("50 members");
 
-        mFlockInfoPrivacyTextView = (TextView)v.findViewById(R.id.profile_info_privacy);
+        mFlockInfoPrivacyTextView = (TextView) v.findViewById(R.id.profile_info_privacy);
 //        if (mFlock.privacy != null) {
 //            mFlockInfoPrivacyTextView.setText(mFlock.privacy);
 //        } else {
@@ -89,13 +93,13 @@ public class FlockProfileFragment extends FlockFragment {
 //        }
         mFlockInfoPrivacyTextView.setText("Public");
 
-        mFlockProfileImageView = (RoundedImageView)v.findViewById(R.id.profile_image);
+        mFlockProfileImageView = (RoundedImageView) v.findViewById(R.id.profile_image);
         Picasso.with(getContext())
                 .load("http://justinhackworth.com/canada-goose-01.jpg")
 //        mFlock.imageURL;
                 .into(mFlockProfileImageView);
 
-        mFlockInfoCreationDateTextView = (TextView)v.findViewById(R.id.profile_info_creation_date);
+        mFlockInfoCreationDateTextView = (TextView) v.findViewById(R.id.profile_info_creation_date);
 //        if (mFlock.createdDate != null) {
 //            mFlockInfoCreationDateTextView.setText("Created on " + mFlock.createdDate);
 //        } else {
@@ -104,7 +108,7 @@ public class FlockProfileFragment extends FlockFragment {
         mFlockInfoCreationDateTextView.setText("Created on " + "January 1, 2016");
 
         mGMapView = (MapView) v.findViewById(R.id.profile_google_map);
-        mMapImageView = (ImageView)v.findViewById(R.id.profile_image_map);
+        mMapImageView = (ImageView) v.findViewById(R.id.profile_image_map);
 
         int status = GooglePlayServicesUtil.isGooglePlayServicesAvailable(getActivity());
         int googleVersionCode = getResources().getInteger(R.integer.google_play_services_version);
@@ -116,7 +120,11 @@ public class FlockProfileFragment extends FlockFragment {
             map = mGMapView.getMap();
             map.getUiSettings().setMyLocationButtonEnabled(false);
             map.getUiSettings().setMapToolbarEnabled(false);
-            map.setMyLocationEnabled(true);
+
+            if (checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED ||
+                    checkSelfPermission(getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+                map.setMyLocationEnabled(true);
+            }
 
             map.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
                 @Override

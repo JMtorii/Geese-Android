@@ -229,7 +229,7 @@ public class FlockProfileFragment extends FlockFragment {
 
                     @Override
                     public void onError(Throwable e) {
-                        Log.e("FlockProfileFragment", "Something happened: " + e.getMessage());
+                        Log.e("FlockProfileFragment", "Something happened in joinFlock: " + e.getMessage());
                         if (progressDialog.isShowing()) {
                             progressDialog.dismiss();
                         }
@@ -240,11 +240,28 @@ public class FlockProfileFragment extends FlockFragment {
                         Log.i("FlockProfileFragment", "onNext called");
                         mFlock.setFavourited(true);
                         mJoinFlockButton.setText(R.string.profile_unjoin);
-                        parentActivity.getSupportFragmentManager().popBackStack();
-
+//                        parentActivity.getSupportFragmentManager().popBackStack();
+//
+//                        MainFlockFragment fragment = (MainFlockFragment) getFragmentManager().findFragmentByTag(Constants.FLOCK_FRAGMENT_TAG);
+//                        if (fragment == null) {
+//                            fragment = new MainFlockFragment();
+//                        }
+//                        fragment.setFlock(mFlock);
+//                        parentActivity.switchFragment(
+//                                fragment,
+//                                R.anim.fragment_slide_in_left,
+//                                R.anim.fragment_slide_out_right,
+//                                Constants.FLOCK_FRAGMENT_TAG,
+//                                mFlock.getName(),
+//                                false,
+//                                false,
+//                                true
+//                        );
                         if (progressDialog.isShowing()) {
                             progressDialog.dismiss();
                         }
+
+                        parentActivity.joinFlock(mFlock);
                     }
                 });
     }
@@ -263,7 +280,7 @@ public class FlockProfileFragment extends FlockFragment {
 
                     @Override
                     public void onError(Throwable e) {
-                        Log.e("FlockProfileFragment", "Something happened: " + e.getMessage());
+                        Log.e("FlockProfileFragment", "Something happened in unjoin: " + e.getMessage());
                         if (progressDialog.isShowing()) {
                             progressDialog.dismiss();
                         }
@@ -274,7 +291,8 @@ public class FlockProfileFragment extends FlockFragment {
                         Log.i("FlockProfileFragment", "onNext called");
                         mFlock.setFavourited(false);
                         mJoinFlockButton.setText(R.string.profile_join);
-                        parentActivity.getSupportFragmentManager().popBackStack();
+
+                        parentActivity.unjoinFlock();
 
                         if (progressDialog.isShowing()) {
                             progressDialog.dismiss();

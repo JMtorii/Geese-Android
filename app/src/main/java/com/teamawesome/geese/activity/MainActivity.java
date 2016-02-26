@@ -45,9 +45,11 @@ import com.teamawesome.geese.fragment.CreateFlockFragment;
 import com.teamawesome.geese.fragment.DatePickerFragment;
 import com.teamawesome.geese.fragment.FavouriteFlocksFragment;
 import com.teamawesome.geese.fragment.HomeFragment;
+import com.teamawesome.geese.fragment.MainFlockFragment;
 import com.teamawesome.geese.fragment.TimePickerFragment;
 import com.teamawesome.geese.fragment.settings.SettingsMainFragment;
 import com.teamawesome.geese.object.NavDrawerItem;
+import com.teamawesome.geese.rest.model.FlockV2;
 import com.teamawesome.geese.util.Constants;
 import com.teamawesome.geese.util.SessionManager;
 import com.teamawesome.geese.view.RoundedImageView;
@@ -57,8 +59,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Stack;
-
-import static android.support.v4.content.PermissionChecker.checkSelfPermission;
 
 /*
  * MainActivity is responsible for holding all fragments and managing them through
@@ -492,6 +492,50 @@ public class MainActivity
         ft.commit();
         curFragmentTag = tag;
         mToolbar.setTitle(title);
+    }
+
+    // This should only be called by FLockProfileFragment... Again sorry for this
+    public void joinFlock(FlockV2 flock) {
+        popManualBackStack();
+        getSupportFragmentManager().popBackStack();
+        curFragmentTag = Constants.HOME_FRAGMENT_TAG;
+
+        MainFlockFragment fragment = new MainFlockFragment();
+
+        fragment.setFlock(flock);
+        switchFragment(
+                fragment,
+                R.anim.fragment_slide_in_left,
+                R.anim.fragment_slide_out_right,
+                Constants.FLOCK_FRAGMENT_TAG,
+                flock.getName(),
+                false,
+                false,
+                true
+        );
+    }
+
+    // This should only be called by FLockProfileFragment... Again sorry for this
+    public void unjoinFlock() {
+        while (getManualBackStackSize() > 1 ) {
+            popManualBackStack();
+        }
+
+        getSupportFragmentManager().popBackStack();
+        HomeFragment fragment = (HomeFragment) getSupportFragmentManager().findFragmentByTag(curFragmentTag);
+
+        if (fragment != null) {
+            fragment.getNearbyFlocks();
+        }
+    }
+
+    public int getManualBackStackSize() {
+        curFragmentTag = customBackStack.peek().getTag();
+        return customBackStack.size();
+    }
+
+    public void popManualBackStack() {
+        customBackStack.pop();
     }
 
     public Location getLatestLocation() {

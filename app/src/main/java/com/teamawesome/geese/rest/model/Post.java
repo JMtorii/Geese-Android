@@ -31,6 +31,9 @@ public class Post {
     @JsonProperty("score")
     private int score;
 
+    //TODO: temp thing till we get what the user has voted for back from the server
+    public int vote;
+
     private Post(Builder builder) {
         builder.id = id;
         builder.flockid = flockid;

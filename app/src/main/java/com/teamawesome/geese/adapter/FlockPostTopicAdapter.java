@@ -28,20 +28,38 @@ public class FlockPostTopicAdapter extends ArrayAdapter<Post> {
         int position;
     }
 
+    //TODO: fix the vote thing, using it to keep track locally for now
     private UpvoteDownvoteListener mUpvoteDownvoteListener = new UpvoteDownvoteListener() {
-        //TODO: ACTUALLY VOTE, not just change the number
         @Override
         public void onUpvoteClicked(UpvoteDownvoteView v) {
             int index = (Integer)v.getTag();
             Post postTopic = getItem(index);
-            v.setVotesText(Integer.toString(postTopic.getScore() + 1));
+            if (postTopic.vote != 1) {
+                postTopic.vote = 1;
+                v.setUpVoted();
+                voteForPost(postTopic.getId(), 1);
+            } else {
+                postTopic.vote = 0;
+                v.setNotVoted();
+                voteForPost(postTopic.getId(), 0);
+            }
+            v.setVotesText(Integer.toString(postTopic.getScore() + postTopic.vote));
         }
 
         @Override
         public void onDownvoteClicked(UpvoteDownvoteView v) {
             int index = (Integer)v.getTag();
             Post postTopic = getItem(index);
-            v.setVotesText(Integer.toString(postTopic.getScore() - 1));
+            if (postTopic.vote != -1) {
+                postTopic.vote = -1;
+                v.setDownVoted();
+                voteForPost(postTopic.getId(), -1);
+            } else {
+                postTopic.vote = 0;
+                v.setNotVoted();
+                voteForPost(postTopic.getId(), 0);
+            }
+            v.setVotesText(Integer.toString(postTopic.getScore() + postTopic.vote));
         }
     };
 
@@ -70,7 +88,14 @@ public class FlockPostTopicAdapter extends ArrayAdapter<Post> {
         viewHolder.title.setText(post.getTitle());
         viewHolder.description.setText(post.getDescription());
         viewHolder.upvoteDownvoteView.setTag(position);
-        viewHolder.upvoteDownvoteView.setVotesText(Integer.toString(getItem(position).getScore()));
+        viewHolder.upvoteDownvoteView.setVotesText(Integer.toString(post.getScore() + post.vote));
+        if (post.vote == 1) {
+            viewHolder.upvoteDownvoteView.setUpVoted();
+        } else if(post.vote == -1) {
+            viewHolder.upvoteDownvoteView.setDownVoted();
+        } else {
+            viewHolder.upvoteDownvoteView.setNotVoted();
+        }
         // TODO: check if image scaling is off
         viewHolder.image.setImageDrawable(null);
 
@@ -93,5 +118,26 @@ public class FlockPostTopicAdapter extends ArrayAdapter<Post> {
 //            }
 //        }
         return convertView;
+    }
+
+    private void voteForPost(int postId, int value) {
+        //TODO:votes dont work yet
+//        RestClient.postService.voteForPost(postId, value).enqueue(new Callback<ResponseBody>() {
+//            @Override
+//            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+//                if (response.isSuccess()) {
+//                    Log.d("PostTopicVote", "Vote Success");
+//                } else {
+//                    // TODO: better error handling
+//                    Log.e("PostTopicVote", "Vote Failed " + response.errorBody());
+//                }
+//            }
+//
+//            @Override
+//            public void onFailure(Throwable t) {
+//                // TODO: better error handling
+//                Log.e("PostTopicVote", "Vote Failed" + t.getMessage());
+//            }
+//        });
     }
 }

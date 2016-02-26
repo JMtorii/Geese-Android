@@ -11,8 +11,8 @@
 
         <menu>
             <item
-                android:id="@+id/menuTest1"
-                android:title="Test 1" />
+                android:id="@+id/create_flock"
+                android:title="Create Flock" />
             <item
                 android:id="@+id/menuTest2"
                 android:title="Test 2" />

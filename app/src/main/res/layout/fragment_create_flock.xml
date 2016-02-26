@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/whiteBackground"
+    android:weightSum="1"
+    android:id="@+id/flock_linear_layout">
+
+    <com.astuetz.PagerSlidingTabStrip
+        android:id="@+id/tabs"
+        android:layout_width="match_parent"
+        android:background="@color/primaryDark"
+        android:layout_height="?attr/actionBarSize" />
+
+    <android.support.v4.view.ViewPager
+        android:id="@+id/pager_debug"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        tools:context=".FlockFragment"/>
+
+    <ListView
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/create_flock_listview"
+        android:background="@color/whiteBackground"
+        android:divider="@color/separatorColour"
+        android:dividerHeight="1px">
+    </ListView>
+</LinearLayout>

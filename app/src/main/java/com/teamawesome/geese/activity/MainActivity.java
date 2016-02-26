@@ -1,5 +1,6 @@
 package com.teamawesome.geese.activity;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
@@ -15,6 +16,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
@@ -32,6 +34,7 @@ import com.facebook.login.LoginManager;
 import com.squareup.picasso.Picasso;
 import com.teamawesome.geese.R;
 import com.teamawesome.geese.adapter.NavDrawerAdapter;
+import com.teamawesome.geese.fragment.CreateFlockFragment;
 import com.teamawesome.geese.fragment.DatePickerFragment;
 import com.teamawesome.geese.fragment.FavouriteFlocksFragment;
 import com.teamawesome.geese.fragment.HomeFragment;
@@ -173,7 +176,12 @@ public class MainActivity extends AppCompatActivity implements TimePickerFragmen
         mToolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem menuItem) {
+                Log.i("MenuItemId", String.valueOf(menuItem.getItemId()));
+                Log.i("want", String.valueOf(menuItem.getItemId()));
                 switch (menuItem.getItemId()) {
+                    case R.id.create_flock:
+                        Fragment fragment = new CreateFlockFragment();
+                        switchFragment(fragment, 0, 0, Constants.FLOCK_CREATE_TAG, "Create Flock", true, true, true);
                     case R.id.action_settings:
                         // TODO: add custom animation
 //                        Fragment fragment = new SettingsMainFragment();

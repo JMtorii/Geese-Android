@@ -27,19 +27,36 @@ public class FlockPostCommentAdapter extends ArrayAdapter<Comment> {
     }
 
     private UpvoteDownvoteListener mUpvoteDownvoteListener = new UpvoteDownvoteListener() {
-        //TODO: ACTUALLY VOTE, not just change the number
         @Override
         public void onUpvoteClicked(UpvoteDownvoteView v) {
             int index = (Integer)v.getTag();
-            Comment postComment = getItem(index);
-            v.setVotesText(Integer.toString(postComment.getScore() + 1));
+            Comment comment = getItem(index);
+            if (comment.vote != 1) {
+                comment.vote = 1;
+                v.setUpVoted();
+//                voteForComment(comment.getId(), 1);
+            } else {
+                comment.vote = 0;
+                v.setNotVoted();
+//                voteForComment(comment.getId(), 0);
+            }
+            v.setVotesText(Integer.toString(comment.getScore() + comment.vote));
         }
 
         @Override
         public void onDownvoteClicked(UpvoteDownvoteView v) {
             int index = (Integer)v.getTag();
-            Comment postComment = getItem(index);
-            v.setVotesText(Integer.toString(postComment.getScore() - 1));
+            Comment comment = getItem(index);
+            if (comment.vote != -1) {
+                comment.vote = -1;
+                v.setDownVoted();
+//                voteForComment(comment.getId(), -1);
+            } else {
+                comment.vote = 0;
+                v.setNotVoted();
+//                voteForComment(comment.getId(), 0);
+            }
+            v.setVotesText(Integer.toString(comment.getScore() + comment.vote));
         }
     };
 
@@ -65,7 +82,14 @@ public class FlockPostCommentAdapter extends ArrayAdapter<Comment> {
         viewHolder.position = position;
         viewHolder.commentView.setText(comment.getText());
         viewHolder.upvoteDownvoteView.setTag(position);
-        viewHolder.upvoteDownvoteView.setVotesText(Integer.toString(getItem(position).getScore()));
+        viewHolder.upvoteDownvoteView.setVotesText(Integer.toString(comment.getScore() + comment.vote));
+        if (comment.vote == 1) {
+            viewHolder.upvoteDownvoteView.setUpVoted();
+        } else if (comment.vote == -1) {
+            viewHolder.upvoteDownvoteView.setDownVoted();
+        } else {
+            viewHolder.upvoteDownvoteView.setNotVoted();
+        }
         return convertView;
     }
 }

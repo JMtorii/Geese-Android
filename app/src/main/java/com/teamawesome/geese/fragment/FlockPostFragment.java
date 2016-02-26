@@ -64,21 +64,22 @@ public class FlockPostFragment extends FlockFragment {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 // uncomment when posts from server have comments
-//                FlockPostDetailsFragment fragment = (FlockPostDetailsFragment) getFragmentManager().findFragmentByTag(Constants.FLOCK_POST_DETAILS_FRAGMENT_TAG);
-//                if (fragment == null) {
-//                    fragment = new FlockPostDetailsFragment();
-//                }
-//                fragment.setPostTopic(mPostTopics.get(position));
-//                MainActivity mainActivity = (MainActivity) getActivity();
-//                mainActivity.switchFragment(
-//                        fragment,
-//                        R.anim.fragment_slide_in_left,
-//                        R.anim.fragment_slide_out_right,
-//                        Constants.FLOCK_POST_DETAILS_FRAGMENT_TAG,
-//                        false,
-//                        false,
-//                        true
-//                );
+                FlockPostDetailsFragment fragment = (FlockPostDetailsFragment) getFragmentManager().findFragmentByTag(Constants.FLOCK_POST_DETAILS_FRAGMENT_TAG);
+                if (fragment == null) {
+                    fragment = new FlockPostDetailsFragment();
+                }
+                fragment.setPostTopic(mPostTopics.get(position));
+                MainActivity mainActivity = (MainActivity) getActivity();
+                mainActivity.switchFragment(
+                        fragment,
+                        R.anim.fragment_slide_in_left,
+                        R.anim.fragment_slide_out_right,
+                        Constants.FLOCK_POST_DETAILS_FRAGMENT_TAG,
+                        mPostTopics.get(position).getTitle(),
+                        false,
+                        false,
+                        true
+                );
             }
         });
         // attach floating button to listview

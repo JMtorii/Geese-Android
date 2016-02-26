@@ -8,7 +8,7 @@ import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 import com.teamawesome.geese.R;
-import com.teamawesome.geese.object.PostComment;
+import com.teamawesome.geese.rest.model.Comment;
 import com.teamawesome.geese.view.UpvoteDownvoteListener;
 import com.teamawesome.geese.view.UpvoteDownvoteView;
 
@@ -17,7 +17,7 @@ import java.util.ArrayList;
 /**
  * Created by MichaelQ on 2015-10-25.
  */
-public class FlockPostCommentAdapter extends ArrayAdapter<PostComment> {
+public class FlockPostCommentAdapter extends ArrayAdapter<Comment> {
 
     // View lookup cache
     private static class ViewHolder {
@@ -31,25 +31,25 @@ public class FlockPostCommentAdapter extends ArrayAdapter<PostComment> {
         @Override
         public void onUpvoteClicked(UpvoteDownvoteView v) {
             int index = (Integer)v.getTag();
-            PostComment postComment = getItem(index);
-            v.setVotesText(Integer.toString(postComment.getUpvotes() + 1));
+            Comment postComment = getItem(index);
+            v.setVotesText(Integer.toString(postComment.getScore() + 1));
         }
 
         @Override
         public void onDownvoteClicked(UpvoteDownvoteView v) {
             int index = (Integer)v.getTag();
-            PostComment postComment = getItem(index);
-            v.setVotesText(Integer.toString(postComment.getUpvotes() - 1));
+            Comment postComment = getItem(index);
+            v.setVotesText(Integer.toString(postComment.getScore() - 1));
         }
     };
 
-    public FlockPostCommentAdapter(Context context, ArrayList<PostComment> comments) {
+    public FlockPostCommentAdapter(Context context, ArrayList<Comment> comments) {
         super(context, R.layout.flock_post_comment_item, comments);
     }
 
     @Override
     public View getView(final int position, View convertView, ViewGroup parent) {
-        final PostComment comment = getItem(position);
+        final Comment comment = getItem(position);
         final ViewHolder viewHolder;
         if (convertView == null) {
             viewHolder = new ViewHolder();
@@ -63,9 +63,9 @@ public class FlockPostCommentAdapter extends ArrayAdapter<PostComment> {
             viewHolder = (ViewHolder) convertView.getTag();
         }
         viewHolder.position = position;
-        viewHolder.commentView.setText(comment.getComment());
+        viewHolder.commentView.setText(comment.getText());
         viewHolder.upvoteDownvoteView.setTag(position);
-        viewHolder.upvoteDownvoteView.setVotesText(Integer.toString(getItem(position).getUpvotes()));
+        viewHolder.upvoteDownvoteView.setVotesText(Integer.toString(getItem(position).getScore()));
         return convertView;
     }
 }

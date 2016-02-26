@@ -130,6 +130,7 @@ public class FlockPostDetailsFragment extends Fragment {
                 if (fragment == null) {
                     fragment = new FlockPostCommentCreateFragment();
                 }
+                fragment.setPostId(mPostTopic.getId());
                 MainActivity mainActivity = (MainActivity) getActivity();
                 mainActivity.switchFragment(
                         fragment,

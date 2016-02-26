@@ -49,18 +49,42 @@ public class FlockPostDetailsFragment extends Fragment {
         final ImageView image = (ImageView)view.findViewById(R.id.flock_post_topic_image);
         UpvoteDownvoteView upvoteDownvoteView = (UpvoteDownvoteView)view.findViewById(R.id.flock_post_topic_upvote_downvote);
         upvoteDownvoteView.setUpvoteDownvoteListener(new UpvoteDownvoteListener() {
-            // TODO: vote
             @Override
             public void onUpvoteClicked(UpvoteDownvoteView v) {
-                v.setVotesText(Integer.toString(mPostTopic.getScore() + 1));
+                if (mPostTopic.vote != 1) {
+                    mPostTopic.vote = 1;
+                    v.setUpVoted();
+//                    voteForPost(postTopic.getId(), 1);
+                } else {
+                    mPostTopic.vote = 0;
+                    v.setNotVoted();
+//                    voteForPost(postTopic.getId(), 0);
+                }
+                v.setVotesText(Integer.toString(mPostTopic.getScore() + mPostTopic.vote));
             }
 
             @Override
             public void onDownvoteClicked(UpvoteDownvoteView v) {
-                v.setVotesText(Integer.toString(mPostTopic.getScore() - 1));
+                if (mPostTopic.vote != -1) {
+                    mPostTopic.vote = -1;
+                    v.setDownVoted();
+//                    voteForPost(postTopic.getId(), -1);
+                } else {
+                    mPostTopic.vote = 0;
+                    v.setNotVoted();
+//                    voteForPost(postTopic.getId(), 0);
+                }
+                v.setVotesText(Integer.toString(mPostTopic.getScore() + mPostTopic.vote));
             }
         });
-        upvoteDownvoteView.setVotesText(Integer.toString(mPostTopic.getScore()));
+        upvoteDownvoteView.setVotesText(Integer.toString(mPostTopic.getScore() + mPostTopic.vote));
+        if (mPostTopic.vote == 1) {
+            upvoteDownvoteView.setUpVoted();
+        } else if (mPostTopic.vote == -1) {
+            upvoteDownvoteView.setDownVoted();
+        } else {
+            upvoteDownvoteView.setNotVoted();
+        }
         ListView listView = (ListView)view.findViewById(R.id.flock_post_details_list);
         title.setText(mPostTopic.getTitle());
         description.setText(mPostTopic.getDescription());

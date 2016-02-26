@@ -7,6 +7,7 @@ import com.teamawesome.geese.rest.model.FlockV2;
 import java.util.List;
 
 import retrofit.Call;
+import retrofit.http.Body;
 import retrofit.http.DELETE;
 import retrofit.http.GET;
 import retrofit.http.POST;
@@ -43,8 +44,8 @@ public interface FlockService {
     @POST("/flock/{flockId}/unjoinFlock")
     Observable<ResponseBody> unjoinFlock(@Path("flockId") int flockId);
 
-    @POST("/flock/")
-    Call<Flock> createFlock(Flock flock);
+    @POST("/flock")
+    Call<Void> createFlock(@Body Flock flock);
 
 
 

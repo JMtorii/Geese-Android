@@ -8,6 +8,7 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.provider.DocumentsContract;
 import android.provider.MediaStore;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.Log;
@@ -101,22 +102,25 @@ public class CreateFlockFragment extends GeeseFragment {
         super.onActivityResult(requestCode, resultCode, data);
 
         // TODO: Check result code
-        if (requestCode == PHOTO_SELECTED /*&& resultCode == RESULT_OK */&& null != data) {
+        if (requestCode == PHOTO_SELECTED && resultCode == Activity.RESULT_OK && null != data) {
             Uri selectedImage = data.getData();
-            String[] filePathColumn = { MediaStore.Images.Media.DATA};
-
-            // TODO: Don't abuse the poor context like this
-            Cursor cursor = getContext().getContentResolver().query(selectedImage,
-                    filePathColumn, null, null, null);
-            cursor.moveToFirst();
-
-            int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
-            final String picturePath = cursor.getString(columnIndex);
-            cursor.close();
-
-            mImageFile = new File(picturePath);
+            mImageFile = new File(getRealPathFromURI(selectedImage).getPath());
             new UploadToS3().execute(mImageFile);
         }
+    }
+
+    private Uri getRealPathFromURI(Uri contentURI) {
+        String result;
+        Cursor cursor = parentActivity.getContentResolver().query(contentURI, null, null, null, null);
+        if (cursor == null) {
+            result = contentURI.getPath();
+        } else {
+            cursor.moveToFirst();
+            int idx = cursor.getColumnIndex(MediaStore.Images.ImageColumns.DATA);
+            result = cursor.getString(idx);
+            cursor.close();
+        }
+        return Uri.parse(result);
     }
 
     public void setupCreateFlockButton() {
@@ -126,10 +130,10 @@ public class CreateFlockFragment extends GeeseFragment {
                 String flockname = mFlockNameText.getText().toString().trim();
                 // TODO: Finish populating this
                 Flock flock = new Flock(flockname, "description", 0, 0, 0, 0);
-                Call<Flock> call = RestClient.flockService.createFlock(flock);
-                call.enqueue(new Callback<Flock>() {
+                Call<Void> call = RestClient.flockService.createFlock(flock);
+                call.enqueue(new Callback<Void>() {
                     @Override
-                    public void onResponse(Response<Flock> response, Retrofit retrofit) {
+                    public void onResponse(Response<Void> response, Retrofit retrofit) {
                         if (response.isSuccess()) {
                             //attemptLogin(username, email, hashedPassword);
                         } else {
@@ -161,28 +165,8 @@ public class CreateFlockFragment extends GeeseFragment {
         Log.i("CreateFlockFragment", "update");
     }
 
-    public void createFlock() {
-        // TODO: Make this actually upload an image
-        Context context = getContext();
-        String filename = "localfile";
-        String string = "Hello world 5!";
-        FileOutputStream outputStream;
-
-        try {
-            outputStream = context.openFileOutput(filename, Context.MODE_PRIVATE);
-            outputStream.write(string.getBytes());
-            outputStream.close();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        File toUpload = new File(context.getApplicationContext().getFilesDir(), "localfile");
-        new UploadToS3().execute(toUpload);
-    }
-
     private class UploadToS3 extends AsyncTask<File, Integer, Long> {
         protected Long doInBackground(File... files) {
-            // TODO: This shouldn't actually be here.
             // Configure AWS S3 Access
             // Create an S3 client
 

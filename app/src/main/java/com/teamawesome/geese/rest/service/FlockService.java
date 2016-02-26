@@ -42,4 +42,10 @@ public interface FlockService {
 
     @POST("/flock/{flockId}/unjoinFlock")
     Observable<ResponseBody> unjoinFlock(@Path("flockId") int flockId);
+
+    @POST("/flock/")
+    Call<Flock> createFlock(Flock flock);
+
+
+
 }

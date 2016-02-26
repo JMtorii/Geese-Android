@@ -4,6 +4,7 @@ package com.teamawesome.geese.util;
  * Created by JMtorii on 15-07-09.
  */
 public final class Constants {
+    public static final String PICTURE_BUCKET = "geese-images";
 
     // shared preference
     public static final String PREF_SETTINGS = "PREF_SETTINGS";

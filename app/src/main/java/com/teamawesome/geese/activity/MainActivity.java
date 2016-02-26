@@ -437,6 +437,18 @@ public class MainActivity
     @Override
     public void onBackPressed() {
         popFragment();
+
+        // This is Satan's work. Sorry.
+        // If the current fragment is the home fragment upon pressing the back button, we reload that bullshit
+        String curFragmentTag = customBackStack.peek().getTag();
+        if (curFragmentTag.equals(Constants.HOME_FRAGMENT_TAG)) {
+            HomeFragment fragment = (HomeFragment) getSupportFragmentManager().findFragmentByTag(curFragmentTag);
+
+            if (fragment != null) {
+                Log.i("MainActivity", "Calling getNearbyFlocks through back button");
+                fragment.getNearbyFlocks();
+            }
+        }
     }
 
     public void popFragment() {

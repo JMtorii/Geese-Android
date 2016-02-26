@@ -12,7 +12,6 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import com.teamawesome.geese.R;
-import com.teamawesome.geese.activity.MainActivity;
 import com.teamawesome.geese.adapter.FlockAdapter;
 import com.teamawesome.geese.rest.model.FlockV2;
 import com.teamawesome.geese.util.Constants;
@@ -72,24 +71,46 @@ public class HomeFragment extends GeeseFragment {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                // TODO implement some logic
-                // use Bundle and fragment.setArguments if required to pass additional data
-                MainFlockFragment fragment = (MainFlockFragment) getFragmentManager().findFragmentByTag(Constants.FLOCK_FRAGMENT_TAG);
-                if (fragment == null) {
-                    fragment = new MainFlockFragment();
+                // TODO: Sorry for this. Satan told me to do this
+
+                if (flocks.get(position).getFavourited()) {
+                    MainFlockFragment fragment = (MainFlockFragment) getFragmentManager().findFragmentByTag(Constants.FLOCK_FRAGMENT_TAG);
+                    if (fragment == null) {
+                        fragment = new MainFlockFragment();
+                    }
+                    fragment.setFlock(flocks.get(position));
+                    parentActivity.switchFragment(
+                            fragment,
+                            R.anim.fragment_slide_in_left,
+                            R.anim.fragment_slide_out_right,
+                            Constants.FLOCK_FRAGMENT_TAG,
+                            flocks.get(position).getName(),
+                            false,
+                            false,
+                            true
+                    );
+
+                } else {
+//                    FlockProfileFragment fragment = (FlockProfileFragment) getFragmentManager().findFragmentByTag(Constants.FLOCK_PROFILE_FRAGMENT_TAG);
+//                    if (fragment == null) {
+//                        fragment = new FlockProfileFragment();
+//                    }
+
+                    // This is not optimized. We instantiate it all the time
+                    FlockProfileFragment fragment = FlockProfileFragment.newInstance(0);
+
+                    fragment.setFlock(flocks.get(position));
+                    parentActivity.switchFragment(
+                            fragment,
+                            R.anim.fragment_slide_in_left,
+                            R.anim.fragment_slide_out_right,
+                            Constants.FLOCK_FRAGMENT_TAG,
+                            flocks.get(position).getName(),
+                            false,
+                            false,
+                            true
+                    );
                 }
-                fragment.setFlock(flocks.get(position));
-                MainActivity mainActivity = (MainActivity) getActivity();
-                mainActivity.switchFragment(
-                        fragment,
-                        R.anim.fragment_slide_in_left,
-                        R.anim.fragment_slide_out_right,
-                        Constants.FLOCK_FRAGMENT_TAG,
-                        flocks.get(position).getName(),
-                        false,
-                        false,
-                        true
-                );
             }
         });
 
@@ -110,7 +131,7 @@ public class HomeFragment extends GeeseFragment {
         getNearbyFlocks();
     }
 
-    private void getNearbyFlocks() {
+    public void getNearbyFlocks() {
         progressDialog.show();
 
         // TODO use interceptor instead to add token to all REST calls

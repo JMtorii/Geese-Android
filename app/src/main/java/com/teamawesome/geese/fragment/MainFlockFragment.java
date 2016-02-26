@@ -47,7 +47,7 @@ public class MainFlockFragment extends Fragment {
         mAdapter = new PagerAdapter(getFragmentManager());
         mPager.setAdapter(mAdapter);
         mTabs.setViewPager(mPager);
-        mPager.setCurrentItem(0);
+        mPager.setCurrentItem(1);
         return v;
     }
 

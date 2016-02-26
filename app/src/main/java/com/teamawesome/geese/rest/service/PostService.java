@@ -1,6 +1,7 @@
 package com.teamawesome.geese.rest.service;
 
 import com.squareup.okhttp.ResponseBody;
+import com.teamawesome.geese.rest.model.Comment;
 import com.teamawesome.geese.rest.model.CreatePostRequestBody;
 import com.teamawesome.geese.rest.model.Post;
 
@@ -23,4 +24,11 @@ public interface PostService {
 
     @POST("/post")
     Call<ResponseBody> savePostForFlock(@Body CreatePostRequestBody createPostRequestBody);
+
+    @GET("/comment")
+    Observable<List<Comment>> getCommentsForPost(@Query("postId") int postId);
+
+    @POST("/comment")
+    Call<ResponseBody> saveCommentForPost();
+
 }

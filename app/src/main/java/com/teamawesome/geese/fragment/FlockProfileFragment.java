@@ -178,7 +178,9 @@ public class FlockProfileFragment extends FlockFragment {
         mJoinFlockButton = (Button)v.findViewById(R.id.profile_join);
 
         if (mFlock.getFavourited()) {
-            mJoinFlockButton.setVisibility(View.INVISIBLE);
+            mJoinFlockButton.setText(R.string.profile_unjoin);
+        } else {
+            mJoinFlockButton.setText(R.string.profile_join);
         }
 
         mJoinFlockButton.setOnClickListener(new View.OnClickListener() {
@@ -186,6 +188,9 @@ public class FlockProfileFragment extends FlockFragment {
             public void onClick(View v) {
                 if (!mFlock.getFavourited()) {
                     joinFlock();
+                } else {
+                    unjoinFlock();
+                    mJoinFlockButton.setText(R.string.profile_join);
                 }
             }
         });
@@ -212,6 +217,7 @@ public class FlockProfileFragment extends FlockFragment {
     }
 
     private void joinFlock() {
+        Log.i("FlockProfileFragment", Integer.toString(mFlock.getId()));
         Observable<ResponseBody> observable = RestClient.flockService.joinFlock(mFlock.getId());
         observable.subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -229,7 +235,34 @@ public class FlockProfileFragment extends FlockFragment {
                     @Override
                     public void onNext(ResponseBody body) {
                         Log.i("FlockProfileFragment", "onNext called");
-                        mJoinFlockButton.setVisibility(View.INVISIBLE);
+                        mFlock.setFavourited(true);
+                        mJoinFlockButton.setText(R.string.profile_unjoin);
+
+                    }
+                });
+    }
+
+    private void unjoinFlock() {
+        Log.i("FlockProfileFragment", Integer.toString(mFlock.getId()));
+        Observable<ResponseBody> observable = RestClient.flockService.unjoinFlock(mFlock.getId());
+        observable.subscribeOn(Schedulers.newThread())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Subscriber<ResponseBody>() {
+                    @Override
+                    public void onCompleted() {
+                        // nothing to do here
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        Log.e("FlockProfileFragment", "Something happened: " + e.getMessage());
+                    }
+
+                    @Override
+                    public void onNext(ResponseBody body) {
+                        Log.i("FlockProfileFragment", "onNext called");
+                        mFlock.setFavourited(false);
+                        mJoinFlockButton.setText(R.string.profile_join);
 
                     }
                 });

@@ -181,7 +181,7 @@ public class MainActivity extends AppCompatActivity implements TimePickerFragmen
                 switch (menuItem.getItemId()) {
                     case R.id.create_flock:
                         Fragment fragment = new CreateFlockFragment();
-                        switchFragment(fragment, 0, 0, Constants.FLOCK_CREATE_TAG, "Create Flock", true, true, true);
+                        switchFragment(fragment, 0, 0, Constants.FLOCK_CREATE_TAG, "Create Flock", false, false, true);
                     case R.id.action_settings:
                         // TODO: add custom animation
 //                        Fragment fragment = new SettingsMainFragment();

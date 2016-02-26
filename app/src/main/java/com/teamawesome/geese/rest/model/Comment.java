@@ -38,6 +38,9 @@ public class Comment {
     @JsonProperty("score")
     private int score;
 
+    //TODO: temp field to keep track of the users vote, till we get it back from the server
+    public int vote = 0;
+
     //dummy constructor for jackson
     public Comment() {}
 

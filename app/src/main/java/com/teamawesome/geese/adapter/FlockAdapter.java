@@ -71,7 +71,7 @@ public class FlockAdapter extends ArrayAdapter<FlockV2> {
 
 //        viewHolder.members.setText("Members: " + flock.members);
 //        viewHolder.privacy.setText("Privacy: " + flock.privacy);
-        viewHolder.members.setText("Members: 50");
+        viewHolder.members.setText("Members: " + Integer.toString(flock.getMembers()));
         viewHolder.privacy.setText("Privacy: Public");
 
         Picasso.with(getContext())

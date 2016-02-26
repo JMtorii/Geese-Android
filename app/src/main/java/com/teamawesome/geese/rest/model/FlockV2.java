@@ -39,6 +39,9 @@ public class FlockV2 {
     @JsonProperty("favourited")
     private boolean favourited;
 
+    @JsonProperty("members")
+    private int members;
+
     // TODO: implement me
 //    @JsonIgnoreProperties("createdTime")
 //    private String createdTime;
@@ -60,6 +63,7 @@ public class FlockV2 {
         this.longitude = builder.longitude;
         this.radius = builder.radius;
         this.score = builder.score;
+        this.members = builder.members;
         this.mapImage200x200 = builder.mapImage200x200;
 
         // TODO: implement me
@@ -119,6 +123,14 @@ public class FlockV2 {
         this.favourited = favourited;
     }
 
+    public int getMembers() {
+        return members;
+    }
+
+    public void setMembers(int members) {
+        this.members = members;
+    }
+
     // TODO: implement me
 //    public LocalDateTime getCreatedTime() {
 //        return createdTime;
@@ -137,6 +149,7 @@ public class FlockV2 {
         private float longitude;
         private double radius;
         private int score;
+        private int members;
         private Bitmap mapImage200x200;
 
         // TODO: implement me
@@ -182,6 +195,11 @@ public class FlockV2 {
 
         public Builder score(int score) {
             this.score = score;
+            return this;
+        }
+
+        public Builder members(int members) {
+            this.members = members;
             return this;
         }
 

@@ -36,4 +36,8 @@
     <!-- Profile -->
     <string name="profile_join">Join Flock</string>
     <string name="profile_unjoin">Unjoin Flock</string>
+
+    <!-- Flock Posts -->
+    <string name="comment_count_format">Comments: %d</string>
+
 </resources>

@@ -1,6 +1,7 @@
 package com.teamawesome.geese.adapter;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -8,12 +9,18 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.squareup.okhttp.ResponseBody;
 import com.teamawesome.geese.R;
 import com.teamawesome.geese.rest.model.Post;
+import com.teamawesome.geese.util.RestClient;
 import com.teamawesome.geese.view.UpvoteDownvoteListener;
 import com.teamawesome.geese.view.UpvoteDownvoteView;
 
 import java.util.ArrayList;
+
+import retrofit.Callback;
+import retrofit.Response;
+import retrofit.Retrofit;
 
 /**
  * Created by MichaelQ on 2015-10-04.
@@ -132,23 +139,22 @@ public class FlockPostTopicAdapter extends ArrayAdapter<Post> {
     }
 
     private void voteForPost(int postId, int value) {
-        //TODO:votes dont work yet
-//        RestClient.postService.voteForPost(postId, value).enqueue(new Callback<ResponseBody>() {
-//            @Override
-//            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
-//                if (response.isSuccess()) {
-//                    Log.d("PostTopicVote", "Vote Success");
-//                } else {
-//                    // TODO: better error handling
-//                    Log.e("PostTopicVote", "Vote Failed " + response.errorBody());
-//                }
-//            }
-//
-//            @Override
-//            public void onFailure(Throwable t) {
-//                // TODO: better error handling
-//                Log.e("PostTopicVote", "Vote Failed" + t.getMessage());
-//            }
-//        });
+        RestClient.postService.voteForPost(postId, value).enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+                if (response.isSuccess()) {
+                    Log.d("PostTopicVote", "Vote Success");
+                } else {
+                    // TODO: better error handling
+                    Log.e("PostTopicVote", "Vote Failed " + response.errorBody());
+                }
+            }
+
+            @Override
+            public void onFailure(Throwable t) {
+                // TODO: better error handling
+                Log.e("PostTopicVote", "Vote Failed" + t.getMessage());
+            }
+        });
     }
 }

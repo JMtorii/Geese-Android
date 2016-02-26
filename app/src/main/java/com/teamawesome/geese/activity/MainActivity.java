@@ -1,16 +1,23 @@
 package com.teamawesome.geese.activity;
 
+import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
+import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.content.res.TypedArray;
 import android.graphics.Color;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.os.Bundle;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -51,6 +58,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.Stack;
 
+import static android.support.v4.content.PermissionChecker.checkSelfPermission;
+
 /*
  * MainActivity is responsible for holding all fragments and managing them through
  * FragmentTransaction. The Toolbar and side bar should also be set up through this Activity
@@ -58,7 +67,11 @@ import java.util.Stack;
  * We should use ActionBarActivity to support Android 4. Otherwise, we have to change the minimum
  * version to 5
  */
-public class MainActivity extends AppCompatActivity implements TimePickerFragment.TimePickerDialogListener, DatePickerFragment.DatePickerDialogListener{
+public class MainActivity
+        extends AppCompatActivity
+        implements TimePickerFragment.TimePickerDialogListener, DatePickerFragment.DatePickerDialogListener,
+        LocationListener {
+
     // Toolbar
     private Toolbar mToolbar;
 
@@ -75,6 +88,12 @@ public class MainActivity extends AppCompatActivity implements TimePickerFragmen
 
     // Custom back stack
     private Stack<CustomFragment> customBackStack;
+
+    // Location
+    private LocationManager mLocationManager;
+    private Location mLatestLocation;
+    private boolean mLocationEnabled = false;
+    private static final int MY_PERMISSIONS_REQUEST_ACCESS_LOCATION = 1;
 
     // Time picker
     private static final int START_TIME_PICKER_ID = 1;
@@ -104,16 +123,17 @@ public class MainActivity extends AppCompatActivity implements TimePickerFragmen
         newFragment.show(getSupportFragmentManager(), "datePicker");
     }
 
-    @Override public void onTimeSet(int id, TimePicker view, int hourOfDay, int minute) {
+    @Override
+    public void onTimeSet(int id, TimePicker view, int hourOfDay, int minute) {
         if (view.isShown()) {
             if (id == START_TIME_PICKER_ID) {
                 TextView textView = (TextView) findViewById(R.id.flock_event_create_start_time);
-                Date dt = new Date(0,0,0, hourOfDay, minute);
+                Date dt = new Date(0, 0, 0, hourOfDay, minute);
                 SimpleDateFormat sdf = new SimpleDateFormat("hh:mm aa");
                 textView.setText(sdf.format(dt));
             } else if (id == END_TIME_PICKER_ID) {
                 TextView textView = (TextView) findViewById(R.id.flock_event_create_end_time);
-                Date dt = new Date(0,0,0, hourOfDay, minute);
+                Date dt = new Date(0, 0, 0, hourOfDay, minute);
                 SimpleDateFormat sdf = new SimpleDateFormat("hh:mm aa");
                 textView.setText(sdf.format(dt));
                 textView.setTextColor(Color.BLACK);
@@ -121,7 +141,8 @@ public class MainActivity extends AppCompatActivity implements TimePickerFragmen
         }
     }
 
-    @Override public void onDateSet(int id, DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+    @Override
+    public void onDateSet(int id, DatePicker view, int year, int monthOfYear, int dayOfMonth) {
         if (view.isShown()) {
             if (id == START_DATE_PICKER_ID) {
                 TextView textView = (TextView) findViewById(R.id.flock_event_create_start_date);
@@ -136,6 +157,23 @@ public class MainActivity extends AppCompatActivity implements TimePickerFragmen
                 textView.setTextColor(Color.BLACK);
             }
         }
+    }
+
+    @Override
+    public void onLocationChanged(Location location) {
+        mLatestLocation = location;
+    }
+
+    @Override
+    public void onStatusChanged(String provider, int status, Bundle extras) {
+    }
+
+    @Override
+    public void onProviderEnabled(String provider) {
+    }
+
+    @Override
+    public void onProviderDisabled(String provider) {
     }
 
     // Fragment information useful for the custom back stack
@@ -243,6 +281,47 @@ public class MainActivity extends AppCompatActivity implements TimePickerFragmen
 
         if (savedInstanceState == null) {
             selectDrawerItem(0);
+        }
+
+        mLocationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+        // TODO: Move this into an util class
+        if (ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
+                ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this,
+                    new String[]{Manifest.permission.ACCESS_FINE_LOCATION,Manifest.permission.ACCESS_COARSE_LOCATION},
+                    MY_PERMISSIONS_REQUEST_ACCESS_LOCATION);
+        } else {
+            mLocationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, this);
+            mLocationEnabled = true;
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode,
+                                           String permissions[], int[] grantResults) {
+        switch (requestCode) {
+            case MY_PERMISSIONS_REQUEST_ACCESS_LOCATION: {
+                // If request is cancelled, the result arrays are empty.
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+
+                    // permission was granted, yay! Do the
+                    // contacts-related task you need to do.
+                    if (ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED ||
+                            ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+                        mLocationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, this);
+                        mLocationEnabled = true;
+                    }
+                } else {
+
+                    // permission denied, boo! Disable the
+                    // functionality that depends on this permission.
+                }
+                return;
+            }
+
+            // other 'case' lines to check for other
+            // permissions this app might request
         }
     }
 
@@ -401,5 +480,13 @@ public class MainActivity extends AppCompatActivity implements TimePickerFragmen
         ft.commit();
         curFragmentTag = tag;
         mToolbar.setTitle(title);
+    }
+
+    public Location getLatestLocation() {
+        return mLatestLocation;
+    }
+
+    public boolean getLocationEnabled() {
+        return mLocationEnabled;
     }
 }

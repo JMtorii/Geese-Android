@@ -1,7 +1,10 @@
 package com.teamawesome.geese.fragment;
 
+import android.Manifest;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,6 +23,8 @@ import com.teamawesome.geese.activity.MainActivity;
 import com.teamawesome.geese.util.Constants;
 
 import org.parceler.Parcel;
+
+import static android.support.v4.content.PermissionChecker.checkSelfPermission;
 
 /**
  * Created by lcolam on 12/14/15.
@@ -62,13 +67,14 @@ public class FlockFullScreenMapFragment extends Fragment {
             mGMapView.onCreate(savedInstanceState);
             map = mGMapView.getMap();
             map.getUiSettings().setMyLocationButtonEnabled(false);
-            map.setMyLocationEnabled(true);
 
             try {
                 MapsInitializer.initialize(this.getActivity());
-
+                if (checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED ||
+                        checkSelfPermission(getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+                    map.setMyLocationEnabled(true);
+                }
                 map.setMapType(GoogleMap.MAP_TYPE_NORMAL);
-                map.setMyLocationEnabled(true);
                 map.getUiSettings().setZoomControlsEnabled(true);
                 map.getUiSettings().setAllGesturesEnabled(true);
                 map.getUiSettings().setMyLocationButtonEnabled(true);

@@ -1,6 +1,7 @@
 package com.teamawesome.geese.fragment;
 
 import android.Manifest;
+import android.app.FragmentTransaction;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.util.Log;
@@ -138,8 +139,8 @@ public class FlockProfileFragment extends FlockFragment {
                     MainActivity mainActivity = (MainActivity) getActivity();
                     mainActivity.switchFragment(
                             fragment,
-                            R.anim.fragment_slide_in_left,
-                            R.anim.fragment_slide_out_right,
+                            FragmentTransaction.TRANSIT_NONE,
+                            FragmentTransaction.TRANSIT_NONE,
                             Constants.FLOCK_FULL_SCREEN_MAP_FRAGMENT_TAG,
                             mFlock.getName(),
                             false,

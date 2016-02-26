@@ -222,7 +222,7 @@ public class LoginActivity extends Activity {
                 if (response.isSuccess()) {
                     try {
                         final String token = response.body().string();
-                        // TODO: currents uses user information obtained from Facebook, may want to obtain user information from our own server
+                        // TODO: currently uses user information obtained from Facebook, may want to obtain user information from our own server
                         GraphRequest request = GraphRequest.newMeRequest(
                                 AccessToken.getCurrentAccessToken(),
                                 new GraphRequest.GraphJSONObjectCallback() {

@@ -33,4 +33,7 @@
     <string name="settings_terms">Nothing defined yet.</string>
     <string name="settings_privacy_policy">Nothing defined yet.</string>
 
+    <!-- Profile -->
+    <string name="profile_join">Join Flock</string>
+    <string name="profile_unjoin">Unjoin Flock</string>
 </resources>

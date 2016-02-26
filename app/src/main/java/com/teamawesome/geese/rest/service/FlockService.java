@@ -39,4 +39,7 @@ public interface FlockService {
 
     @POST("/flock/{flockId}/joinFlock")
     Observable<ResponseBody> joinFlock(@Path("flockId") int flockId);
+
+    @POST("/flock/{flockId}/unjoinFlock")
+    Observable<ResponseBody> unjoinFlock(@Path("flockId") int flockId);
 }

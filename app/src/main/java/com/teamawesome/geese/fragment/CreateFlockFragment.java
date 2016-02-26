@@ -4,9 +4,11 @@ import android.app.Activity;
 import android.app.Fragment;
 import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -69,9 +71,6 @@ public class CreateFlockFragment extends GeeseFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        findWidgets(mView);
-        setupChooseImageButton();
-        setupCreateFlockButton();
     }
 
     @Override
@@ -79,6 +78,9 @@ public class CreateFlockFragment extends GeeseFragment {
         View view = inflater.inflate(R.layout.fragment_create_flock, container, false);
         mView = view;
         //gridView = (GridView) view.findViewById(R.id.create_flock_gridview);
+        findWidgets(mView);
+        setupChooseImageButton();
+        setupCreateFlockButton();
 
         return view;
     }
@@ -101,7 +103,18 @@ public class CreateFlockFragment extends GeeseFragment {
         // TODO: Check result code
         if (requestCode == PHOTO_SELECTED /*&& resultCode == RESULT_OK */&& null != data) {
             Uri selectedImage = data.getData();
-            mImageFile = new File(selectedImage.getPath());
+            String[] filePathColumn = { MediaStore.Images.Media.DATA};
+
+            // TODO: Don't abuse the poor context like this
+            Cursor cursor = getContext().getContentResolver().query(selectedImage,
+                    filePathColumn, null, null, null);
+            cursor.moveToFirst();
+
+            int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
+            final String picturePath = cursor.getString(columnIndex);
+            cursor.close();
+
+            mImageFile = new File(picturePath);
             new UploadToS3().execute(mImageFile);
         }
     }

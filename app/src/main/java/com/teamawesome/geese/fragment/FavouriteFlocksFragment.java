@@ -76,7 +76,10 @@ public class FavouriteFlocksFragment extends GeeseFragment {
                 if (fragment == null) {
                     fragment = new MainFlockFragment();
                 }
-                fragment.setFlock(flocks.get(position));
+
+                FlockV2 tmpFlock = flocks.get(position);
+                tmpFlock.setFavourited(true);
+                fragment.setFlock(tmpFlock);
                 MainActivity mainActivity = (MainActivity) getActivity();
                 mainActivity.switchFragment(
                         fragment,
@@ -102,8 +105,9 @@ public class FavouriteFlocksFragment extends GeeseFragment {
         listView.setAdapter(flockAdapter);
     }
 
-    private void getFavouritedFlocks() {
+    public void getFavouritedFlocks() {
         if (SessionManager.checkLogin()) {
+            progressDialog.show();
             Observable<List<FlockV2>> observable = RestClient.flockService.getFavourited();
             observable.subscribeOn(Schedulers.newThread())
                     .observeOn(AndroidSchedulers.mainThread())
@@ -117,6 +121,10 @@ public class FavouriteFlocksFragment extends GeeseFragment {
                         public void onError(Throwable e) {
                             Log.e("FavouriteFlocksFragment", "Something happened: " + e.getMessage());
                             swipeContainer.setRefreshing(false);
+
+                            if (progressDialog.isShowing()) {
+                                progressDialog.dismiss();
+                            }
                         }
 
                         @Override
@@ -132,6 +140,10 @@ public class FavouriteFlocksFragment extends GeeseFragment {
 
                             flockAdapter.notifyDataSetChanged();
                             swipeContainer.setRefreshing(false);
+
+                            if (progressDialog.isShowing()) {
+                                progressDialog.dismiss();
+                            }
                         }
                     });
         }

@@ -11,7 +11,7 @@ public final class Constants {
     public static final String PREF_ID = "PREF_ID";
 
     public static final String HOME_TITLE = "Home";
-    public static final String FAVOURITE_TITLE = "Favourite";
+    public static final String FAVOURITE_TITLE = "Joined Flocks";
     public static final String SETTING_TITLE = "Setting";
     public static final String SETTING_RULES_TITLE = "Rules";
     public static final String SETTING_TERMS_OF_SERVICE_TITLE = "Terms of Service";
@@ -46,5 +46,5 @@ public final class Constants {
 
     public static final String GEESE_SERVER_ADDRESS = "https://geeseapp.com";
 //    public static final String GEESE_SERVER_ADDRESS = "http://10.0.3.2:8080";
-    public static final String MARK_SERVER_ADDRESS = "https://10.0.3.2:8080";
+    public static final String MARK_SERVER_ADDRESS = "http://10.0.3.2:8080";
 }

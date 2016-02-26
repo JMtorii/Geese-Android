@@ -190,7 +190,6 @@ public class FlockProfileFragment extends FlockFragment {
                     joinFlock();
                 } else {
                     unjoinFlock();
-                    mJoinFlockButton.setText(R.string.profile_join);
                 }
             }
         });
@@ -218,6 +217,7 @@ public class FlockProfileFragment extends FlockFragment {
 
     private void joinFlock() {
         Log.i("FlockProfileFragment", Integer.toString(mFlock.getId()));
+        progressDialog.show();
         Observable<ResponseBody> observable = RestClient.flockService.joinFlock(mFlock.getId());
         observable.subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -230,6 +230,9 @@ public class FlockProfileFragment extends FlockFragment {
                     @Override
                     public void onError(Throwable e) {
                         Log.e("FlockProfileFragment", "Something happened: " + e.getMessage());
+                        if (progressDialog.isShowing()) {
+                            progressDialog.dismiss();
+                        }
                     }
 
                     @Override
@@ -237,13 +240,18 @@ public class FlockProfileFragment extends FlockFragment {
                         Log.i("FlockProfileFragment", "onNext called");
                         mFlock.setFavourited(true);
                         mJoinFlockButton.setText(R.string.profile_unjoin);
+                        parentActivity.getSupportFragmentManager().popBackStack();
 
+                        if (progressDialog.isShowing()) {
+                            progressDialog.dismiss();
+                        }
                     }
                 });
     }
 
     private void unjoinFlock() {
         Log.i("FlockProfileFragment", Integer.toString(mFlock.getId()));
+        progressDialog.show();
         Observable<ResponseBody> observable = RestClient.flockService.unjoinFlock(mFlock.getId());
         observable.subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -256,6 +264,9 @@ public class FlockProfileFragment extends FlockFragment {
                     @Override
                     public void onError(Throwable e) {
                         Log.e("FlockProfileFragment", "Something happened: " + e.getMessage());
+                        if (progressDialog.isShowing()) {
+                            progressDialog.dismiss();
+                        }
                     }
 
                     @Override
@@ -263,7 +274,11 @@ public class FlockProfileFragment extends FlockFragment {
                         Log.i("FlockProfileFragment", "onNext called");
                         mFlock.setFavourited(false);
                         mJoinFlockButton.setText(R.string.profile_join);
+                        parentActivity.getSupportFragmentManager().popBackStack();
 
+                        if (progressDialog.isShowing()) {
+                            progressDialog.dismiss();
+                        }
                     }
                 });
     }

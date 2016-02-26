@@ -84,7 +84,7 @@ public class FlockProfileFragment extends FlockFragment {
 //        } else {
 //            mFlockInfoMemberCountTextView.setVisibility(View.GONE);
 //        }
-        mFlockInfoMemberCountTextView.setText(Integer.toString(mFlock.getMembers()) + " members");
+        mFlockInfoMemberCountTextView.setText(Integer.toString(mFlock.getMembers()) + " Members");
 
         mFlockInfoPrivacyTextView = (TextView) v.findViewById(R.id.profile_info_privacy);
 //        if (mFlock.privacy != null) {

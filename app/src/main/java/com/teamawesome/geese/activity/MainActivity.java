@@ -448,6 +448,13 @@ public class MainActivity
                 Log.i("MainActivity", "Calling getNearbyFlocks through back button");
                 fragment.getNearbyFlocks();
             }
+        } else if (curFragmentTag.equals(Constants.FAVOURITE_FLOCKS_FRAGMENT_TAG)) {
+            FavouriteFlocksFragment fragment = (FavouriteFlocksFragment) getSupportFragmentManager().findFragmentByTag(curFragmentTag);
+
+            if (fragment != null) {
+                Log.i("MainActivity", "Calling getFavouritedFlocks through back button");
+                fragment.getFavouritedFlocks();
+            }
         }
     }
 
@@ -455,7 +462,7 @@ public class MainActivity
         Fragment f = getSupportFragmentManager().findFragmentByTag(curFragmentTag);
 
         // This is a temporary fix due to the viewpager being weird
-        if (f != null && !f.getTag().equals(Constants.HOME_FRAGMENT_TAG) && customBackStack.size() > 1) {
+        if (f != null && (!f.getTag().equals(Constants.HOME_FRAGMENT_TAG) || !f.getTag().equals(Constants.FAVOURITE_FLOCKS_FRAGMENT_TAG)) && customBackStack.size() > 1) {
             super.onBackPressed();
 
             customBackStack.pop();
@@ -522,11 +529,23 @@ public class MainActivity
         }
 
         getSupportFragmentManager().popBackStack();
-        HomeFragment fragment = (HomeFragment) getSupportFragmentManager().findFragmentByTag(curFragmentTag);
 
-        if (fragment != null) {
-            fragment.getNearbyFlocks();
+        if (curFragmentTag.equals(Constants.HOME_FRAGMENT_TAG)) {
+            HomeFragment fragment = (HomeFragment) getSupportFragmentManager().findFragmentByTag(curFragmentTag);
+
+            if (fragment != null) {
+                mToolbar.setTitle(customBackStack.peek().getTitle());
+                fragment.getNearbyFlocks();
+            }
+        } else if (curFragmentTag.equals(Constants.FAVOURITE_FLOCKS_FRAGMENT_TAG)) {
+            FavouriteFlocksFragment fragment = (FavouriteFlocksFragment) getSupportFragmentManager().findFragmentByTag(curFragmentTag);
+
+            if (fragment != null) {
+                mToolbar.setTitle(customBackStack.peek().getTitle());
+                fragment.getFavouritedFlocks();
+            }
         }
+
     }
 
     public int getManualBackStackSize() {

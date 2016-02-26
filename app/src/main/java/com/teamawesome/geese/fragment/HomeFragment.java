@@ -132,8 +132,6 @@ public class HomeFragment extends GeeseFragment {
     }
 
     public void getNearbyFlocks() {
-        progressDialog.show();
-
         // TODO use interceptor instead to add token to all REST calls
         if (useDummyData) {
             // fix for when network requests fail
@@ -152,6 +150,7 @@ public class HomeFragment extends GeeseFragment {
             return;
         }
         if (SessionManager.checkLogin()) {
+            progressDialog.show();
             Observable<List<FlockV2>> observable;
             Location location = parentActivity.getLatestLocation();
             if (location != null) {

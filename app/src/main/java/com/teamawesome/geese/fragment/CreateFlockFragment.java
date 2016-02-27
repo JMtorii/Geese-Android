@@ -176,9 +176,9 @@ public class CreateFlockFragment extends GeeseFragment {
             // Set the region of your S3 bucket
             s3.setRegion(Region.getRegion(Regions.US_EAST_1));
 
+            // TODO: Use hashing.
             String fname = "uploaded";
-            fname += (int)(Math.random()*100000);
-            fname += ".txt";
+            fname += (int)(Math.random()*1000000000);
 
             TransferUtility transferUtility = new TransferUtility(s3, getContext().getApplicationContext());
             TransferObserver observer = transferUtility.upload(

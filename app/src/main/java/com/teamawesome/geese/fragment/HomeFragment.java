@@ -196,8 +196,11 @@ public class HomeFragment extends GeeseFragment {
                             if (flocks != null) {
                                 if (flocks.isEmpty()) {
                                     emptyView.setVisibility(View.VISIBLE);
+                                    emptyView.setPadding(0, 0, 0, 0);
                                 } else {
+                                    // TODO hackity hack hack
                                     emptyView.setVisibility(View.GONE);
+                                    emptyView.setPadding(0, -1*emptyView.getHeight(), 0, 0);
                                     for (FlockV2 flock : flocks) {
                                         flockAdapter.insert(flock, flockAdapter.getCount());
                                     }

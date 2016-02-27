@@ -11,6 +11,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.melnykov.fab.FloatingActionButton;
+import com.squareup.okhttp.ResponseBody;
 import com.teamawesome.geese.R;
 import com.teamawesome.geese.activity.MainActivity;
 import com.teamawesome.geese.adapter.FlockPostCommentAdapter;
@@ -24,6 +25,9 @@ import com.teamawesome.geese.view.UpvoteDownvoteView;
 import java.util.ArrayList;
 import java.util.List;
 
+import retrofit.Callback;
+import retrofit.Response;
+import retrofit.Retrofit;
 import rx.Observable;
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
@@ -64,11 +68,11 @@ public class FlockPostDetailsFragment extends Fragment {
                 if (mPostTopic.vote != 1) {
                     mPostTopic.vote = 1;
                     v.setUpVoted();
-//                    voteForPost(postTopic.getId(), 1);
+                    voteForPost(mPostTopic.getId(), 1);
                 } else {
                     mPostTopic.vote = 0;
                     v.setNotVoted();
-//                    voteForPost(postTopic.getId(), 0);
+                    voteForPost(mPostTopic.getId(), 0);
                 }
                 v.setVotesText(Integer.toString(mPostTopic.getScore() + mPostTopic.vote));
             }
@@ -78,11 +82,11 @@ public class FlockPostDetailsFragment extends Fragment {
                 if (mPostTopic.vote != -1) {
                     mPostTopic.vote = -1;
                     v.setDownVoted();
-//                    voteForPost(postTopic.getId(), -1);
+                    voteForPost(mPostTopic.getId(), -1);
                 } else {
                     mPostTopic.vote = 0;
                     v.setNotVoted();
-//                    voteForPost(postTopic.getId(), 0);
+                    voteForPost(mPostTopic.getId(), 0);
                 }
                 v.setVotesText(Integer.toString(mPostTopic.getScore() + mPostTopic.vote));
             }
@@ -204,6 +208,26 @@ public class FlockPostDetailsFragment extends Fragment {
                     }
                 });
 
+    }
+
+    private void voteForPost(int postId, int value) {
+        RestClient.postService.voteForPost(postId, value).enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+                if (response.isSuccess()) {
+                    Log.d("PostTopicVote", "Vote Success");
+                } else {
+                    // TODO: better error handling
+                    Log.e("PostTopicVote", "Vote Failed " + response.errorBody());
+                }
+            }
+
+            @Override
+            public void onFailure(Throwable t) {
+                // TODO: better error handling
+                Log.e("PostTopicVote", "Vote Failed" + t.getMessage());
+            }
+        });
     }
 
 }

@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/empty_view"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    >
+
+    <TextView
+        android:id="@+id/empty_description"
+        android:layout_width="fill_parent"
+        android:layout_marginTop="30dp"
+        android:layout_marginLeft="40dp"
+        android:layout_marginBottom="10dp"
+        android:layout_marginRight="40dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:text="There doesn't appear to be anything here yet..."
+        android:textSize="20dp"
+        android:textAlignment="center"
+        android:gravity="center"
+        />
+
+    <TextView
+        android:id="@+id/empty_frown"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="40dp"
+        android:layout_centerHorizontal="true"
+        android:text=":("
+        android:textSize="45dp"
+        android:layout_below="@id/empty_description"
+    />
+
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginBottom="2dp"
+        android:background="@color/separatorColour"
+        android:layout_below="@id/empty_frown"
+        />
+
+</RelativeLayout>

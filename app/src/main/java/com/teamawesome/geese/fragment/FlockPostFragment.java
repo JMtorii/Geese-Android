@@ -108,11 +108,6 @@ public class FlockPostFragment extends FlockFragment {
             }
         });
 
-        // hack to add padding to bottom of listview
-        TextView empty = new TextView(getContext());
-        empty.setHeight(180);
-        listView.addFooterView(empty);
-
         return frameLayout;
     }
 

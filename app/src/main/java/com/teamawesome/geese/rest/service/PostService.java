@@ -36,4 +36,7 @@ public interface PostService {
     @POST("/comment")
     Call<ResponseBody> saveCommentForPost(@Body CreateCommentRequestBody createCommentRequestBody);
 
+    @POST("/comment/vote/{commentId}")
+    Call<ResponseBody> voteForComment(@Path("commentId") int commentId, @Query("value") int value);
+
 }

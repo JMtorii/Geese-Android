@@ -1,10 +1,12 @@
 package com.teamawesome.geese.rest.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * Created by MichaelQ on 2016-02-24.
  */
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Comment {
 //    {
 //        "id": 2,

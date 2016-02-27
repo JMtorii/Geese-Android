@@ -2,6 +2,7 @@ package com.teamawesome.geese.fragment;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,10 +17,17 @@ import com.teamawesome.geese.adapter.FlockPostCommentAdapter;
 import com.teamawesome.geese.rest.model.Comment;
 import com.teamawesome.geese.rest.model.Post;
 import com.teamawesome.geese.util.Constants;
+import com.teamawesome.geese.util.RestClient;
 import com.teamawesome.geese.view.UpvoteDownvoteListener;
 import com.teamawesome.geese.view.UpvoteDownvoteView;
 
 import java.util.ArrayList;
+import java.util.List;
+
+import rx.Observable;
+import rx.Subscriber;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 
 /**
  * Created by MichaelQ on 2015-10-11.
@@ -28,6 +36,7 @@ public class FlockPostDetailsFragment extends Fragment {
 
     private Post mPostTopic;
     private ArrayList<Comment> mPostComments;
+    private FlockPostCommentAdapter mAdapter;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -122,12 +131,9 @@ public class FlockPostDetailsFragment extends Fragment {
         listView.addHeaderView(header);
 
         mPostComments = new ArrayList<>();
-        Comment.Builder builder = new Comment.Builder().authorId(1).postId(mPostTopic.getId()).text("OP is liar");
-        for (int i = 0; i < 10; i++) {
-            mPostComments.add(builder.score(i).commentId(i).build());
-        }
-
-        listView.setAdapter(new FlockPostCommentAdapter(getActivity(), mPostComments));
+        mAdapter = new FlockPostCommentAdapter(getActivity(), mPostComments);
+        listView.setAdapter(mAdapter);
+        fetchPostComments();
 
         // attach floating button to listview
         FloatingActionButton fab = (FloatingActionButton)view.findViewById(R.id.fab);
@@ -164,6 +170,40 @@ public class FlockPostDetailsFragment extends Fragment {
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+    }
+
+    private void fetchPostComments() {
+        Observable<List<Comment>> observable = RestClient.postService.getCommentsForPost(mPostTopic.getId());
+        observable.subscribeOn(Schedulers.newThread())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Subscriber<List<Comment>>() {
+                    @Override
+                    public void onCompleted() {
+                        // nothing to do here
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        Log.e("PostDetailsFragment", "error: " + e.getMessage());
+                    }
+
+                    @Override
+                    public void onNext(List<Comment> comments) {
+                        Log.i("PostDetailsFragment", "onNext called");
+                        mPostComments = new ArrayList<Comment>();
+                        mAdapter.clear();
+                        if (comments != null) {
+                            for (Comment comment : comments) {
+                                mPostComments.add(comment);
+                                mAdapter.insert(comment, mAdapter.getCount());
+                            }
+                        }
+
+                        mAdapter.notifyDataSetChanged();
+//                        swipeContainer.setRefreshing(false);
+                    }
+                });
+
     }
 
 }

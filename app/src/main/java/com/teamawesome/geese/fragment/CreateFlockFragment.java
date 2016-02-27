@@ -1,30 +1,19 @@
 package com.teamawesome.geese.fragment;
 
 import android.app.Activity;
-import android.app.Fragment;
-import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.provider.DocumentsContract;
 import android.provider.MediaStore;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.GridView;
-import android.widget.ListView;
 import android.widget.Toast;
-
-import com.amazonaws.auth.BasicAWSCredentials;
-
-import java.io.File;
-import java.io.FileOutputStream;
 
 import com.amazonaws.auth.BasicAWSCredentials;
 import com.amazonaws.mobileconnectors.s3.transferutility.TransferObserver;
@@ -33,16 +22,12 @@ import com.amazonaws.regions.Region;
 import com.amazonaws.regions.Regions;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3Client;
-import com.amazonaws.services.s3.model.PutObjectRequest;
 import com.teamawesome.geese.R;
-import com.teamawesome.geese.adapter.FlockAdapter;
 import com.teamawesome.geese.rest.model.Flock;
 import com.teamawesome.geese.util.Constants;
 import com.teamawesome.geese.util.RestClient;
 
 import java.io.File;
-import java.io.FileOutputStream;
-import java.net.URL;
 
 import retrofit.Call;
 import retrofit.Callback;
@@ -104,7 +89,20 @@ public class CreateFlockFragment extends GeeseFragment {
         // TODO: Check result code
         if (requestCode == PHOTO_SELECTED && resultCode == Activity.RESULT_OK && null != data) {
             Uri selectedImage = data.getData();
-            mImageFile = new File(getRealPathFromURI(selectedImage).getPath());
+//            mImageFile = new File(getRealPathFromURI(selectedImage).getPath());
+
+            String[] projection = { MediaStore.Images.Media.DATA };
+
+            Cursor cursor = parentActivity.getContentResolver().query(selectedImage, projection, null, null, null);
+            cursor.moveToFirst();
+
+//            Log.d(TAG, DatabaseUtils.dumpCursorToString(cursor));
+
+            int columnIndex = cursor.getColumnIndex(projection[0]);
+            String picturePath = cursor.getString(columnIndex); // returns null
+            cursor.close();
+
+            mImageFile = new File(picturePath);
             new UploadToS3().execute(mImageFile);
         }
     }

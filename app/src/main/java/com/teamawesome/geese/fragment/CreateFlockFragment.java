@@ -1,29 +1,19 @@
 package com.teamawesome.geese.fragment;
 
 import android.app.Activity;
-import android.app.Fragment;
-import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.GridView;
-import android.widget.ListView;
 import android.widget.Toast;
-
-import com.amazonaws.auth.BasicAWSCredentials;
-
-import java.io.File;
-import java.io.FileOutputStream;
 
 import com.amazonaws.auth.BasicAWSCredentials;
 import com.amazonaws.mobileconnectors.s3.transferutility.TransferObserver;
@@ -32,16 +22,12 @@ import com.amazonaws.regions.Region;
 import com.amazonaws.regions.Regions;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3Client;
-import com.amazonaws.services.s3.model.PutObjectRequest;
 import com.teamawesome.geese.R;
-import com.teamawesome.geese.adapter.FlockAdapter;
 import com.teamawesome.geese.rest.model.Flock;
 import com.teamawesome.geese.util.Constants;
 import com.teamawesome.geese.util.RestClient;
 
 import java.io.File;
-import java.io.FileOutputStream;
-import java.net.URL;
 
 import retrofit.Call;
 import retrofit.Callback;
@@ -101,22 +87,38 @@ public class CreateFlockFragment extends GeeseFragment {
         super.onActivityResult(requestCode, resultCode, data);
 
         // TODO: Check result code
-        if (requestCode == PHOTO_SELECTED /*&& resultCode == RESULT_OK */&& null != data) {
+        if (requestCode == PHOTO_SELECTED && resultCode == Activity.RESULT_OK && null != data) {
             Uri selectedImage = data.getData();
-            String[] filePathColumn = { MediaStore.Images.Media.DATA};
+//            mImageFile = new File(getRealPathFromURI(selectedImage).getPath());
 
-            // TODO: Don't abuse the poor context like this
-            Cursor cursor = getContext().getContentResolver().query(selectedImage,
-                    filePathColumn, null, null, null);
+            String[] projection = { MediaStore.Images.Media.DATA };
+
+            Cursor cursor = parentActivity.getContentResolver().query(selectedImage, projection, null, null, null);
             cursor.moveToFirst();
 
-            int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
-            final String picturePath = cursor.getString(columnIndex);
+//            Log.d(TAG, DatabaseUtils.dumpCursorToString(cursor));
+
+            int columnIndex = cursor.getColumnIndex(projection[0]);
+            String picturePath = cursor.getString(columnIndex); // returns null
             cursor.close();
 
             mImageFile = new File(picturePath);
             new UploadToS3().execute(mImageFile);
         }
+    }
+
+    private Uri getRealPathFromURI(Uri contentURI) {
+        String result;
+        Cursor cursor = parentActivity.getContentResolver().query(contentURI, null, null, null, null);
+        if (cursor == null) {
+            result = contentURI.getPath();
+        } else {
+            cursor.moveToFirst();
+            int idx = cursor.getColumnIndex(MediaStore.Images.ImageColumns.DATA);
+            result = cursor.getString(idx);
+            cursor.close();
+        }
+        return Uri.parse(result);
     }
 
     public void setupCreateFlockButton() {
@@ -126,10 +128,10 @@ public class CreateFlockFragment extends GeeseFragment {
                 String flockname = mFlockNameText.getText().toString().trim();
                 // TODO: Finish populating this
                 Flock flock = new Flock(flockname, "description", 0, 0, 0, 0);
-                Call<Flock> call = RestClient.flockService.createFlock(flock);
-                call.enqueue(new Callback<Flock>() {
+                Call<Void> call = RestClient.flockService.createFlock(flock);
+                call.enqueue(new Callback<Void>() {
                     @Override
-                    public void onResponse(Response<Flock> response, Retrofit retrofit) {
+                    public void onResponse(Response<Void> response, Retrofit retrofit) {
                         if (response.isSuccess()) {
                             //attemptLogin(username, email, hashedPassword);
                         } else {
@@ -161,28 +163,8 @@ public class CreateFlockFragment extends GeeseFragment {
         Log.i("CreateFlockFragment", "update");
     }
 
-    public void createFlock() {
-        // TODO: Make this actually upload an image
-        Context context = getContext();
-        String filename = "localfile";
-        String string = "Hello world 5!";
-        FileOutputStream outputStream;
-
-        try {
-            outputStream = context.openFileOutput(filename, Context.MODE_PRIVATE);
-            outputStream.write(string.getBytes());
-            outputStream.close();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        File toUpload = new File(context.getApplicationContext().getFilesDir(), "localfile");
-        new UploadToS3().execute(toUpload);
-    }
-
     private class UploadToS3 extends AsyncTask<File, Integer, Long> {
         protected Long doInBackground(File... files) {
-            // TODO: This shouldn't actually be here.
             // Configure AWS S3 Access
             // Create an S3 client
 
@@ -194,9 +176,9 @@ public class CreateFlockFragment extends GeeseFragment {
             // Set the region of your S3 bucket
             s3.setRegion(Region.getRegion(Regions.US_EAST_1));
 
+            // TODO: Use hashing.
             String fname = "uploaded";
-            fname += (int)(Math.random()*100000);
-            fname += ".txt";
+            fname += (int)(Math.random()*1000000000);
 
             TransferUtility transferUtility = new TransferUtility(s3, getContext().getApplicationContext());
             TransferObserver observer = transferUtility.upload(

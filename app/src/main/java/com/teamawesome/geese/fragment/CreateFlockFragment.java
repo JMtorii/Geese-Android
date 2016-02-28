@@ -32,6 +32,7 @@ import com.teamawesome.geese.R;
 import com.teamawesome.geese.rest.model.Flock;
 import com.teamawesome.geese.util.Constants;
 import com.teamawesome.geese.util.RestClient;
+import com.teamawesome.geese.util.UriToPathConverter;
 
 import java.io.File;
 
@@ -132,7 +133,8 @@ public class CreateFlockFragment extends GeeseFragment {
                          imageFilePath = uri.getPath();
                     } else {
                         // get the id of the image selected by the user
-                        imageFilePath = convertUriToPath(uri);
+                        imageFilePath = UriToPathConverter.getPath(
+                                parentActivity.getApplicationContext(), uri);
 
                         mImageFile = new File(imageFilePath);
                         new UploadToS3().execute(mImageFile);
@@ -142,18 +144,6 @@ public class CreateFlockFragment extends GeeseFragment {
                 }
             }
         }
-    }
-
-    public String convertUriToPath(Uri uri)
-    {
-        String[] projection = { MediaStore.Images.Media.DATA };
-        Cursor cursor = parentActivity.getContentResolver().query(uri, projection, null, null, null);
-        if (cursor == null) return null;
-        int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
-        cursor.moveToFirst();
-        String s=cursor.getString(column_index);
-        cursor.close();
-        return s;
     }
 
     public void setupCreateFlockButton() {

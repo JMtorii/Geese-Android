@@ -103,7 +103,7 @@ public class CreateFlockFragment extends GeeseFragment {
                     } else {
                         // get the id of the image selected by the user
                         Uri wholeID = data.getData();
-                        String id = wholeID.getPath().split(":")[1];
+                        String id = wholeID.toString().split(":")[1];
 
                         String[] projection = { MediaStore.Images.Media.DATA };
                         String whereClause = MediaStore.Images.Media._ID + "=?";
@@ -118,14 +118,14 @@ public class CreateFlockFragment extends GeeseFragment {
                         } else {
                             imageFilePath = uri.getPath();
                         }
+
+                        mImageFile = new File(imageFilePath);
+                        new UploadToS3().execute(mImageFile);
                     }
                 } catch (Exception e) {
                     Log.e(LOG_TAG, "Failed to get image");
                 }
             }
-
-            mImageFile = new File(imageFilePath);
-            new UploadToS3().execute(mImageFile);
         }
     }
 

@@ -56,11 +56,15 @@
             android:layout_row="1"
             android:layout_columnSpan="1"
             android:layout_columnWeight="1"
-            android:focusableInTouchMode="false"
-            android:focusable="false"
-            android:enabled="false"
+            android:focusableInTouchMode="true"
+            android:focusable="true"
+            android:enabled="true"
             android:inputType="text"
-            android:hint="e.g. Goose Lovers" />
+            android:hint="e.g. Goose Lovers"
+            android:autoText="false"
+            android:contextClickable="false"
+            android:editable="true"
+            android:textColor="#000000" />
 
         <Button
             android:layout_width="wrap_content"
@@ -80,7 +84,13 @@
             android:layout_column="2"
             android:layout_columnSpan="1"
             android:layout_columnWeight="1"
-            android:layout_rowWeight="0" />
+            android:layout_rowWeight="0"
+            android:minHeight="120dp"
+            android:minWidth="120dp"
+            android:maxWidth="120dp"
+            android:maxHeight="120dp"
+            android:visibility="visible"
+            android:src="#c6c6c6" />
 
         <Button
             android:layout_width="260dp"

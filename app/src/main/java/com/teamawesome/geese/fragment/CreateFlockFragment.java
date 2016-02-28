@@ -101,10 +101,16 @@ public class CreateFlockFragment extends GeeseFragment {
         //Initialize ImageView
         ImageView imageView = (ImageView) parentActivity.findViewById(R.id.create_flock_image);
 
+        // TODO: placeholder and error, also beautify
         //Loading image from below url into imageView
         Picasso.with(parentActivity)
                 .load(mUploadedImageUrl.getPath())
+                //.placeholder(R.drawable.ic_placeholder) // optional
+                //.error(R.drawable.ic_error_fallback) // optional
+                //.resize(250, 200)                        // optional
                 .into(imageView);
+
+        imageView.invalidate();
     }
 
     public void setupChooseImageButton() {
@@ -275,7 +281,7 @@ public class CreateFlockFragment extends GeeseFragment {
             override.setContentType("image/jpeg"); // TODO: Does this hold?
             GeneratePresignedUrlRequest urlRequest = new GeneratePresignedUrlRequest(
                     Constants.PICTURE_BUCKET, mRemoteName);
-            urlRequest.setExpiration( new Date( System.currentTimeMillis() + 3600000 ) );  // Added an hour's worth of milliseconds to the current time.
+            urlRequest.setExpiration( new Date( System.currentTimeMillis() + 3600000 ));  // Added an hour's worth of milliseconds to the current time.
             urlRequest.setResponseHeaders( override );
             mUploadedImageUrl = s3.generatePresignedUrl( urlRequest );
 

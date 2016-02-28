@@ -1,18 +1,25 @@
 package com.teamawesome.geese.adapter;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
+import com.squareup.okhttp.ResponseBody;
 import com.teamawesome.geese.R;
 import com.teamawesome.geese.rest.model.Comment;
+import com.teamawesome.geese.util.RestClient;
 import com.teamawesome.geese.view.UpvoteDownvoteListener;
 import com.teamawesome.geese.view.UpvoteDownvoteView;
 
 import java.util.ArrayList;
+
+import retrofit.Callback;
+import retrofit.Response;
+import retrofit.Retrofit;
 
 /**
  * Created by MichaelQ on 2015-10-25.
@@ -34,11 +41,11 @@ public class FlockPostCommentAdapter extends ArrayAdapter<Comment> {
             if (comment.vote != 1) {
                 comment.vote = 1;
                 v.setUpVoted();
-//                voteForComment(comment.getId(), 1);
+                voteForComment(comment.getCommentId(), 1);
             } else {
                 comment.vote = 0;
                 v.setNotVoted();
-//                voteForComment(comment.getId(), 0);
+                voteForComment(comment.getCommentId(), 0);
             }
             v.setVotesText(Integer.toString(comment.getScore() + comment.vote));
         }
@@ -50,11 +57,11 @@ public class FlockPostCommentAdapter extends ArrayAdapter<Comment> {
             if (comment.vote != -1) {
                 comment.vote = -1;
                 v.setDownVoted();
-//                voteForComment(comment.getId(), -1);
+                voteForComment(comment.getCommentId(), -1);
             } else {
                 comment.vote = 0;
                 v.setNotVoted();
-//                voteForComment(comment.getId(), 0);
+                voteForComment(comment.getCommentId(), 0);
             }
             v.setVotesText(Integer.toString(comment.getScore() + comment.vote));
         }
@@ -91,5 +98,25 @@ public class FlockPostCommentAdapter extends ArrayAdapter<Comment> {
             viewHolder.upvoteDownvoteView.setNotVoted();
         }
         return convertView;
+    }
+
+    private void voteForComment(int commentId, int value) {
+        RestClient.postService.voteForComment(commentId, value).enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+                if (response.isSuccess()) {
+                    Log.d("CommentVote", "Vote Success");
+                } else {
+                    // TODO: better error handling
+                    Log.e("CommentVote", "Vote Failed " + response.errorBody());
+                }
+            }
+
+            @Override
+            public void onFailure(Throwable t) {
+                // TODO: better error handling
+                Log.e("CommentVote", "Vote Failed" + t.getMessage());
+            }
+        });
     }
 }

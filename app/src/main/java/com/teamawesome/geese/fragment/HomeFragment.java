@@ -10,6 +10,8 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.teamawesome.geese.R;
 import com.teamawesome.geese.adapter.FlockAdapter;
@@ -17,6 +19,8 @@ import com.teamawesome.geese.rest.model.FlockV2;
 import com.teamawesome.geese.util.Constants;
 import com.teamawesome.geese.util.RestClient;
 import com.teamawesome.geese.util.SessionManager;
+
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,6 +41,7 @@ public class HomeFragment extends GeeseFragment {
 
     private SwipeRefreshLayout swipeContainer;
     private ListView listView;
+    private View emptyView;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -67,12 +72,19 @@ public class HomeFragment extends GeeseFragment {
                 android.R.color.holo_orange_light,
                 android.R.color.holo_red_light);
 
+        // TODO: Hack for empty view, should use setEmptyView but unfortunately, that doesn't work
+        emptyView = getActivity().getLayoutInflater().inflate(R.layout.empty_view,
+                listView,
+                false);
+        listView.addFooterView(emptyView);
         listView.setAdapter(flockAdapter);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 // TODO: Sorry for this. Satan told me to do this
-
+                if (view == emptyView) {
+                    return;
+                }
                 if (flocks.get(position).getFavourited()) {
                     MainFlockFragment fragment = (MainFlockFragment) getFragmentManager().findFragmentByTag(Constants.FLOCK_FRAGMENT_TAG);
                     if (fragment == null) {
@@ -122,7 +134,6 @@ public class HomeFragment extends GeeseFragment {
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        listView.setAdapter(flockAdapter);
     }
 
     @Override
@@ -183,12 +194,21 @@ public class HomeFragment extends GeeseFragment {
 
                             flockAdapter.clear();
                             if (flocks != null) {
-                                for (FlockV2 flock : flocks) {
-                                    flockAdapter.insert(flock, flockAdapter.getCount());
+                                if (flocks.isEmpty()) {
+                                    emptyView.setVisibility(View.VISIBLE);
+                                    emptyView.setPadding(0, 0, 0, 0);
+                                } else {
+                                    // TODO hackity hack hack
+                                    emptyView.setVisibility(View.GONE);
+                                    emptyView.setPadding(0, -1*emptyView.getHeight(), 0, 0);
+                                    for (FlockV2 flock : flocks) {
+                                        flockAdapter.insert(flock, flockAdapter.getCount());
+                                    }
                                 }
                             }
 
                             flockAdapter.notifyDataSetChanged();
+                            listView.invalidateViews();
                             swipeContainer.setRefreshing(false);
 
                             if (progressDialog.isShowing()) {

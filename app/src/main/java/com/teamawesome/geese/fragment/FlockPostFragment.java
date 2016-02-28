@@ -10,7 +10,6 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.FrameLayout;
 import android.widget.ListView;
-import android.widget.TextView;
 
 import com.melnykov.fab.FloatingActionButton;
 import com.teamawesome.geese.R;
@@ -64,10 +63,13 @@ public class FlockPostFragment extends FlockFragment {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                // uncomment when posts from server have comments
                 FlockPostDetailsFragment fragment = (FlockPostDetailsFragment) getFragmentManager().findFragmentByTag(Constants.FLOCK_POST_DETAILS_FRAGMENT_TAG);
                 if (fragment == null) {
                     fragment = new FlockPostDetailsFragment();
+                }
+                if (position >= mPostTopics.size()) {
+                    // the footer counts as an item clicked
+                    return;
                 }
                 fragment.setPostTopic(mPostTopics.get(position));
                 MainActivity mainActivity = (MainActivity) getActivity();
@@ -107,11 +109,6 @@ public class FlockPostFragment extends FlockFragment {
                 );
             }
         });
-
-        // hack to add padding to bottom of listview
-        TextView empty = new TextView(getContext());
-        empty.setHeight(180);
-        listView.addFooterView(empty);
 
         return frameLayout;
     }

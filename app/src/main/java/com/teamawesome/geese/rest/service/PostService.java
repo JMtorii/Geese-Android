@@ -28,12 +28,15 @@ public interface PostService {
     Call<ResponseBody> savePostForFlock(@Body CreatePostRequestBody createPostRequestBody);
 
     @POST("/post/vote/{postId}")
-    Call<ResponseBody> voteForPost(@Path("postId") int postId, @Body int value);
+    Call<ResponseBody> voteForPost(@Path("postId") int postId, @Query("value") int value);
 
     @GET("/comment")
     Observable<List<Comment>> getCommentsForPost(@Query("postId") int postId);
 
     @POST("/comment")
     Call<ResponseBody> saveCommentForPost(@Body CreateCommentRequestBody createCommentRequestBody);
+
+    @POST("/comment/vote/{commentId}")
+    Call<ResponseBody> voteForComment(@Path("commentId") int commentId, @Query("value") int value);
 
 }

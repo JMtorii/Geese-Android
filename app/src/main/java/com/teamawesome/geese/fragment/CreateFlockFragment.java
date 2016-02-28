@@ -1,12 +1,18 @@
 package com.teamawesome.geese.fragment;
 
+import android.Manifest;
 import android.app.Activity;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Environment;
+import android.provider.DocumentsContract;
 import android.provider.MediaStore;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -86,25 +92,50 @@ public class CreateFlockFragment extends GeeseFragment {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        // TODO: Check result code
+        String imageFilePath = null;
         if (requestCode == PHOTO_SELECTED && resultCode == Activity.RESULT_OK && null != data) {
-            Uri selectedImage = data.getData();
-//            mImageFile = new File(getRealPathFromURI(selectedImage).getPath());
+            Uri uri = data.getData();
 
-            String[] projection = { MediaStore.Images.Media.DATA };
+            if (uri != null) {
+                try {
+                    if( uri == null ) {
+                         imageFilePath = uri.getPath();
+                    } else {
+                        // get the id of the image selected by the user
+                        Uri wholeID = data.getData();
+                        String id = wholeID.getPath().split(":")[1];
 
-            Cursor cursor = parentActivity.getContentResolver().query(selectedImage, projection, null, null, null);
-            cursor.moveToFirst();
+                        String[] projection = { MediaStore.Images.Media.DATA };
+                        String whereClause = MediaStore.Images.Media._ID + "=?";
+                        Cursor cursor = parentActivity.getContentResolver().query(getUri(), projection, whereClause, new String[]{id}, null);
+                        if( cursor != null ){
+                            int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+                            if (cursor.moveToFirst()) {
+                                imageFilePath = cursor.getString(column_index);
+                            }
 
-//            Log.d(TAG, DatabaseUtils.dumpCursorToString(cursor));
+                            cursor.close();
+                        } else {
+                            imageFilePath = uri.getPath();
+                        }
+                    }
+                } catch (Exception e) {
+                    Log.e(LOG_TAG, "Failed to get image");
+                }
+            }
 
-            int columnIndex = cursor.getColumnIndex(projection[0]);
-            String picturePath = cursor.getString(columnIndex); // returns null
-            cursor.close();
-
-            mImageFile = new File(picturePath);
+            mImageFile = new File(imageFilePath);
             new UploadToS3().execute(mImageFile);
         }
+    }
+
+    private Uri getUri() {
+        String state = Environment.getExternalStorageState();
+        if(!state.equalsIgnoreCase(Environment.MEDIA_MOUNTED)) {
+            return MediaStore.Images.Media.INTERNAL_CONTENT_URI;
+        }
+
+        return MediaStore.Images.Media.EXTERNAL_CONTENT_URI;
     }
 
     private Uri getRealPathFromURI(Uri contentURI) {
@@ -125,32 +156,84 @@ public class CreateFlockFragment extends GeeseFragment {
         mCreateFlockButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String flockname = mFlockNameText.getText().toString().trim();
-                // TODO: Finish populating this
-                Flock flock = new Flock(flockname, "description", 0, 0, 0, 0);
-                Call<Void> call = RestClient.flockService.createFlock(flock);
-                call.enqueue(new Callback<Void>() {
-                    @Override
-                    public void onResponse(Response<Void> response, Retrofit retrofit) {
-                        if (response.isSuccess()) {
-                            //attemptLogin(username, email, hashedPassword);
-                        } else {
-                            Log.e(LOG_TAG, "Create Flock failed!");
-                            // TODO: member context
-                            Toast.makeText(getContext().getApplicationContext(), "Flock creation failed", Toast.LENGTH_SHORT).show();
-                        }
-                    }
+                int permissionCheck = ContextCompat.checkSelfPermission(parentActivity,
+                        Manifest.permission.READ_EXTERNAL_STORAGE);
+                // Here, thisActivity is the current activity
+                if (ContextCompat.checkSelfPermission(parentActivity,
+                        Manifest.permission.READ_EXTERNAL_STORAGE)
+                        != PackageManager.PERMISSION_GRANTED) {
 
-                    @Override
-                    public void onFailure(Throwable t) {
+                    // Should we show an explanation?
+                    if (ActivityCompat.shouldShowRequestPermissionRationale(parentActivity,
+                            Manifest.permission.READ_EXTERNAL_STORAGE)) {
+
+                        // Show an expanation to the user *asynchronously* -- don't block
+                        // this thread waiting for the user's response! After the user
+                        // sees the explanation, try again to request the permission.
+
+                    } else {
+
+                        // No explanation needed, we can request the permission.
+
+                        ActivityCompat.requestPermissions(parentActivity,
+                                new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
+                                Constants.MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE);
+
+                        // MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE is an
+                        // app-defined int constant. The callback method gets the
+                        // result of the request.
+                    }
+                }
+
+            }
+        });
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode,
+                                           String permissions[], int[] grantResults) {
+        switch (requestCode) {
+            case Constants.MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE: {
+                // If request is cancelled, the result arrays are empty.
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+
+                    // permission was granted, yay!
+                    String flockname = mFlockNameText.getText().toString().trim();
+
+                    Flock flock = new Flock(flockname, "description", 0, 0, 0, 0);
+                    Call<Void> call = RestClient.flockService.createFlock(flock);
+                    call.enqueue(new Callback<Void>() {
+                        @Override
+                        public void onResponse(Response<Void> response, Retrofit retrofit) {
+                            if (response.isSuccess()) {
+                                //attemptLogin(username, email, hashedPassword);
+                            } else {
+                                Log.e(LOG_TAG, "Create Flock failed!");
+                                // TODO: member context
+                                Toast.makeText(getContext().getApplicationContext(), "Flock creation failed", Toast.LENGTH_SHORT).show();
+                            }
+                        }
+
+                        @Override
+                        public void onFailure(Throwable t) {
 //                        Log.e(loggingTag, "Failed to create goose");
 //                        Log.e(loggingTag, t.getMessage().toString());
 //                        t.printStackTrace();
 //                        Toast.makeText(mContext.getApplicationContext(), "Server down, try again later...", Toast.LENGTH_SHORT).show();
-                    }
-                });
+                        }
+                    });
+                } else {
+
+                    // permission denied, boo! Disable the
+                    // functionality that depends on this permission.
+                }
+                return;
             }
-        });
+
+            // other 'case' lines to check for other
+            // permissions this app might request
+        }
     }
 
     @Override
@@ -180,7 +263,7 @@ public class CreateFlockFragment extends GeeseFragment {
             String fname = "uploaded";
             fname += (int)(Math.random()*1000000000);
 
-            TransferUtility transferUtility = new TransferUtility(s3, getContext().getApplicationContext());
+            TransferUtility transferUtility = new TransferUtility(s3, parentActivity.getApplicationContext());
             TransferObserver observer = transferUtility.upload(
                     Constants.PICTURE_BUCKET, /* The bucket to upload to */
                     fname,      /* The key for the uploaded object */

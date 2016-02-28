@@ -109,6 +109,11 @@ public class CreateFlockFragment extends GeeseFragment {
                         // result of the request.
                     }
                 }
+                if (ContextCompat.checkSelfPermission(parentActivity,
+                        Manifest.permission.READ_EXTERNAL_STORAGE)
+                        == PackageManager.PERMISSION_GRANTED) {
+                    openPhotoChooserDialog();
+                }
             }
         });
     }
@@ -127,22 +132,7 @@ public class CreateFlockFragment extends GeeseFragment {
                          imageFilePath = uri.getPath();
                     } else {
                         // get the id of the image selected by the user
-                        Uri wholeID = data.getData();
-                        String id = wholeID.toString().split(":")[1];
-
-                        String[] projection = { MediaStore.Images.Media.DATA };
-                        String whereClause = MediaStore.Images.Media._ID + "=?";
-                        Cursor cursor = parentActivity.getContentResolver().query(getUri(), projection, whereClause, new String[]{id}, null);
-                        if( cursor != null ){
-                            int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
-                            if (cursor.moveToFirst()) {
-                                imageFilePath = cursor.getString(column_index);
-                            }
-
-                            cursor.close();
-                        } else {
-                            imageFilePath = uri.getPath();
-                        }
+                        imageFilePath = convertUriToPath(uri);
 
                         mImageFile = new File(imageFilePath);
                         new UploadToS3().execute(mImageFile);
@@ -154,27 +144,16 @@ public class CreateFlockFragment extends GeeseFragment {
         }
     }
 
-    private Uri getUri() {
-        String state = Environment.getExternalStorageState();
-        if(!state.equalsIgnoreCase(Environment.MEDIA_MOUNTED)) {
-            return MediaStore.Images.Media.INTERNAL_CONTENT_URI;
-        }
-
-        return MediaStore.Images.Media.EXTERNAL_CONTENT_URI;
-    }
-
-    private Uri getRealPathFromURI(Uri contentURI) {
-        String result;
-        Cursor cursor = parentActivity.getContentResolver().query(contentURI, null, null, null, null);
-        if (cursor == null) {
-            result = contentURI.getPath();
-        } else {
-            cursor.moveToFirst();
-            int idx = cursor.getColumnIndex(MediaStore.Images.ImageColumns.DATA);
-            result = cursor.getString(idx);
-            cursor.close();
-        }
-        return Uri.parse(result);
+    public String convertUriToPath(Uri uri)
+    {
+        String[] projection = { MediaStore.Images.Media.DATA };
+        Cursor cursor = parentActivity.getContentResolver().query(uri, projection, null, null, null);
+        if (cursor == null) return null;
+        int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+        cursor.moveToFirst();
+        String s=cursor.getString(column_index);
+        cursor.close();
+        return s;
     }
 
     public void setupCreateFlockButton() {
@@ -219,9 +198,7 @@ public class CreateFlockFragment extends GeeseFragment {
                         && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
 
                     // permission was granted, yay!
-                    Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
-                    intent.setType("image/*");
-                    startActivityForResult(intent, PHOTO_SELECTED);
+                    openPhotoChooserDialog();
                 } else {
 
                     // permission denied, boo! Disable the
@@ -233,6 +210,12 @@ public class CreateFlockFragment extends GeeseFragment {
             // other 'case' lines to check for other
             // permissions this app might request
         }
+    }
+
+    public void openPhotoChooserDialog() {
+        Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+        intent.setType("image/*");
+        startActivityForResult(intent, PHOTO_SELECTED);
     }
 
     @Override

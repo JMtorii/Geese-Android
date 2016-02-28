@@ -5,6 +5,8 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -19,15 +21,21 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.amazonaws.auth.BasicAWSCredentials;
+import com.amazonaws.http.HttpClient;
+import com.amazonaws.http.HttpResponse;
 import com.amazonaws.mobileconnectors.s3.transferutility.TransferObserver;
 import com.amazonaws.mobileconnectors.s3.transferutility.TransferUtility;
 import com.amazonaws.regions.Region;
 import com.amazonaws.regions.Regions;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3Client;
+import com.amazonaws.services.s3.model.GeneratePresignedUrlRequest;
+import com.amazonaws.services.s3.model.ResponseHeaderOverrides;
+import com.squareup.picasso.Picasso;
 import com.teamawesome.geese.R;
 import com.teamawesome.geese.rest.model.Flock;
 import com.teamawesome.geese.util.Constants;
@@ -35,6 +43,9 @@ import com.teamawesome.geese.util.RestClient;
 import com.teamawesome.geese.util.UriToPathConverter;
 
 import java.io.File;
+import java.io.InputStream;
+import java.net.URL;
+import java.util.Date;
 
 import retrofit.Call;
 import retrofit.Callback;
@@ -54,6 +65,8 @@ public class CreateFlockFragment extends GeeseFragment {
     private Button mChooseImageButton;
     private EditText mFlockNameText;
     private File mImageFile = null;
+    private URL mUploadedImageUrl = null;
+    private String mRemoteName = null;
 
     private void findWidgets(View view) {
         mCreateFlockButton = (Button) view.findViewById(R.id.create_flock_button);
@@ -74,8 +87,24 @@ public class CreateFlockFragment extends GeeseFragment {
         findWidgets(mView);
         setupChooseImageButton();
         setupCreateFlockButton();
+        setupFlockImage();
 
         return view;
+    }
+
+    public void setupFlockImage() {
+        // If the current flock image is null, no image was selected yet
+        if (mUploadedImageUrl == null) {
+            return;
+        }
+
+        //Initialize ImageView
+        ImageView imageView = (ImageView) parentActivity.findViewById(R.id.create_flock_image);
+
+        //Loading image from below url into imageView
+        Picasso.with(parentActivity)
+                .load(mUploadedImageUrl.getPath())
+                .into(imageView);
     }
 
     public void setupChooseImageButton() {
@@ -137,6 +166,7 @@ public class CreateFlockFragment extends GeeseFragment {
                                 parentActivity.getApplicationContext(), uri);
 
                         mImageFile = new File(imageFilePath);
+                        Toast.makeText(getContext().getApplicationContext(), "Uploading...", Toast.LENGTH_SHORT).show();
                         new UploadToS3().execute(mImageFile);
                     }
                 } catch (Exception e) {
@@ -220,9 +250,7 @@ public class CreateFlockFragment extends GeeseFragment {
 
     private class UploadToS3 extends AsyncTask<File, Integer, Long> {
         protected Long doInBackground(File... files) {
-            // Configure AWS S3 Access
             // Create an S3 client
-
             String accessKey, secretKey;
             BasicAWSCredentials bac = new BasicAWSCredentials("AKIAI67CPRBHXAGTO33A",
                     "wxETPVLbptOst5dn4C9MBHnrJuc5vb+scnOE7fBd");
@@ -231,9 +259,10 @@ public class CreateFlockFragment extends GeeseFragment {
             // Set the region of your S3 bucket
             s3.setRegion(Region.getRegion(Regions.US_EAST_1));
 
-            // TODO: Use hashing.
+            // TODO: Use hashing to guarantee no collisions.
             String fname = "uploaded";
             fname += (int)(Math.random()*1000000000);
+            mRemoteName = fname;
 
             TransferUtility transferUtility = new TransferUtility(s3, parentActivity.getApplicationContext());
             TransferObserver observer = transferUtility.upload(
@@ -242,17 +271,32 @@ public class CreateFlockFragment extends GeeseFragment {
                     files[0]        /* The file where the data to upload exists */
             );
 
+            ResponseHeaderOverrides override = new ResponseHeaderOverrides();
+            override.setContentType("image/jpeg"); // TODO: Does this hold?
+            GeneratePresignedUrlRequest urlRequest = new GeneratePresignedUrlRequest(
+                    Constants.PICTURE_BUCKET, mRemoteName);
+            urlRequest.setExpiration( new Date( System.currentTimeMillis() + 3600000 ) );  // Added an hour's worth of milliseconds to the current time.
+            urlRequest.setResponseHeaders( override );
+            mUploadedImageUrl = s3.generatePresignedUrl( urlRequest );
+
             long result = 0;
 
             return result;
         }
 
+        // TODO: Progress bar goes here...
         protected void onProgressUpdate(Integer... progress) {
             //setProgressPercent(progress[0]);
         }
 
         protected void onPostExecute(Long result) {
             //showDialog("Uploaded " + result + " bytes");
+            if (result == 0) {
+                Toast.makeText(getContext().getApplicationContext(), "Upload successful", Toast.LENGTH_SHORT).show();
+                setupFlockImage();
+            } else {
+                Toast.makeText(getContext().getApplicationContext(), "Upload failed", Toast.LENGTH_SHORT).show();
+            }
         }
     }
 }

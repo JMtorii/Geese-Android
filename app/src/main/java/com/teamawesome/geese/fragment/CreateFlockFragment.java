@@ -81,9 +81,34 @@ public class CreateFlockFragment extends GeeseFragment {
         mChooseImageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
-                intent.setType("image/*");
-                startActivityForResult(intent, PHOTO_SELECTED);
+                int permissionCheck = ContextCompat.checkSelfPermission(parentActivity,
+                        Manifest.permission.READ_EXTERNAL_STORAGE);
+                // Here, thisActivity is the current activity
+                if (ContextCompat.checkSelfPermission(parentActivity,
+                        Manifest.permission.READ_EXTERNAL_STORAGE)
+                        != PackageManager.PERMISSION_GRANTED) {
+
+                    // Should we show an explanation?
+                    if (ActivityCompat.shouldShowRequestPermissionRationale(parentActivity,
+                            Manifest.permission.READ_EXTERNAL_STORAGE)) {
+
+                        // Show an expanation to the user *asynchronously* -- don't block
+                        // this thread waiting for the user's response! After the user
+                        // sees the explanation, try again to request the permission.
+
+                    } else {
+
+                        // No explanation needed, we can request the permission.
+
+                        ActivityCompat.requestPermissions(parentActivity,
+                                new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
+                                Constants.MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE);
+
+                        // MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE is an
+                        // app-defined int constant. The callback method gets the
+                        // result of the request.
+                    }
+                }
             }
         });
     }
@@ -156,35 +181,30 @@ public class CreateFlockFragment extends GeeseFragment {
         mCreateFlockButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                int permissionCheck = ContextCompat.checkSelfPermission(parentActivity,
-                        Manifest.permission.READ_EXTERNAL_STORAGE);
-                // Here, thisActivity is the current activity
-                if (ContextCompat.checkSelfPermission(parentActivity,
-                        Manifest.permission.READ_EXTERNAL_STORAGE)
-                        != PackageManager.PERMISSION_GRANTED) {
+                String flockname = mFlockNameText.getText().toString().trim();
 
-                    // Should we show an explanation?
-                    if (ActivityCompat.shouldShowRequestPermissionRationale(parentActivity,
-                            Manifest.permission.READ_EXTERNAL_STORAGE)) {
-
-                        // Show an expanation to the user *asynchronously* -- don't block
-                        // this thread waiting for the user's response! After the user
-                        // sees the explanation, try again to request the permission.
-
-                    } else {
-
-                        // No explanation needed, we can request the permission.
-
-                        ActivityCompat.requestPermissions(parentActivity,
-                                new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
-                                Constants.MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE);
-
-                        // MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE is an
-                        // app-defined int constant. The callback method gets the
-                        // result of the request.
+                Flock flock = new Flock(flockname, "description", 0, 0, 0, 0);
+                Call<Void> call = RestClient.flockService.createFlock(flock);
+                call.enqueue(new Callback<Void>() {
+                    @Override
+                    public void onResponse(Response<Void> response, Retrofit retrofit) {
+                        if (response.isSuccess()) {
+                            //attemptLogin(username, email, hashedPassword);
+                        } else {
+                            Log.e(LOG_TAG, "Create Flock failed!");
+                            // TODO: member context
+                            Toast.makeText(getContext().getApplicationContext(), "Flock creation failed", Toast.LENGTH_SHORT).show();
+                        }
                     }
-                }
 
+                    @Override
+                    public void onFailure(Throwable t) {
+//                        Log.e(loggingTag, "Failed to create goose");
+//                        Log.e(loggingTag, t.getMessage().toString());
+//                        t.printStackTrace();
+//                        Toast.makeText(mContext.getApplicationContext(), "Server down, try again later...", Toast.LENGTH_SHORT).show();
+                    }
+                });
             }
         });
     }
@@ -199,30 +219,9 @@ public class CreateFlockFragment extends GeeseFragment {
                         && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
 
                     // permission was granted, yay!
-                    String flockname = mFlockNameText.getText().toString().trim();
-
-                    Flock flock = new Flock(flockname, "description", 0, 0, 0, 0);
-                    Call<Void> call = RestClient.flockService.createFlock(flock);
-                    call.enqueue(new Callback<Void>() {
-                        @Override
-                        public void onResponse(Response<Void> response, Retrofit retrofit) {
-                            if (response.isSuccess()) {
-                                //attemptLogin(username, email, hashedPassword);
-                            } else {
-                                Log.e(LOG_TAG, "Create Flock failed!");
-                                // TODO: member context
-                                Toast.makeText(getContext().getApplicationContext(), "Flock creation failed", Toast.LENGTH_SHORT).show();
-                            }
-                        }
-
-                        @Override
-                        public void onFailure(Throwable t) {
-//                        Log.e(loggingTag, "Failed to create goose");
-//                        Log.e(loggingTag, t.getMessage().toString());
-//                        t.printStackTrace();
-//                        Toast.makeText(mContext.getApplicationContext(), "Server down, try again later...", Toast.LENGTH_SHORT).show();
-                        }
-                    });
+                    Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+                    intent.setType("image/*");
+                    startActivityForResult(intent, PHOTO_SELECTED);
                 } else {
 
                     // permission denied, boo! Disable the

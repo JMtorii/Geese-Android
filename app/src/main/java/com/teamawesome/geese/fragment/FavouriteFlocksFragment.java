@@ -13,7 +13,7 @@ import android.widget.ListView;
 import com.teamawesome.geese.R;
 import com.teamawesome.geese.activity.MainActivity;
 import com.teamawesome.geese.adapter.FlockAdapter;
-import com.teamawesome.geese.rest.model.FlockV2;
+import com.teamawesome.geese.rest.model.Flock;
 import com.teamawesome.geese.util.Constants;
 import com.teamawesome.geese.util.RestClient;
 import com.teamawesome.geese.util.SessionManager;
@@ -34,8 +34,8 @@ public class FavouriteFlocksFragment extends GeeseFragment {
     private SwipeRefreshLayout swipeContainer;
     private ListView listView;
 
-    private ArrayAdapter<FlockV2> flockAdapter;
-    private List<FlockV2> flocks = new ArrayList<>();
+    private ArrayAdapter<Flock> flockAdapter;
+    private List<Flock> flocks = new ArrayList<>();
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -77,7 +77,7 @@ public class FavouriteFlocksFragment extends GeeseFragment {
                     fragment = new MainFlockFragment();
                 }
 
-                FlockV2 tmpFlock = flocks.get(position);
+                Flock tmpFlock = flocks.get(position);
                 tmpFlock.setFavourited(true);
                 fragment.setFlock(tmpFlock);
                 MainActivity mainActivity = (MainActivity) getActivity();
@@ -108,10 +108,10 @@ public class FavouriteFlocksFragment extends GeeseFragment {
     public void getFavouritedFlocks() {
         if (SessionManager.checkLogin()) {
             progressDialog.show();
-            Observable<List<FlockV2>> observable = RestClient.flockService.getFavourited();
+            Observable<List<Flock>> observable = RestClient.flockService.getFavourited();
             observable.subscribeOn(Schedulers.newThread())
                     .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(new Subscriber<List<FlockV2>>() {
+                    .subscribe(new Subscriber<List<Flock>>() {
                         @Override
                         public void onCompleted() {
                             // nothing to do here
@@ -128,12 +128,12 @@ public class FavouriteFlocksFragment extends GeeseFragment {
                         }
 
                         @Override
-                        public void onNext(List<FlockV2> flocks) {
+                        public void onNext(List<Flock> flocks) {
                             Log.i("FavouriteFlocksFragment", "onNext called");
 
                             flockAdapter.clear();
                             if (flocks != null) {
-                                for (FlockV2 flock : flocks) {
+                                for (Flock flock : flocks) {
                                     flockAdapter.insert(flock, flockAdapter.getCount());
                                 }
                             }

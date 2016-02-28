@@ -4,15 +4,10 @@ import android.Manifest;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.database.Cursor;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
+import android.location.Location;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Environment;
-import android.provider.DocumentsContract;
-import android.provider.MediaStore;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
@@ -25,8 +20,6 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.amazonaws.auth.BasicAWSCredentials;
-import com.amazonaws.http.HttpClient;
-import com.amazonaws.http.HttpResponse;
 import com.amazonaws.mobileconnectors.s3.transferutility.TransferObserver;
 import com.amazonaws.mobileconnectors.s3.transferutility.TransferUtility;
 import com.amazonaws.regions.Region;
@@ -43,7 +36,6 @@ import com.teamawesome.geese.util.RestClient;
 import com.teamawesome.geese.util.UriToPathConverter;
 
 import java.io.File;
-import java.io.InputStream;
 import java.net.URL;
 import java.util.Date;
 
@@ -188,7 +180,18 @@ public class CreateFlockFragment extends GeeseFragment {
             public void onClick(View v) {
                 String flockname = mFlockNameText.getText().toString().trim();
 
-                Flock flock = new Flock(flockname, "description", 0, 0, 0, 0);
+                // Use latest location, otherwise default to Waterloo if no location
+                Location location = parentActivity.getLatestLocation();
+                float latitude = location != null ? (float)location.getLatitude() : 43.471086f;
+                float longitude = location != null ? (float)location.getLongitude() : -80.541875f;
+
+                Flock flock = new Flock.Builder()
+                        .name(flockname)
+                        .description("description")
+                        .latitude(latitude)
+                        .longitude(longitude)
+                        .build();
+
                 Call<Void> call = RestClient.flockService.createFlock(flock);
                 call.enqueue(new Callback<Void>() {
                     @Override
@@ -197,6 +200,7 @@ public class CreateFlockFragment extends GeeseFragment {
                             //attemptLogin(username, email, hashedPassword);
                         } else {
                             Log.e(LOG_TAG, "Create Flock failed!");
+                            Log.e(LOG_TAG, response.raw().toString());
                             // TODO: member context
                             Toast.makeText(getContext().getApplicationContext(), "Flock creation failed", Toast.LENGTH_SHORT).show();
                         }

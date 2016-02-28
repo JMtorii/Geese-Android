@@ -49,7 +49,7 @@ import com.teamawesome.geese.fragment.MainFlockFragment;
 import com.teamawesome.geese.fragment.TimePickerFragment;
 import com.teamawesome.geese.fragment.settings.SettingsMainFragment;
 import com.teamawesome.geese.object.NavDrawerItem;
-import com.teamawesome.geese.rest.model.FlockV2;
+import com.teamawesome.geese.rest.model.Flock;
 import com.teamawesome.geese.util.Constants;
 import com.teamawesome.geese.util.SessionManager;
 import com.teamawesome.geese.view.RoundedImageView;
@@ -502,7 +502,7 @@ public class MainActivity
     }
 
     // This should only be called by FLockProfileFragment... Again sorry for this
-    public void joinFlock(FlockV2 flock) {
+    public void joinFlock(Flock flock) {
         popManualBackStack();
         getSupportFragmentManager().popBackStack();
         curFragmentTag = Constants.HOME_FRAGMENT_TAG;

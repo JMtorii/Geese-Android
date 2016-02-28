@@ -12,7 +12,7 @@ import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 import com.teamawesome.geese.R;
-import com.teamawesome.geese.rest.model.FlockV2;
+import com.teamawesome.geese.rest.model.Flock;
 
 import java.util.List;
 import java.util.Locale;
@@ -20,7 +20,7 @@ import java.util.Locale;
 /**
  * Created by MichaelQ on 2015-07-19.
  */
-public class FlockAdapter extends ArrayAdapter<FlockV2> {
+public class FlockAdapter extends ArrayAdapter<Flock> {
     // View lookup cache
     private static class ViewHolder {
         TextView name;
@@ -32,13 +32,13 @@ public class FlockAdapter extends ArrayAdapter<FlockV2> {
         int position;
     }
 
-    public FlockAdapter(Context context, List<FlockV2> flocks) {
+    public FlockAdapter(Context context, List<Flock> flocks) {
         super(context, R.layout.flock_list_item, flocks);
     }
 
     @Override
     public View getView(final int position, View convertView, ViewGroup parent) {
-        final FlockV2 flock = getItem(position);
+        final Flock flock = getItem(position);
         final ViewHolder viewHolder;
         if (convertView == null) {
             viewHolder = new ViewHolder();

@@ -2,7 +2,6 @@ package com.teamawesome.geese.rest.service;
 
 import com.squareup.okhttp.ResponseBody;
 import com.teamawesome.geese.rest.model.Flock;
-import com.teamawesome.geese.rest.model.FlockV2;
 
 import java.util.List;
 
@@ -33,10 +32,10 @@ public interface FlockService {
     Call<Flock> deleteFlock(@Path("flockId") int flockId);
 
     @GET("/flock/getNearbyFlocks")
-    Observable<List<FlockV2>> getNearbyFlocks(@Query("latitude") float latitude, @Query("longitude") float longitude);
+    Observable<List<Flock>> getNearbyFlocks(@Query("latitude") float latitude, @Query("longitude") float longitude);
 
     @GET("/flock/getFavourited")
-    Observable<List<FlockV2>> getFavourited();
+    Observable<List<Flock>> getFavourited();
 
     @POST("/flock/{flockId}/joinFlock")
     Observable<ResponseBody> joinFlock(@Path("flockId") int flockId);
@@ -46,7 +45,4 @@ public interface FlockService {
 
     @POST("/flock")
     Call<Void> createFlock(@Body Flock flock);
-
-
-
 }

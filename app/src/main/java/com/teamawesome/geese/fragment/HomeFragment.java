@@ -10,17 +10,13 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
 
 import com.teamawesome.geese.R;
 import com.teamawesome.geese.adapter.FlockAdapter;
-import com.teamawesome.geese.rest.model.FlockV2;
+import com.teamawesome.geese.rest.model.Flock;
 import com.teamawesome.geese.util.Constants;
 import com.teamawesome.geese.util.RestClient;
 import com.teamawesome.geese.util.SessionManager;
-
-import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,8 +32,8 @@ import rx.schedulers.Schedulers;
 public class HomeFragment extends GeeseFragment {
     private final static String TAG_FRAGMENT = Constants.HOME_FRAGMENT_TAG;
 
-    private List<FlockV2> flocks = new ArrayList<>();
-    private ArrayAdapter<FlockV2> flockAdapter;
+    private List<Flock> flocks = new ArrayList<>();
+    private ArrayAdapter<Flock> flockAdapter;
 
     private SwipeRefreshLayout swipeContainer;
     private ListView listView;
@@ -147,7 +143,7 @@ public class HomeFragment extends GeeseFragment {
         if (useDummyData) {
             // fix for when network requests fail
             flockAdapter.clear();
-            FlockV2 f = new FlockV2.Builder().name("Network Failed")
+            Flock f = new Flock.Builder().name("Network Failed")
                     .description("So here's a dummy one instead")
                     .latitude(43.4707224f)
                     .longitude(80.5429343f)
@@ -162,7 +158,7 @@ public class HomeFragment extends GeeseFragment {
         }
         if (SessionManager.checkLogin()) {
             progressDialog.show();
-            Observable<List<FlockV2>> observable;
+            Observable<List<Flock>> observable;
             Location location = parentActivity.getLatestLocation();
             if (location != null) {
                 observable = RestClient.flockService.getNearbyFlocks((float)location.getLatitude(), (float)location.getLongitude());
@@ -172,7 +168,7 @@ public class HomeFragment extends GeeseFragment {
             }
             observable.subscribeOn(Schedulers.newThread())
                     .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(new Subscriber<List<FlockV2>>() {
+                    .subscribe(new Subscriber<List<Flock>>() {
                         @Override
                         public void onCompleted() {
                             // nothing to do here
@@ -189,7 +185,7 @@ public class HomeFragment extends GeeseFragment {
                         }
 
                         @Override
-                        public void onNext(List<FlockV2> flocks) {
+                        public void onNext(List<Flock> flocks) {
                             Log.i("HomeFragment", "onNext called");
 
                             flockAdapter.clear();
@@ -201,7 +197,7 @@ public class HomeFragment extends GeeseFragment {
                                     // TODO hackity hack hack
                                     emptyView.setVisibility(View.GONE);
                                     emptyView.setPadding(0, -1*emptyView.getHeight(), 0, 0);
-                                    for (FlockV2 flock : flocks) {
+                                    for (Flock flock : flocks) {
                                         flockAdapter.insert(flock, flockAdapter.getCount());
                                     }
                                 }

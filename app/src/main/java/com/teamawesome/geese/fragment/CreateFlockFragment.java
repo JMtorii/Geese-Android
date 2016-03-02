@@ -190,7 +190,10 @@ public class CreateFlockFragment extends GeeseFragment {
                         .description("description")
                         .latitude(latitude)
                         .longitude(longitude)
+                        .radius(1.0)
+                        .score(0)
                         .imageUri(mUploadedImageUrl.getPath())
+                        .members(1)
                         .build();
 
                 Call<Void> call = RestClient.flockService.createFlock(flock);

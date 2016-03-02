@@ -194,6 +194,7 @@ public class LoginActivity extends Activity {
                 if (response.isSuccess()) {
                     try {
                         String token = response.body().string();
+                        Log.i("tok", token);
                         loginUserComplete(username, email, token);
                     } catch (IOException e) {
                         e.printStackTrace();

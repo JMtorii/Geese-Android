@@ -190,6 +190,7 @@ public class CreateFlockFragment extends GeeseFragment {
                         .description("description")
                         .latitude(latitude)
                         .longitude(longitude)
+                        .imageUri(mUploadedImageUrl.getPath())
                         .build();
 
                 Call<Void> call = RestClient.flockService.createFlock(flock);
@@ -283,6 +284,8 @@ public class CreateFlockFragment extends GeeseFragment {
 
             ResponseHeaderOverrides override = new ResponseHeaderOverrides();
             override.setContentType("image/jpeg"); // TODO: Does this hold?
+
+            // TODO: Do not need presigned URL request, use generic URL
             GeneratePresignedUrlRequest urlRequest = new GeneratePresignedUrlRequest(
                     Constants.PICTURE_BUCKET, mRemoteName);
             urlRequest.setExpiration( new Date( System.currentTimeMillis() + 3600000 ));  // Added an hour's worth of milliseconds to the current time.

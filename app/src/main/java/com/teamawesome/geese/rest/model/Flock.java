@@ -42,6 +42,9 @@ public class Flock {
     @JsonProperty("members")
     private int members;
 
+    @JsonProperty("imageUri")
+    private String imageUri;
+
     // TODO: implement me
 //    @JsonIgnoreProperties("createdTime")
 //    private String createdTime;
@@ -64,6 +67,7 @@ public class Flock {
         this.radius = builder.radius;
         this.score = builder.score;
         this.members = builder.members;
+        this.imageUri = builder.imageUri;
         this.mapImage200x200 = builder.mapImage200x200;
 
         // TODO: implement me
@@ -131,6 +135,10 @@ public class Flock {
         this.members = members;
     }
 
+    public String getImageUri() {
+        return imageUri;
+    }
+
     // TODO: implement me
 //    public LocalDateTime getCreatedTime() {
 //        return createdTime;
@@ -150,6 +158,7 @@ public class Flock {
         private double radius;
         private int score;
         private int members;
+        private String imageUri;
         private Bitmap mapImage200x200;
 
         // TODO: implement me
@@ -200,6 +209,11 @@ public class Flock {
 
         public Builder members(int members) {
             this.members = members;
+            return this;
+        }
+
+        public Builder imageUri(String imageUri) {
+            this.imageUri = imageUri;
             return this;
         }
 

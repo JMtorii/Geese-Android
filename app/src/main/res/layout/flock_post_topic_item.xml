@@ -46,6 +46,15 @@
             />
 
         <TextView
+            android:id="@+id/flock_post_topic_metadata"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:textColor="@color/grey"
+            android:text="Created on March 1, 2016 by anon"
+            />
+
+        <TextView
             android:id="@+id/flock_post_topic_comment_count"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

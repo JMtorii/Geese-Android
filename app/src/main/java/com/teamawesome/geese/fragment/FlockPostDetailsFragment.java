@@ -86,6 +86,7 @@ public class FlockPostDetailsFragment extends GeeseFragment {
         TextView title = (TextView)view.findViewById(R.id.flock_post_topic_title);
         TextView description = (TextView)view.findViewById(R.id.flock_post_topic_description);
         final ImageView image = (ImageView)view.findViewById(R.id.flock_post_topic_image);
+        TextView metadata = (TextView)view.findViewById(R.id.flock_post_topic_metadata);
         TextView comments = (TextView)view.findViewById(R.id.flock_post_topic_comment_count);
         UpvoteDownvoteView upvoteDownvoteView = (UpvoteDownvoteView)view.findViewById(R.id.flock_post_topic_upvote_downvote);
         upvoteDownvoteView.setUpvoteDownvoteListener(new UpvoteDownvoteListener() {
@@ -152,6 +153,7 @@ public class FlockPostDetailsFragment extends GeeseFragment {
         } else {
             description.setVisibility(View.VISIBLE);
         }
+        metadata.setText(String.format(getResources().getString(R.string.comment_metadata), mPostTopic.getCreatedDate(), mPostTopic.getAuthorName()));
         comments.setText(String.format(getResources().getString(R.string.comment_count_format), mPostTopic.getCommentCount()));
 
         //uncomment when we have images for posts

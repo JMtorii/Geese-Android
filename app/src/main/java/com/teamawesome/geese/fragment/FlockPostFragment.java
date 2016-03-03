@@ -1,8 +1,11 @@
 package com.teamawesome.geese.fragment;
 
 import android.app.FragmentTransaction;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,6 +13,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.FrameLayout;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.melnykov.fab.FloatingActionButton;
 import com.teamawesome.geese.R;
@@ -36,6 +40,8 @@ public class FlockPostFragment extends FlockFragment {
     private int mPosition;
     ArrayList<Post> mPostTopics = new ArrayList<>();
     private ArrayAdapter<Post> mPostAdapter = null;
+
+    private Snackbar snackbar;
 
     public static FlockPostFragment newInstance(int position) {
         FlockPostFragment f = new FlockPostFragment();
@@ -139,6 +145,17 @@ public class FlockPostFragment extends FlockFragment {
                     @Override
                     public void onError(Throwable e) {
                         Log.e("FlockPostFragment", "error: " + e.getMessage());
+
+                        snackbar = Snackbar
+                                .make(parentActivity.findViewById(R.id.flock_post_topic_list_fragment_layout), "Error Occurred", Snackbar.LENGTH_LONG)
+                                .setActionTextColor(Color.RED);
+
+                        View snackbarView = snackbar.getView();
+                        TextView textView = (TextView) snackbarView.findViewById(android.support.design.R.id.snackbar_text);
+                        textView.setTextColor(Color.WHITE);
+                        textView.setGravity(Gravity.CENTER);
+
+                        snackbar.show();
                     }
 
                     @Override

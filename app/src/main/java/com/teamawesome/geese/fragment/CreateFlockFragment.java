@@ -101,8 +101,7 @@ public class CreateFlockFragment extends GeeseFragment {
             }
         };
 
-        mUploader = new ImageUploader(parentActivity.getApplicationContext(),
-                mTransferListener);
+        mUploader = new ImageUploader(parentActivity.getApplicationContext(), mTransferListener);
     }
 
     @Override

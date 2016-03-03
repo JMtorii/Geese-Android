@@ -69,13 +69,14 @@ public class FlockAdapter extends ArrayAdapter<Flock> {
             viewHolder.location.setVisibility(View.GONE);
         }
 
-//        viewHolder.members.setText("Members: " + flock.members);
-//        viewHolder.privacy.setText("Privacy: " + flock.privacy);
         viewHolder.members.setText("Members: " + Integer.toString(flock.getMembers()));
         viewHolder.privacy.setText("Privacy: Public");
 
+        String imageURL = flock.getImageUri() != null ? flock.getImageUri() : "http://justinhackworth.com/canada-goose-01.jpg";
         Picasso.with(getContext())
-                .load("http://justinhackworth.com/canada-goose-01.jpg")
+                .load(imageURL)
+                .resize(100, 100)
+                .centerCrop()
                 .into(viewHolder.image);
 
         if (flock.getFavourited()) {

@@ -5,6 +5,10 @@ import android.graphics.Bitmap;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.node.ObjectNode;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 /**
  * Created by JMtorii on 15-12-13.
@@ -45,12 +49,8 @@ public class Flock {
     @JsonProperty("imageUri")
     private String imageUri;
 
-    // TODO: implement me
-//    @JsonIgnoreProperties("createdTime")
-//    private String createdTime;
-//
-//    @JsonIgnoreProperties("expireTime")
-//    private String expireTime;
+//    @JsonProperty("createdTime")
+//    private ObjectNode createdTime;
 
     @JsonIgnore
     private Bitmap mapImage200x200;
@@ -127,25 +127,23 @@ public class Flock {
         this.favourited = favourited;
     }
 
-    public int getMembers() {
-        return members;
-    }
+    public int getMembers() { return members; }
 
-    public void setMembers(int members) {
-        this.members = members;
-    }
+    public void setMembers(int members) { this.members = members; }
 
-    public String getImageUri() {
-        return imageUri;
-    }
+    public String getImageUri() { return imageUri; }
 
-    // TODO: implement me
-//    public LocalDateTime getCreatedTime() {
-//        return createdTime;
-//    }
-//
-//    public LocalDateTime getExpireTime() {
-//        return expireTime;
+//    public String getCreatedTime() {
+//        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-mm-dd HH:MM");
+//        Date testDate = null;
+//        try {
+//            testDate = sdf.parse(createdTime);
+//        }catch(Exception ex){
+//            ex.printStackTrace();
+//        }
+//        SimpleDateFormat formatter = new SimpleDateFormat("MMM dd,yyyy");
+//        String newFormat = formatter.format(testDate);
+//        return newFormat;
 //    }
 
     public static class Builder {
@@ -160,10 +158,6 @@ public class Flock {
         private int members;
         private String imageUri;
         private Bitmap mapImage200x200;
-
-        // TODO: implement me
-//        private LocalDateTime createdTime;
-//        private LocalDateTime expireTime;
 
         public Builder() {}
 
@@ -221,17 +215,6 @@ public class Flock {
             this.mapImage200x200 = mapImage200x200;
             return this;
         }
-
-        // TODO: implement me
-//        public Builder createdTime(LocalDateTime createdTime) {
-//            this.createdTime = createdTime;
-//            return this;
-//        }
-//
-//        public Builder expireTime(LocalDateTime expireTime) {
-//            this.expireTime = expireTime;
-//            return this;
-//        }
 
         public Flock build() {
             return new Flock(this);

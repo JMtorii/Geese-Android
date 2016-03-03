@@ -79,34 +79,22 @@ public class FlockProfileFragment extends FlockFragment {
         }
 
         mFlockInfoMemberCountTextView = (TextView) v.findViewById(R.id.profile_info_member_count);
-//        if (mFlock.members >= 0) {
-//            mFlockInfoMemberCountTextView.setText(mFlock.members + " members");
-//        } else {
-//            mFlockInfoMemberCountTextView.setVisibility(View.GONE);
-//        }
         mFlockInfoMemberCountTextView.setText(Integer.toString(mFlock.getMembers()) + " Members");
 
         mFlockInfoPrivacyTextView = (TextView) v.findViewById(R.id.profile_info_privacy);
-//        if (mFlock.privacy != null) {
-//            mFlockInfoPrivacyTextView.setText(mFlock.privacy);
-//        } else {
-//            mFlockInfoPrivacyTextView.setVisibility(View.GONE);
-//        }
         mFlockInfoPrivacyTextView.setText("Public");
 
         mFlockProfileImageView = (RoundedImageView) v.findViewById(R.id.profile_image);
+        String imageURL = mFlock.getImageUri() != null ? mFlock.getImageUri() : "http://justinhackworth.com/canada-goose-01.jpg";
         Picasso.with(getContext())
-                .load("http://justinhackworth.com/canada-goose-01.jpg")
-//        mFlock.imageURL;
+                .load(imageURL)
+                .resize(100, 100)
+                .centerCrop()
                 .into(mFlockProfileImageView);
 
         mFlockInfoCreationDateTextView = (TextView) v.findViewById(R.id.profile_info_creation_date);
-//        if (mFlock.createdDate != null) {
-//            mFlockInfoCreationDateTextView.setText("Created on " + mFlock.createdDate);
-//        } else {
-//            mFlockInfoCreationDateTextView.setVisibility(View.GONE);
-//        }
         mFlockInfoCreationDateTextView.setText("Created on " + "January 1, 2016");
+//        mFlockInfoCreationDateTextView.setText("Created on " + mFlock.getCreatedTime());
 
         mGMapView = (MapView) v.findViewById(R.id.profile_google_map);
         mMapImageView = (ImageView) v.findViewById(R.id.profile_image_map);

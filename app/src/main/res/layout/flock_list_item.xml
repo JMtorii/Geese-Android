@@ -16,7 +16,7 @@
         <ImageView
             android:id="@+id/flock_list_item_image"
             android:layout_width="100dp"
-            android:layout_height="fill_parent"
+            android:layout_height="100dp"
             android:layout_marginRight="15dp"
             android:layout_marginLeft="10dp"
             />

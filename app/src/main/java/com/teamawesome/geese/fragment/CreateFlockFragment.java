@@ -53,6 +53,7 @@ public class CreateFlockFragment extends GeeseFragment {
 
     private static final int PHOTO_SELECTED = 1;
     private View mView;
+    private ImageView mFlockImageView;
     private Button mCreateFlockButton;
     private Button mChooseImageButton;
     private EditText mFlockNameText;
@@ -64,6 +65,7 @@ public class CreateFlockFragment extends GeeseFragment {
         mCreateFlockButton = (Button) view.findViewById(R.id.create_flock_button);
         mChooseImageButton = (Button) view.findViewById(R.id.choose_image_button);
         mFlockNameText = (EditText) view.findViewById(R.id.create_flock_name);
+        mFlockImageView = (ImageView) view.findViewById(R.id.create_flock_image);
     }
 
     @Override
@@ -90,19 +92,14 @@ public class CreateFlockFragment extends GeeseFragment {
             return;
         }
 
-        //Initialize ImageView
-        ImageView imageView = (ImageView) parentActivity.findViewById(R.id.create_flock_image);
-
         // TODO: placeholder and error, also beautify
         //Loading image from below url into imageView
-        Picasso.with(parentActivity)
-                .load(mUploadedImageUrl.getPath())
+        Picasso.with(getContext())
+                .load(mUploadedImageUrl.toString())
                 //.placeholder(R.drawable.ic_placeholder) // optional
                 //.error(R.drawable.ic_error_fallback) // optional
                 //.resize(250, 200)                        // optional
-                .into(imageView);
-
-        imageView.invalidate();
+                .into(mFlockImageView);
     }
 
     public void setupChooseImageButton() {
@@ -192,7 +189,7 @@ public class CreateFlockFragment extends GeeseFragment {
                         .longitude(longitude)
                         .radius(1.0)
                         .score(0)
-                        .imageUri(mUploadedImageUrl.getPath())
+                        .imageUri(mUploadedImageUrl.toString())
                         .members(1)
                         .build();
 
@@ -201,7 +198,9 @@ public class CreateFlockFragment extends GeeseFragment {
                     @Override
                     public void onResponse(Response<Void> response, Retrofit retrofit) {
                         if (response.isSuccess()) {
-                            //attemptLogin(username, email, hashedPassword);
+                            Toast.makeText(getContext().getApplicationContext(), "Flock created!", Toast.LENGTH_SHORT).show();
+
+                            parentActivity.getSupportFragmentManager().popBackStack();
                         } else {
                             Log.e(LOG_TAG, "Create Flock failed!");
                             Log.e(LOG_TAG, response.raw().toString());
@@ -292,8 +291,9 @@ public class CreateFlockFragment extends GeeseFragment {
             GeneratePresignedUrlRequest urlRequest = new GeneratePresignedUrlRequest(
                     Constants.PICTURE_BUCKET, mRemoteName);
             urlRequest.setExpiration( new Date( System.currentTimeMillis() + 3600000 ));  // Added an hour's worth of milliseconds to the current time.
-            urlRequest.setResponseHeaders( override );
+            urlRequest.setResponseHeaders(override);
             mUploadedImageUrl = s3.generatePresignedUrl( urlRequest );
+            Log.e(LOG_TAG, "uploaded URL: " + mUploadedImageUrl.toString());
 
             long result = 0;
 
@@ -307,8 +307,10 @@ public class CreateFlockFragment extends GeeseFragment {
 
         protected void onPostExecute(Long result) {
             //showDialog("Uploaded " + result + " bytes");
+            Log.e(LOG_TAG, "post executed");
             if (result == 0) {
                 Toast.makeText(getContext().getApplicationContext(), "Upload successful", Toast.LENGTH_SHORT).show();
+                Log.e(LOG_TAG, "uploaded URL post execute: " + mUploadedImageUrl.toString());
                 setupFlockImage();
             } else {
                 Toast.makeText(getContext().getApplicationContext(), "Upload failed", Toast.LENGTH_SHORT).show();

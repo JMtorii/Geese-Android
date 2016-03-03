@@ -9,7 +9,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Post {
 
-//    {"id":0,"flockid":0,"authorid":0,"title":null,"description":null,"pinned":false,"score":0,"createdTime":null,"startTime":null,"endTime":null}
     @JsonProperty("id")
     private int id;
 
@@ -34,8 +33,8 @@ public class Post {
     //TODO: temp thing till we get what the user has voted for back from the server
     public int vote;
 
-    //TODO: temp comment count. should be getting this from the server
-    public int comments = 4;
+    @JsonProperty("commentCount")
+    private int commentCount;
 
     private Post(Builder builder) {
         builder.id = id;
@@ -45,6 +44,7 @@ public class Post {
         builder.description = description;
         builder.pinned = pinned;
         builder.score = score;
+        builder.commentCount = commentCount;
     }
 
     public Post() {}
@@ -81,6 +81,10 @@ public class Post {
         this.score = score;
     }
 
+    public int getCommentCount() {
+        return commentCount;
+    }
+
     public static class Builder {
         private int id;
         private int flockid;
@@ -89,6 +93,7 @@ public class Post {
         private String description;
         private boolean pinned;
         private int score;
+        private int commentCount;
 
         public Builder() {}
 
@@ -125,6 +130,11 @@ public class Post {
         public Builder score(int score) {
             this.score = score;
             return this;
+        }
+
+        public Builder commentCount(int commentCount) {
+            this.commentCount = commentCount;
+            return  this;
         }
 
         public Post build() {

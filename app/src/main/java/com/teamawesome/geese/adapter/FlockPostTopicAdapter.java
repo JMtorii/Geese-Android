@@ -103,7 +103,7 @@ public class FlockPostTopicAdapter extends ArrayAdapter<Post> {
             viewHolder.description.setVisibility(View.VISIBLE);
         }
 
-        viewHolder.comments.setText(String.format(getContext().getResources().getString(R.string.comment_count_format), post.comments));
+        viewHolder.comments.setText(String.format(getContext().getResources().getString(R.string.comment_count_format), post.getCommentCount()));
 
         viewHolder.upvoteDownvoteView.setTag(position);
         viewHolder.upvoteDownvoteView.setVotesText(Integer.toString(post.getScore() + post.vote));

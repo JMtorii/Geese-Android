@@ -108,7 +108,7 @@ public class FlockPostDetailsFragment extends Fragment {
         } else {
             description.setVisibility(View.VISIBLE);
         }
-        comments.setText(String.format(getResources().getString(R.string.comment_count_format), mPostTopic.comments));
+        comments.setText(String.format(getResources().getString(R.string.comment_count_format), mPostTopic.getCommentCount()));
 
         //uncomment when we have images for posts
 //        if (mPostTopic.getImageURL() != null) {

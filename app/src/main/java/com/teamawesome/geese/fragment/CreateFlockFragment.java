@@ -20,7 +20,9 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.amazonaws.auth.BasicAWSCredentials;
+import com.amazonaws.mobileconnectors.s3.transferutility.TransferListener;
 import com.amazonaws.mobileconnectors.s3.transferutility.TransferObserver;
+import com.amazonaws.mobileconnectors.s3.transferutility.TransferState;
 import com.amazonaws.mobileconnectors.s3.transferutility.TransferUtility;
 import com.amazonaws.regions.Region;
 import com.amazonaws.regions.Regions;
@@ -264,7 +266,7 @@ public class CreateFlockFragment extends GeeseFragment {
     private class UploadToS3 extends AsyncTask<File, Integer, Long> {
         protected Long doInBackground(File... files) {
             // Create an S3 client
-            String accessKey, secretKey;
+//            String accessKey, secretKey;
             BasicAWSCredentials bac = new BasicAWSCredentials("AKIAI67CPRBHXAGTO33A",
                     "wxETPVLbptOst5dn4C9MBHnrJuc5vb+scnOE7fBd");
             AmazonS3 s3 = new AmazonS3Client(bac);
@@ -293,28 +295,29 @@ public class CreateFlockFragment extends GeeseFragment {
             urlRequest.setExpiration( new Date( System.currentTimeMillis() + 3600000 ));  // Added an hour's worth of milliseconds to the current time.
             urlRequest.setResponseHeaders(override);
             mUploadedImageUrl = s3.generatePresignedUrl( urlRequest );
-            Log.e(LOG_TAG, "uploaded URL: " + mUploadedImageUrl.toString());
+            observer.setTransferListener(new TransferListener() {
+                @Override
+                public void onStateChanged(int id, TransferState state) {
+                    Toast.makeText(getContext().getApplicationContext(), "Upload successful", Toast.LENGTH_SHORT).show();
+                    setupFlockImage();
+                }
+
+                @Override
+                public void onProgressChanged(int id, long bytesCurrent, long bytesTotal) {
+//                    int percentage = (int) (bytesCurrent / bytesTotal * 100);
+//                    progress.setProgress(percentage);
+                    //Display percentage transfered to user
+                }
+
+                @Override
+                public void onError(int id, Exception ex) {
+                    Toast.makeText(getContext().getApplicationContext(), "Upload failed", Toast.LENGTH_SHORT).show();
+                }
+
+            });
 
             long result = 0;
-
             return result;
-        }
-
-        // TODO: Progress bar goes here...
-        protected void onProgressUpdate(Integer... progress) {
-            //setProgressPercent(progress[0]);
-        }
-
-        protected void onPostExecute(Long result) {
-            //showDialog("Uploaded " + result + " bytes");
-            Log.e(LOG_TAG, "post executed");
-            if (result == 0) {
-                Toast.makeText(getContext().getApplicationContext(), "Upload successful", Toast.LENGTH_SHORT).show();
-                Log.e(LOG_TAG, "uploaded URL post execute: " + mUploadedImageUrl.toString());
-                setupFlockImage();
-            } else {
-                Toast.makeText(getContext().getApplicationContext(), "Upload failed", Toast.LENGTH_SHORT).show();
-            }
         }
     }
 }

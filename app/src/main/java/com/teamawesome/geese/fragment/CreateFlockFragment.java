@@ -28,6 +28,7 @@ import com.teamawesome.geese.util.Constants;
 import com.teamawesome.geese.util.ImageUploader;
 import com.teamawesome.geese.util.RestClient;
 
+import java.io.File;
 import java.net.URL;
 
 import retrofit.Call;
@@ -51,43 +52,10 @@ public class CreateFlockFragment extends GeeseFragment {
     private String mUploadedImageUrlStr = null;
     private EditText mFlockDescriptionText;
     private File mImageFile = null;
-    private URL mUploadedImageUrl = null;
     private String mRemoteName = null;
 
     private ImageUploader mUploader;
     private TransferListener mTransferListener;
-
-    public CreateFlockFragment() {
-        mUploader = new ImageUploader(parentActivity.getApplicationContext(),
-                mTransferListener);
-        /**
-         * Handle updates from uploading the image file
-         */
-        mTransferListener = new TransferListener() {
-            @Override
-            public void onStateChanged(int id, TransferState state) {
-                if (state == TransferState.COMPLETED) {
-                    Toast.makeText(parentActivity.getApplicationContext(),
-                            "Upload successful", Toast.LENGTH_SHORT).show();
-                    mUploadedImageUrlStr = mUploader.getUploadedImageUrl();
-                    setupFlockImage();
-                }
-            }
-
-            @Override
-            public void onProgressChanged(int id, long bytesCurrent, long bytesTotal) {
-//                    int percentage = (int) (bytesCurrent / bytesTotal * 100);
-//                    progress.setProgress(percentage);
-                //Display percentage transfered to user
-            }
-
-            @Override
-            public void onError(int id, Exception ex) {
-                Toast.makeText(parentActivity.getApplicationContext(),
-                        "Upload failed", Toast.LENGTH_SHORT).show();
-            }
-        };
-    }
 
     private void findWidgets(View view) {
         mCreateFlockButton = (Button) view.findViewById(R.id.create_flock_button);
@@ -104,6 +72,37 @@ public class CreateFlockFragment extends GeeseFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        /**
+         * Handle updates from uploading the image file
+         */
+        mTransferListener = new TransferListener() {
+            @Override
+            public void onStateChanged(int id, TransferState state) {
+                if (state == TransferState.COMPLETED) {
+                    Toast.makeText(parentActivity.getApplicationContext(),
+                            "Upload successful", Toast.LENGTH_SHORT).show();
+                    mUploadedImageUrlStr = mUploader.getUploadedImageUrl();
+                    refreshFlockImage();
+                }
+            }
+
+            @Override
+            public void onProgressChanged(int id, long bytesCurrent, long bytesTotal) {
+//                    int percentage = (int) (bytesCurrent / bytesTotal * 100);
+//                    progress.setProgress(percentage);
+                //Display percentage transfered to user
+            }
+
+            @Override
+            public void onError(int id, Exception ex) {
+                Toast.makeText(parentActivity.getApplicationContext(),
+                        "Upload failed", Toast.LENGTH_SHORT).show();
+            }
+        };
+
+        mUploader = new ImageUploader(parentActivity.getApplicationContext(),
+                mTransferListener);
     }
 
     @Override
@@ -114,18 +113,18 @@ public class CreateFlockFragment extends GeeseFragment {
         findWidgets(mView);
         setupChooseImageButton();
         setupCreateFlockButton();
-        setupFlockImage();
+        refreshFlockImage();
 
         return view;
     }
 
-    public void setupFlockImage() {
-        if (mUploadedImageUrl == null) {
+    public void refreshFlockImage() {
+        if (mUploadedImageUrlStr == null) {
             mFlockImageView.setVisibility(View.GONE);
             return;
         }
         Picasso.with(getContext())
-                .load(mUploadedImageUrl.toString())
+                .load(mUploadedImageUrlStr)
                 .resize(300, 240)
                 .centerCrop()
                 .into(mFlockImageView);
@@ -183,7 +182,6 @@ public class CreateFlockFragment extends GeeseFragment {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        String imageFilePath = null;
         if (requestCode == PHOTO_SELECTED && resultCode == Activity.RESULT_OK && null != data) {
             mUploader.uploadPhotoSelection(data.getData());
         }

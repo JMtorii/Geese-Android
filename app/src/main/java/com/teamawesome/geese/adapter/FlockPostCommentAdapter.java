@@ -11,6 +11,7 @@ import android.widget.TextView;
 import com.squareup.okhttp.ResponseBody;
 import com.teamawesome.geese.R;
 import com.teamawesome.geese.rest.model.Comment;
+import com.teamawesome.geese.rest.model.UserVote;
 import com.teamawesome.geese.util.RestClient;
 import com.teamawesome.geese.view.UpvoteDownvoteListener;
 import com.teamawesome.geese.view.UpvoteDownvoteView;
@@ -38,32 +39,48 @@ public class FlockPostCommentAdapter extends ArrayAdapter<Comment> {
         public void onUpvoteClicked(UpvoteDownvoteView v) {
             int index = (Integer)v.getTag();
             Comment comment = getItem(index);
-            if (comment.vote != 1) {
-                comment.vote = 1;
+            UserVote userVote = comment.getUserVote();
+            int currentVote = userVote.getValue();
+            if (currentVote != 1) {
+                if (currentVote == 0) {
+                    comment.setScore(comment.getScore() + 1);
+                } else {
+                    comment.setScore(comment.getScore() + 2);
+                }
+                userVote.setValue(1);
                 v.setUpVoted();
                 voteForComment(comment.getCommentId(), 1);
             } else {
-                comment.vote = 0;
+                userVote.setValue(0);
+                comment.setScore(comment.getScore() - 1);
                 v.setNotVoted();
                 voteForComment(comment.getCommentId(), 0);
             }
-            v.setVotesText(Integer.toString(comment.getScore() + comment.vote));
+            v.setVotesText(Integer.toString(comment.getScore()));
         }
 
         @Override
         public void onDownvoteClicked(UpvoteDownvoteView v) {
             int index = (Integer)v.getTag();
             Comment comment = getItem(index);
-            if (comment.vote != -1) {
-                comment.vote = -1;
+            UserVote userVote = comment.getUserVote();
+            int currentVote = userVote.getValue();
+            if (currentVote != -1) {
+                if (currentVote == 0) {
+                    comment.setScore(comment.getScore() - 1);
+                } else {
+                    comment.setScore(comment.getScore() - 2);
+                }
+                userVote.setValue(-1);
                 v.setDownVoted();
                 voteForComment(comment.getCommentId(), -1);
             } else {
-                comment.vote = 0;
+                userVote.setValue(0);
+                comment.setScore(comment.getScore() + 1);
                 v.setNotVoted();
                 voteForComment(comment.getCommentId(), 0);
             }
-            v.setVotesText(Integer.toString(comment.getScore() + comment.vote));
+            v.setVotesText(Integer.toString(comment.getScore()));
         }
     };
 
@@ -89,10 +106,10 @@ public class FlockPostCommentAdapter extends ArrayAdapter<Comment> {
         viewHolder.position = position;
         viewHolder.commentView.setText(comment.getText());
         viewHolder.upvoteDownvoteView.setTag(position);
-        viewHolder.upvoteDownvoteView.setVotesText(Integer.toString(comment.getScore() + comment.vote));
-        if (comment.vote == 1) {
+        viewHolder.upvoteDownvoteView.setVotesText(Integer.toString(comment.getScore()));
+        if (comment.getUserVote().getValue() == 1) {
             viewHolder.upvoteDownvoteView.setUpVoted();
-        } else if (comment.vote == -1) {
+        } else if (comment.getUserVote().getValue() == -1) {
             viewHolder.upvoteDownvoteView.setDownVoted();
         } else {
             viewHolder.upvoteDownvoteView.setNotVoted();

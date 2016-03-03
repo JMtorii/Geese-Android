@@ -17,6 +17,7 @@ import com.teamawesome.geese.activity.MainActivity;
 import com.teamawesome.geese.adapter.FlockPostCommentAdapter;
 import com.teamawesome.geese.rest.model.Comment;
 import com.teamawesome.geese.rest.model.Post;
+import com.teamawesome.geese.rest.model.UserVote;
 import com.teamawesome.geese.util.Constants;
 import com.teamawesome.geese.util.RestClient;
 import com.teamawesome.geese.view.UpvoteDownvoteListener;
@@ -65,36 +66,52 @@ public class FlockPostDetailsFragment extends Fragment {
         upvoteDownvoteView.setUpvoteDownvoteListener(new UpvoteDownvoteListener() {
             @Override
             public void onUpvoteClicked(UpvoteDownvoteView v) {
-                if (mPostTopic.vote != 1) {
-                    mPostTopic.vote = 1;
+                UserVote userVote = mPostTopic.getUserVote();
+                int currentVote = userVote.getValue();
+                if (currentVote != 1) {
+                    if (currentVote == 0) {
+                        mPostTopic.setScore(mPostTopic.getScore() + 1);
+                    } else {
+                        mPostTopic.setScore(mPostTopic.getScore() + 2);
+                    }
+                    userVote.setValue(1);
                     v.setUpVoted();
                     voteForPost(mPostTopic.getId(), 1);
                 } else {
-                    mPostTopic.vote = 0;
+                    userVote.setValue(0);
+                    mPostTopic.setScore(mPostTopic.getScore() - 1);
                     v.setNotVoted();
                     voteForPost(mPostTopic.getId(), 0);
                 }
-                v.setVotesText(Integer.toString(mPostTopic.getScore() + mPostTopic.vote));
+                v.setVotesText(Integer.toString(mPostTopic.getScore()));
             }
 
             @Override
             public void onDownvoteClicked(UpvoteDownvoteView v) {
-                if (mPostTopic.vote != -1) {
-                    mPostTopic.vote = -1;
+                UserVote userVote = mPostTopic.getUserVote();
+                int currentVote = userVote.getValue();
+                if (currentVote != -1) {
+                    if (currentVote == 0) {
+                        mPostTopic.setScore(mPostTopic.getScore() - 1);
+                    } else {
+                        mPostTopic.setScore(mPostTopic.getScore() - 2);
+                    }
+                    userVote.setValue(-1);
                     v.setDownVoted();
                     voteForPost(mPostTopic.getId(), -1);
                 } else {
-                    mPostTopic.vote = 0;
+                    userVote.setValue(0);
+                    mPostTopic.setScore(mPostTopic.getScore() + 1);
                     v.setNotVoted();
                     voteForPost(mPostTopic.getId(), 0);
                 }
-                v.setVotesText(Integer.toString(mPostTopic.getScore() + mPostTopic.vote));
+                v.setVotesText(Integer.toString(mPostTopic.getScore()));
             }
         });
-        upvoteDownvoteView.setVotesText(Integer.toString(mPostTopic.getScore() + mPostTopic.vote));
-        if (mPostTopic.vote == 1) {
+        upvoteDownvoteView.setVotesText(Integer.toString(mPostTopic.getScore()));
+        if (mPostTopic.getUserVote().getValue() == 1) {
             upvoteDownvoteView.setUpVoted();
-        } else if (mPostTopic.vote == -1) {
+        } else if (mPostTopic.getUserVote().getValue() == -1) {
             upvoteDownvoteView.setDownVoted();
         } else {
             upvoteDownvoteView.setNotVoted();

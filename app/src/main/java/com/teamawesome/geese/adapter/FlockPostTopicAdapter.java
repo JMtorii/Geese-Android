@@ -84,7 +84,7 @@ public class FlockPostTopicAdapter extends ArrayAdapter<Post> {
                 v.setNotVoted();
                 voteForPost(postTopic.getId(), 0);
             }
-            v.setVotesText(Integer.toString(postTopic.getScore() + postTopic.vote));
+            v.setVotesText(Integer.toString(postTopic.getScore()));
         }
     };
 

@@ -33,9 +33,6 @@ public class Post {
     @JsonProperty("userVote")
     private UserVote userVote;
 
-    //TODO: temp thing till we get what the user has voted for back from the server
-    public int vote;
-
     @JsonProperty("commentCount")
     private int commentCount;
 

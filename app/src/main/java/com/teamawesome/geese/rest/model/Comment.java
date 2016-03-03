@@ -8,23 +8,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Comment {
-//    {
-//        "id": 2,
-//        "postid": 9,
-//        "authorid": 1,
-//        "text": "First",
-//        "score": 222,
-//        "createdTime": [
-//            2016,
-//            1,
-//            20,
-//            19,
-//            32,
-//            12
-//        ],
-//        "startTime": null,
-//        "endTime": null
-//    }
+
     @JsonProperty("id")
     private int commentId;
 
@@ -40,8 +24,8 @@ public class Comment {
     @JsonProperty("score")
     private int score;
 
-    //TODO: temp field to keep track of the users vote, till we get it back from the server
-    public int vote = 0;
+    @JsonProperty("userVote")
+    private UserVote userVote;
 
     //dummy constructor for jackson
     public Comment() {}
@@ -52,6 +36,7 @@ public class Comment {
         this.authorId = builder.authorId;
         this.text = builder.text;
         this.score = builder.score;
+        this.userVote = builder.userVote;
     }
 
     public int getCommentId() {
@@ -78,12 +63,17 @@ public class Comment {
         this.score = score;
     }
 
+    public UserVote getUserVote() {
+        return userVote;
+    }
+
     public static class Builder {
         private int commentId;
         private int postId;
         private int authorId;
         private String text;
         private int score;
+        private UserVote userVote;
 
         public Builder() {}
 
@@ -109,6 +99,11 @@ public class Comment {
 
         public Builder score(int score) {
             this.score = score;
+            return this;
+        }
+
+        public Builder userVote(UserVote userVote) {
+            this.userVote = userVote;
             return this;
         }
 

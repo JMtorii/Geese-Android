@@ -2,9 +2,6 @@ package com.teamawesome.geese.rest.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.teamawesome.geese.util.DateUtil;
-
-import java.util.List;
 
 /**
  * Created by lcolam on 11/10/15.
@@ -38,12 +35,6 @@ public class Post {
 
     @JsonProperty("commentCount")
     private int commentCount;
-
-    @JsonProperty("createdTime")
-    private List<Integer> dateArray;
-
-    @JsonProperty("authorName")
-    private String authorName;
 
     private Post(Builder builder) {
         builder.id = id;
@@ -101,14 +92,6 @@ public class Post {
 
     public UserVote getUserVote() {
         return userVote;
-    }
-
-    public String getAuthorName() {
-        return authorName;
-    }
-
-    public String getCreatedDate() {
-        return DateUtil.getCreatedDateFromDateArray(this.dateArray);
     }
 
     public static class Builder {

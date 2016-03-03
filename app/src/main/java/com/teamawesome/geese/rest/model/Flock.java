@@ -5,8 +5,16 @@ import android.graphics.Bitmap;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.teamawesome.geese.util.DateUtil;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 
+import org.json.JSONArray;
+
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -133,7 +141,13 @@ public class Flock {
     public String getImageUri() { return imageUri; }
 
     public String getCreatedDate() {
-        return DateUtil.getCreatedDateFromDateArray(this.dateArray);
+        Calendar cal = Calendar.getInstance();
+        cal.set(Calendar.YEAR, this.dateArray.get(0));
+        cal.set(Calendar.MONTH, this.dateArray.get(1));
+        cal.set(Calendar.DAY_OF_MONTH, this.dateArray.get(2));
+        SimpleDateFormat format = new SimpleDateFormat("MMM dd, yyyy");
+        String date = format.format(Date.parse(cal.getTime().toString()));
+        return date;
     }
 
     public static class Builder {

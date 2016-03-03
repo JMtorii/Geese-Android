@@ -63,11 +63,6 @@ public class LoginActivity extends Activity {
         setupSignupButton();
         setupFacebookLogin();
         setupTextClickables();
-
-        // TODO: Remove this...
-        usernameText.setText("lcolam");
-        emailText.setText("lcolam@uwaterloo.ca");
-        passwordText.setText("this#is*a&PassworD2");
     }
 
     @Override

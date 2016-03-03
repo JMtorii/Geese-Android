@@ -1,6 +1,7 @@
 package com.teamawesome.geese.adapter;
 
 import android.content.Context;
+import android.content.res.Resources;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -32,6 +33,7 @@ public class FlockPostTopicAdapter extends ArrayAdapter<Post> {
         TextView title;
         TextView description;
         ImageView image;
+        TextView metadata;
         TextView comments;
         UpvoteDownvoteView upvoteDownvoteView;
         int position;
@@ -103,6 +105,7 @@ public class FlockPostTopicAdapter extends ArrayAdapter<Post> {
             viewHolder.title = (TextView)convertView.findViewById(R.id.flock_post_topic_title);
             viewHolder.description = (TextView)convertView.findViewById(R.id.flock_post_topic_description);
             viewHolder.image = (ImageView)convertView.findViewById(R.id.flock_post_topic_image);
+            viewHolder.metadata = (TextView)convertView.findViewById(R.id.flock_post_topic_metadata);
             viewHolder.comments = (TextView)convertView.findViewById(R.id.flock_post_topic_comment_count);
             viewHolder.upvoteDownvoteView = (UpvoteDownvoteView)convertView.findViewById(R.id.flock_post_topic_upvote_downvote);
             viewHolder.upvoteDownvoteView.setUpvoteDownvoteListener(mUpvoteDownvoteListener);
@@ -120,7 +123,9 @@ public class FlockPostTopicAdapter extends ArrayAdapter<Post> {
             viewHolder.description.setVisibility(View.VISIBLE);
         }
 
-        viewHolder.comments.setText(String.format(getContext().getResources().getString(R.string.comment_count_format), post.getCommentCount()));
+        Resources resources =  getContext().getResources();
+        viewHolder.metadata.setText(String.format(resources.getString(R.string.comment_metadata), post.getCreatedDate(), post.getAuthorName()));
+        viewHolder.comments.setText(String.format(resources.getString(R.string.comment_count_format), post.getCommentCount()));
 
         viewHolder.upvoteDownvoteView.setTag(position);
         viewHolder.upvoteDownvoteView.setVotesText(Integer.toString(post.getScore()));

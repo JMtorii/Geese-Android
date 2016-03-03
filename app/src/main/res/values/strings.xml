@@ -39,5 +39,6 @@
 
     <!-- Flock Posts -->
     <string name="comment_count_format">Comments: %d</string>
+    <string name="comment_metadata">Created on %1$s by %2$s</string>
 
 </resources>

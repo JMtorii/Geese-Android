@@ -5,15 +5,21 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/whiteBackground">
-    <ListView
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:id="@+id/flock_post_details_list"
-        android:background="@color/whiteBackground"
-        android:divider="@color/separatorColour"
-        android:dividerHeight="1px"/>
-    <com.melnykov.fab.FloatingActionButton
-        style="@style/FloatingActionButtonStyle"
-        fab:fab_colorNormal="@color/primary" />
-    <include layout="@layout/flock_post_topic_item"/>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ListView
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:id="@+id/flock_post_details_list"
+            android:background="@color/whiteBackground"
+            android:divider="@color/separatorColour"
+            android:dividerHeight="1px"/>
+        <com.melnykov.fab.FloatingActionButton
+            style="@style/FloatingActionButtonStyle"
+            fab:fab_colorNormal="@color/primary" />
+        <include layout="@layout/flock_post_topic_item"/>
+    </FrameLayout>
 </android.support.v4.widget.SwipeRefreshLayout>

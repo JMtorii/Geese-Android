@@ -12,7 +12,6 @@ import android.view.ViewGroup;
 import com.astuetz.PagerSlidingTabStrip;
 import com.teamawesome.geese.R;
 import com.teamawesome.geese.rest.model.Flock;
-import com.teamawesome.geese.util.Constants;
 
 /**
  * Created by JMtorii on 15-07-14.
@@ -25,12 +24,8 @@ public class MainFlockFragment extends Fragment {
 
     public FlockFragment fragments[] = {
             FlockProfileFragment.newInstance(0),
-            FlockPostFragment.newInstance(1),
-            FlockEventFragment.newInstance(2)
+            FlockPostFragment.newInstance(1)
     };
-
-
-    private final static String TAG_FRAGMENT = Constants.FLOCK_FRAGMENT_TAG;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -55,7 +50,7 @@ public class MainFlockFragment extends Fragment {
     public void onDestroyView() {
         super.onDestroyView();
         // remove all child fragments, otherwise fragment manager tries to reuse the fragments and fucks up.
-        getFragmentManager().beginTransaction().remove(fragments[0]).remove(fragments[1]).remove(fragments[2]).commit();
+        getFragmentManager().beginTransaction().remove(fragments[0]).remove(fragments[1]).commit();
     }
 
     public void setFlock(Flock f) {
@@ -66,8 +61,7 @@ public class MainFlockFragment extends Fragment {
 
         private final String[] TITLES = {
                 "Profile",
-                "Post",
-                "Events"
+                "Post"
         };
 
         public PagerAdapter(FragmentManager fm) {

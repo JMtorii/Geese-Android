@@ -17,6 +17,9 @@ import com.teamawesome.geese.activity.MainActivity;
 import com.teamawesome.geese.rest.model.CreatePostRequestBody;
 import com.teamawesome.geese.util.RestClient;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import retrofit.Callback;
 import retrofit.Response;
 import retrofit.Retrofit;
@@ -30,6 +33,7 @@ public class FlockPostTopicCreateFragment extends Fragment {
     private EditText mDescriptionField;
     private Button mCreatePostButton;
 
+    private List<OnPostCreatedListener> listeners = new ArrayList<>();
     private int mFlockId;
 
     @Override
@@ -55,6 +59,14 @@ public class FlockPostTopicCreateFragment extends Fragment {
         mFlockId = flockId;
     }
 
+    public void addListener(OnPostCreatedListener listener) {
+        listeners.add(listener);
+    }
+
+    public void removeListener(OnPostCreatedListener listener) {
+        listeners.remove(listener);
+    }
+
     private void createPost() {
         mCreatePostButton.setEnabled(false);
         CreatePostRequestBody requestBody = new CreatePostRequestBody(mFlockId, mTitleField.getText().toString(), mDescriptionField.getText().toString());
@@ -65,6 +77,9 @@ public class FlockPostTopicCreateFragment extends Fragment {
                     @Override
                     public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
                         if (response.isSuccess()) {
+                            for (OnPostCreatedListener listener : listeners) {
+                                listener.onPostCreated();
+                            }
                             //TODO: add post to topic fragment
                             MainActivity mainActivity = (MainActivity) getActivity();
                             View view = mainActivity.getCurrentFocus();
@@ -88,5 +103,9 @@ public class FlockPostTopicCreateFragment extends Fragment {
                         Log.e("PostCeate", "Create post failed " + t.getMessage());
                     }
                 });
+    }
+
+    public interface OnPostCreatedListener {
+        void onPostCreated();
     }
 }

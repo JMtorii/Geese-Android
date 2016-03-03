@@ -66,6 +66,12 @@ public class FlockPostFragment extends FlockFragment {
                 FlockPostDetailsFragment fragment = (FlockPostDetailsFragment) getFragmentManager().findFragmentByTag(Constants.FLOCK_POST_DETAILS_FRAGMENT_TAG);
                 if (fragment == null) {
                     fragment = new FlockPostDetailsFragment();
+                    fragment.addListener(new FlockPostDetailsFragment.OnPostVoteChangedListener() {
+                        @Override
+                        public void onPostVoteChanged() {
+                            mPostAdapter.notifyDataSetChanged();
+                        }
+                    });
                 }
                 if (position >= mPostTopics.size()) {
                     // the footer counts as an item clicked
@@ -94,7 +100,14 @@ public class FlockPostFragment extends FlockFragment {
                 FlockPostTopicCreateFragment fragment = (FlockPostTopicCreateFragment) getFragmentManager().findFragmentByTag(Constants.FLOCK_POST_TOPIC_CREATE_FRAGMENT);
                 if (fragment == null) {
                     fragment = new FlockPostTopicCreateFragment();
+                    fragment.addListener(new FlockPostTopicCreateFragment.OnPostCreatedListener() {
+                        @Override
+                        public void onPostCreated() {
+                            fetchPostTopics();
+                        }
+                    });
                 }
+
                 fragment.setFlockId(mFlock.getId());
                 MainActivity mainActivity = (MainActivity) getActivity();
                 mainActivity.switchFragment(

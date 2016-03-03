@@ -42,6 +42,7 @@ public class FlockPostDetailsFragment extends Fragment {
     private Post mPostTopic;
     private ArrayList<Comment> mPostComments;
     private FlockPostCommentAdapter mAdapter;
+    private List<OnPostVoteChangedListener> listeners = new ArrayList<>();
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -84,6 +85,9 @@ public class FlockPostDetailsFragment extends Fragment {
                     voteForPost(mPostTopic.getId(), 0);
                 }
                 v.setVotesText(Integer.toString(mPostTopic.getScore()));
+                for (OnPostVoteChangedListener listener : listeners) {
+                    listener.onPostVoteChanged();
+                }
             }
 
             @Override
@@ -106,6 +110,9 @@ public class FlockPostDetailsFragment extends Fragment {
                     voteForPost(mPostTopic.getId(), 0);
                 }
                 v.setVotesText(Integer.toString(mPostTopic.getScore()));
+                for (OnPostVoteChangedListener listener : listeners) {
+                    listener.onPostVoteChanged();
+                }
             }
         });
         upvoteDownvoteView.setVotesText(Integer.toString(mPostTopic.getScore()));
@@ -165,6 +172,12 @@ public class FlockPostDetailsFragment extends Fragment {
                 FlockPostCommentCreateFragment fragment = (FlockPostCommentCreateFragment) getFragmentManager().findFragmentByTag(Constants.FLOCK_POST_COMMENT_CREATE_FRAGMENT);
                 if (fragment == null) {
                     fragment = new FlockPostCommentCreateFragment();
+                    fragment.addListener(new FlockPostCommentCreateFragment.OnCommentCreatedListener() {
+                        @Override
+                        public void onCommentCreated() {
+                            fetchPostComments();
+                        }
+                    });
                 }
                 fragment.setPostId(mPostTopic.getId());
                 MainActivity mainActivity = (MainActivity) getActivity();
@@ -191,6 +204,10 @@ public class FlockPostDetailsFragment extends Fragment {
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+    }
+
+    public void addListener(OnPostVoteChangedListener listener) {
+        listeners.add(listener);
     }
 
     private void fetchPostComments() {
@@ -247,5 +264,8 @@ public class FlockPostDetailsFragment extends Fragment {
         });
     }
 
+    public interface OnPostVoteChangedListener {
+        void onPostVoteChanged();
+    }
 }
 

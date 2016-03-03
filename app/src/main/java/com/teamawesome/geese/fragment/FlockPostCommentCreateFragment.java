@@ -17,6 +17,9 @@ import com.teamawesome.geese.activity.MainActivity;
 import com.teamawesome.geese.rest.model.CreateCommentRequestBody;
 import com.teamawesome.geese.util.RestClient;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import retrofit.Callback;
 import retrofit.Response;
 import retrofit.Retrofit;
@@ -28,6 +31,8 @@ public class FlockPostCommentCreateFragment extends Fragment {
 
     private EditText mCommentField;
     private Button mCreateCommentButton;
+
+    private List<OnCommentCreatedListener> listeners = new ArrayList<>();
 
     private int mPostId;
 
@@ -53,6 +58,14 @@ public class FlockPostCommentCreateFragment extends Fragment {
         mPostId = postId;
     }
 
+    public void addListener(OnCommentCreatedListener listener) {
+        listeners.add(listener);
+    }
+
+    public void removeListener(OnCommentCreatedListener listener) {
+        listeners.remove(listener);
+    }
+
     private void createComment() {
         mCreateCommentButton.setEnabled(false);
         CreateCommentRequestBody requestBody = new CreateCommentRequestBody(mPostId, mCommentField.getText().toString());
@@ -63,6 +76,9 @@ public class FlockPostCommentCreateFragment extends Fragment {
                     public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
                         if (response.isSuccess()) {
                             //TODO: add comment to details fragment
+                            for (OnCommentCreatedListener listener : listeners) {
+                                listener.onCommentCreated();
+                            }
                             MainActivity mainActivity = (MainActivity) getActivity();
                             View view = mainActivity.getCurrentFocus();
                             if (view != null) {
@@ -85,5 +101,9 @@ public class FlockPostCommentCreateFragment extends Fragment {
                         Log.e("CommentCeate", "Create comment failed " + t.getMessage());
                     }
                 });
+    }
+
+    public interface OnCommentCreatedListener {
+        void onCommentCreated();
     }
 }

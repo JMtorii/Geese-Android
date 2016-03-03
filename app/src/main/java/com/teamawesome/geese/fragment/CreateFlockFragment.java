@@ -231,10 +231,10 @@ public class CreateFlockFragment extends GeeseFragment {
 
                     @Override
                     public void onFailure(Throwable t) {
-//                        Log.e(loggingTag, "Failed to create goose");
-//                        Log.e(loggingTag, t.getMessage().toString());
-//                        t.printStackTrace();
-//                        Toast.makeText(mContext.getApplicationContext(), "Server down, try again later...", Toast.LENGTH_SHORT).show();
+//                      Log.e(loggingTag, "Failed to create goose");
+//                      Log.e(loggingTag, t.getMessage().toString());
+//                      t.printStackTrace();
+                        Toast.makeText(getContext().getApplicationContext(), "Server down, try again later...", Toast.LENGTH_SHORT).show();
                     }
                 });
             }

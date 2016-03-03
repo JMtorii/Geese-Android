@@ -125,7 +125,7 @@ public class LoginActivity extends Activity {
     }
 
     private void setupFacebookLogin() {
-        List<String> permissionNeeds = Arrays.asList("public_profile", "user_friends", "email", "user_location");
+        List<String> permissionNeeds = Arrays.asList("public_profile", "email");
         facebookLoginButton.setReadPermissions(permissionNeeds);
 
         // Callback registration

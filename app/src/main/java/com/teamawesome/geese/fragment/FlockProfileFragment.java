@@ -93,8 +93,7 @@ public class FlockProfileFragment extends FlockFragment {
                 .into(mFlockProfileImageView);
 
         mFlockInfoCreationDateTextView = (TextView) v.findViewById(R.id.profile_info_creation_date);
-        mFlockInfoCreationDateTextView.setText("Created on " + "January 1, 2016");
-//        mFlockInfoCreationDateTextView.setText("Created on " + mFlock.getCreatedTime());
+        mFlockInfoCreationDateTextView.setText("Created on " + mFlock.getCreatedDate());
 
         mGMapView = (MapView) v.findViewById(R.id.profile_google_map);
         mMapImageView = (ImageView) v.findViewById(R.id.profile_image_map);

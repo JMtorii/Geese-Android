@@ -10,6 +10,7 @@ public final class Constants {
     public static final String PREF_SETTINGS = "PREF_SETTINGS";
     public static final String PREF_ID = "PREF_ID";
 
+    // TODO: MOVE THIS SHIT TO STRINGS.
     public static final String HOME_TITLE = "Home";
     public static final String FAVOURITE_TITLE = "Joined Flocks";
     public static final String SETTING_TITLE = "Setting";

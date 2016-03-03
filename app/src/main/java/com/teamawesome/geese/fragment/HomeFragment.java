@@ -139,7 +139,6 @@ public class HomeFragment extends GeeseFragment {
     }
 
     public void getNearbyFlocks() {
-        // TODO use interceptor instead to add token to all REST calls
         if (useDummyData) {
             // fix for when network requests fail
             flockAdapter.clear();
@@ -195,11 +194,11 @@ public class HomeFragment extends GeeseFragment {
                                     emptyView.setPadding(0, 0, 0, 0);
                                 } else {
                                     // TODO hackity hack hack
-                                    emptyView.setVisibility(View.GONE);
-                                    emptyView.setPadding(0, -1*emptyView.getHeight(), 0, 0);
                                     for (Flock flock : flocks) {
                                         flockAdapter.insert(flock, flockAdapter.getCount());
                                     }
+                                    emptyView.setVisibility(View.GONE);
+                                    emptyView.setPadding(0, -1*emptyView.getHeight(), 0, 0);
                                 }
                             }
 

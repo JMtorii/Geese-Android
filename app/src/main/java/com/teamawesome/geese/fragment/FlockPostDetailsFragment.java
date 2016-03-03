@@ -42,7 +42,7 @@ public class FlockPostDetailsFragment extends Fragment {
     private Post mPostTopic;
     private ArrayList<Comment> mPostComments;
     private FlockPostCommentAdapter mAdapter;
-    private List<OnPostVoteChangedListener> listeners = new ArrayList<>();
+    private List<OnPostUpdatedListener> listeners = new ArrayList<>();
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -85,9 +85,7 @@ public class FlockPostDetailsFragment extends Fragment {
                     voteForPost(mPostTopic.getId(), 0);
                 }
                 v.setVotesText(Integer.toString(mPostTopic.getScore()));
-                for (OnPostVoteChangedListener listener : listeners) {
-                    listener.onPostVoteChanged();
-                }
+                notifyListeners();
             }
 
             @Override
@@ -110,9 +108,7 @@ public class FlockPostDetailsFragment extends Fragment {
                     voteForPost(mPostTopic.getId(), 0);
                 }
                 v.setVotesText(Integer.toString(mPostTopic.getScore()));
-                for (OnPostVoteChangedListener listener : listeners) {
-                    listener.onPostVoteChanged();
-                }
+                notifyListeners();
             }
         });
         upvoteDownvoteView.setVotesText(Integer.toString(mPostTopic.getScore()));
@@ -176,6 +172,12 @@ public class FlockPostDetailsFragment extends Fragment {
                         @Override
                         public void onCommentCreated() {
                             fetchPostComments();
+                            mPostTopic.setCommentCount(mPostTopic.getCommentCount() + 1);
+                            notifyListeners();
+                            if (getView() != null) {
+                                TextView comments = (TextView) getView().findViewById(R.id.flock_post_topic_comment_count);
+                                comments.setText(String.format(getResources().getString(R.string.comment_count_format), mPostTopic.getCommentCount()));
+                            }
                         }
                     });
                 }
@@ -206,7 +208,7 @@ public class FlockPostDetailsFragment extends Fragment {
         super.onActivityCreated(savedInstanceState);
     }
 
-    public void addListener(OnPostVoteChangedListener listener) {
+    public void addListener(OnPostUpdatedListener listener) {
         listeners.add(listener);
     }
 
@@ -264,8 +266,14 @@ public class FlockPostDetailsFragment extends Fragment {
         });
     }
 
-    public interface OnPostVoteChangedListener {
-        void onPostVoteChanged();
+    private void notifyListeners() {
+        for (OnPostUpdatedListener listener : listeners) {
+            listener.onPostUpdated();
+        }
+    }
+
+    public interface OnPostUpdatedListener {
+        void onPostUpdated();
     }
 }
 

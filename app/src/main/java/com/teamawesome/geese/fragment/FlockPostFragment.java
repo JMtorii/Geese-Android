@@ -66,9 +66,9 @@ public class FlockPostFragment extends FlockFragment {
                 FlockPostDetailsFragment fragment = (FlockPostDetailsFragment) getFragmentManager().findFragmentByTag(Constants.FLOCK_POST_DETAILS_FRAGMENT_TAG);
                 if (fragment == null) {
                     fragment = new FlockPostDetailsFragment();
-                    fragment.addListener(new FlockPostDetailsFragment.OnPostVoteChangedListener() {
+                    fragment.addListener(new FlockPostDetailsFragment.OnPostUpdatedListener() {
                         @Override
-                        public void onPostVoteChanged() {
+                        public void onPostUpdated() {
                             mPostAdapter.notifyDataSetChanged();
                         }
                     });

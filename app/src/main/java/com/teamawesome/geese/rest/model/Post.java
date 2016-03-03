@@ -86,6 +86,10 @@ public class Post {
         return commentCount;
     }
 
+    public void setCommentCount(int commentCount) {
+        this.commentCount = commentCount;
+    }
+
     public UserVote getUserVote() {
         return userVote;
     }

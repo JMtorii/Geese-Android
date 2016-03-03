@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v4.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:fab="http://schemas.android.com/apk/res-auto"
     android:id="@+id/flock_post_detail_fragment_layout"
     android:layout_width="match_parent"
@@ -16,4 +16,4 @@
         style="@style/FloatingActionButtonStyle"
         fab:fab_colorNormal="@color/primary" />
     <include layout="@layout/flock_post_topic_item"/>
-</FrameLayout>
+</android.support.v4.widget.SwipeRefreshLayout>

@@ -4,6 +4,7 @@ import android.app.FragmentTransaction;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -11,7 +12,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.FrameLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -40,6 +40,7 @@ public class FlockPostFragment extends FlockFragment {
     private int mPosition;
     ArrayList<Post> mPostTopics = new ArrayList<>();
     private ArrayAdapter<Post> mPostAdapter = null;
+    private SwipeRefreshLayout swipeContainer;
 
     private Snackbar snackbar;
 
@@ -61,8 +62,27 @@ public class FlockPostFragment extends FlockFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        FrameLayout frameLayout = (FrameLayout)inflater.inflate(R.layout.fragment_flock_post_topic_list, container, false);
-        ListView listView = (ListView)frameLayout.findViewById(R.id.flock_post_topic_list);
+        View view = inflater.inflate(R.layout.fragment_flock_post_topic_list, container, false);
+
+        swipeContainer = (SwipeRefreshLayout) view.findViewById(R.id.flock_post_topic_list_fragment_layout);
+
+        swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                fetchPostTopics();
+
+                // Your code to refresh the list here.
+                // Make sure you call swipeContainer.setRefreshing(false)
+                // once the network request has completed successfully.
+            }
+        });
+        // Configure the refreshing colors
+        swipeContainer.setColorSchemeResources(android.R.color.holo_blue_bright,
+                android.R.color.holo_green_light,
+                android.R.color.holo_orange_light,
+                android.R.color.holo_red_light);
+
+        ListView listView = (ListView) view.findViewById(R.id.flock_post_topic_list);
         mPostAdapter = new FlockPostTopicAdapter(parentActivity, mPostTopics);
         listView.setAdapter(mPostAdapter);
         fetchPostTopics();
@@ -98,7 +118,7 @@ public class FlockPostFragment extends FlockFragment {
             }
         });
         // attach floating button to listview
-        FloatingActionButton fab = (FloatingActionButton)frameLayout.findViewById(R.id.fab);
+        FloatingActionButton fab = (FloatingActionButton) view.findViewById(R.id.fab);
         fab.attachToListView(listView);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -129,7 +149,7 @@ public class FlockPostFragment extends FlockFragment {
             }
         });
 
-        return frameLayout;
+        return view;
     }
 
     private void fetchPostTopics() {
@@ -155,6 +175,8 @@ public class FlockPostFragment extends FlockFragment {
                         textView.setTextColor(Color.WHITE);
                         textView.setGravity(Gravity.CENTER);
 
+                        swipeContainer.setRefreshing(false);
+
                         snackbar.show();
                     }
 
@@ -171,6 +193,8 @@ public class FlockPostFragment extends FlockFragment {
 
                         mPostAdapter.notifyDataSetChanged();
 //                        swipeContainer.setRefreshing(false);
+
+                        swipeContainer.setRefreshing(false);
                     }
                 });
 

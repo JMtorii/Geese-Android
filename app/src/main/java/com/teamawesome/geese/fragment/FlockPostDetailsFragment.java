@@ -3,6 +3,7 @@ package com.teamawesome.geese.fragment;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -45,6 +46,7 @@ public class FlockPostDetailsFragment extends GeeseFragment {
     private ArrayList<Comment> mPostComments;
     private FlockPostCommentAdapter mAdapter;
     private List<OnPostUpdatedListener> listeners = new ArrayList<>();
+    private SwipeRefreshLayout swipeContainer;
     private Snackbar snackbar;
 
     @Override
@@ -62,6 +64,25 @@ public class FlockPostDetailsFragment extends GeeseFragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_flock_post_details, container, false);
         view.setClickable(true);
+
+        swipeContainer = (SwipeRefreshLayout) view.findViewById(R.id.flock_post_detail_fragment_layout);
+
+        swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                fetchPostComments();
+
+                // Your code to refresh the list here.
+                // Make sure you call swipeContainer.setRefreshing(false)
+                // once the network request has completed successfully.
+            }
+        });
+        // Configure the refreshing colors
+        swipeContainer.setColorSchemeResources(android.R.color.holo_blue_bright,
+                android.R.color.holo_green_light,
+                android.R.color.holo_orange_light,
+                android.R.color.holo_red_light);
+
         TextView title = (TextView)view.findViewById(R.id.flock_post_topic_title);
         TextView description = (TextView)view.findViewById(R.id.flock_post_topic_description);
         final ImageView image = (ImageView)view.findViewById(R.id.flock_post_topic_image);
@@ -240,6 +261,8 @@ public class FlockPostDetailsFragment extends GeeseFragment {
                         textView.setTextColor(Color.WHITE);
                         textView.setGravity(Gravity.CENTER);
 
+                        swipeContainer.setRefreshing(false);
+
                         snackbar.show();
                     }
 
@@ -257,6 +280,7 @@ public class FlockPostDetailsFragment extends GeeseFragment {
 
                         mAdapter.notifyDataSetChanged();
 //                        swipeContainer.setRefreshing(false);
+                        swipeContainer.setRefreshing(false);
                     }
                 });
 

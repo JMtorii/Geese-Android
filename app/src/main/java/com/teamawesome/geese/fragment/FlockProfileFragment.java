@@ -44,7 +44,6 @@ public class FlockProfileFragment extends FlockFragment {
     private int mPosition;
     private TextView mFlockTitleTextView;
     private TextView mFlockInfoMemberCountTextView;
-    private TextView mFlockInfoPrivacyTextView;
     private TextView mFlockInfoDescriptionTextView;
     private RoundedImageView mFlockProfileImageView;
     private TextView mFlockInfoCreationDateTextView;
@@ -80,9 +79,6 @@ public class FlockProfileFragment extends FlockFragment {
 
         mFlockInfoMemberCountTextView = (TextView) v.findViewById(R.id.profile_info_member_count);
         mFlockInfoMemberCountTextView.setText(Integer.toString(mFlock.getMembers()) + " Members");
-
-        mFlockInfoPrivacyTextView = (TextView) v.findViewById(R.id.profile_info_privacy);
-        mFlockInfoPrivacyTextView.setText("Public");
 
         mFlockProfileImageView = (RoundedImageView) v.findViewById(R.id.profile_image);
         String imageURL = mFlock.getImageUri() != null ? mFlock.getImageUri() : "http://justinhackworth.com/canada-goose-01.jpg";

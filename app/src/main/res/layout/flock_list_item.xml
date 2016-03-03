@@ -50,15 +50,8 @@
             <TextView
                 android:id="@+id/flock_list_item_members"
                 style="@style/FlockSmallTextStyle"
-                android:layout_above="@+id/flock_list_item_privacy"
+                android:layout_below="@id/flock_list_item_location"
                 android:text="Members: 100"
-                />
-
-            <TextView
-                android:id="@+id/flock_list_item_privacy"
-                style="@style/FlockSmallTextStyle"
-                android:layout_alignParentBottom="true"
-                android:text="Privacy: Public"
                 />
 
         </RelativeLayout>

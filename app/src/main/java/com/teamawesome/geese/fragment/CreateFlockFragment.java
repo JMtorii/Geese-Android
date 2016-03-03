@@ -17,6 +17,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Scroller;
 import android.widget.Toast;
 
 import com.amazonaws.auth.BasicAWSCredentials;
@@ -59,6 +60,7 @@ public class CreateFlockFragment extends GeeseFragment {
     private Button mCreateFlockButton;
     private Button mChooseImageButton;
     private EditText mFlockNameText;
+    private EditText mFlockDescriptionText;
     private File mImageFile = null;
     private URL mUploadedImageUrl = null;
     private String mRemoteName = null;
@@ -67,6 +69,11 @@ public class CreateFlockFragment extends GeeseFragment {
         mCreateFlockButton = (Button) view.findViewById(R.id.create_flock_button);
         mChooseImageButton = (Button) view.findViewById(R.id.choose_image_button);
         mFlockNameText = (EditText) view.findViewById(R.id.create_flock_name);
+        mFlockDescriptionText = (EditText) view.findViewById(R.id.create_flock_description);
+        mFlockDescriptionText.setScroller(new Scroller(getContext()));
+        mFlockDescriptionText.setVerticalScrollBarEnabled(true);
+        mFlockDescriptionText.setMinLines(4);
+        mFlockDescriptionText.setMaxLines(4);
         mFlockImageView = (ImageView) view.findViewById(R.id.create_flock_image);
     }
 
@@ -79,7 +86,6 @@ public class CreateFlockFragment extends GeeseFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_create_flock, container, false);
         mView = view;
-        //gridView = (GridView) view.findViewById(R.id.create_flock_gridview);
         findWidgets(mView);
         setupChooseImageButton();
         setupCreateFlockButton();
@@ -89,19 +95,16 @@ public class CreateFlockFragment extends GeeseFragment {
     }
 
     public void setupFlockImage() {
-        // If the current flock image is null, no image was selected yet
         if (mUploadedImageUrl == null) {
+            mFlockImageView.setVisibility(View.GONE);
             return;
         }
-
-        // TODO: placeholder and error, also beautify
-        //Loading image from below url into imageView
         Picasso.with(getContext())
                 .load(mUploadedImageUrl.toString())
-                //.placeholder(R.drawable.ic_placeholder) // optional
-                //.error(R.drawable.ic_error_fallback) // optional
-                //.resize(250, 200)                        // optional
+                .resize(300, 240)
+                .centerCrop()
                 .into(mFlockImageView);
+        mFlockImageView.setVisibility(View.VISIBLE);
     }
 
     public void setupChooseImageButton() {
@@ -177,16 +180,21 @@ public class CreateFlockFragment extends GeeseFragment {
         mCreateFlockButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String flockname = mFlockNameText.getText().toString().trim();
+                String flockName = mFlockNameText.getText().toString().trim();
+                if (flockName.isEmpty()) {
+                    Toast.makeText(getContext().getApplicationContext(), "Flock name required!", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                String flockDescription = mFlockDescriptionText.getText().toString().trim();
 
                 // Use latest location, otherwise default to Waterloo if no location
                 Location location = parentActivity.getLatestLocation();
-                float latitude = location != null ? (float)location.getLatitude() : 43.471086f;
-                float longitude = location != null ? (float)location.getLongitude() : -80.541875f;
+                float latitude = location != null ? (float) location.getLatitude() : 43.471086f;
+                float longitude = location != null ? (float) location.getLongitude() : -80.541875f;
 
                 Flock flock = new Flock.Builder()
-                        .name(flockname)
-                        .description("description")
+                        .name(flockName)
+                        .description(flockDescription)
                         .latitude(latitude)
                         .longitude(longitude)
                         .radius(1.0)
@@ -201,7 +209,6 @@ public class CreateFlockFragment extends GeeseFragment {
                     public void onResponse(Response<Void> response, Retrofit retrofit) {
                         if (response.isSuccess()) {
                             Toast.makeText(getContext().getApplicationContext(), "Flock created!", Toast.LENGTH_SHORT).show();
-
                             parentActivity.getSupportFragmentManager().popBackStack();
                         } else {
                             Log.e(LOG_TAG, "Create Flock failed!");
@@ -292,7 +299,7 @@ public class CreateFlockFragment extends GeeseFragment {
             // TODO: Do not need presigned URL request, use generic URL
             GeneratePresignedUrlRequest urlRequest = new GeneratePresignedUrlRequest(
                     Constants.PICTURE_BUCKET, mRemoteName);
-            urlRequest.setExpiration( new Date( System.currentTimeMillis() + 3600000 ));  // Added an hour's worth of milliseconds to the current time.
+            urlRequest.setExpiration(new Date(System.currentTimeMillis() + 3600000));  // Added an hour's worth of milliseconds to the current time.
             urlRequest.setResponseHeaders(override);
             mUploadedImageUrl = s3.generatePresignedUrl( urlRequest );
             observer.setTransferListener(new TransferListener() {
@@ -313,7 +320,6 @@ public class CreateFlockFragment extends GeeseFragment {
                 public void onError(int id, Exception ex) {
                     Toast.makeText(getContext().getApplicationContext(), "Upload failed", Toast.LENGTH_SHORT).show();
                 }
-
             });
 
             long result = 0;

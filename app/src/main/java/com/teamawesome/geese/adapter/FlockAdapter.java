@@ -26,7 +26,6 @@ public class FlockAdapter extends ArrayAdapter<Flock> {
         TextView name;
         TextView location;
         TextView members;
-        TextView privacy;
         ImageView image;
         TextView favourited;
         int position;
@@ -47,7 +46,6 @@ public class FlockAdapter extends ArrayAdapter<Flock> {
             viewHolder.name = (TextView)convertView.findViewById(R.id.flock_list_item_name);
             viewHolder.location = (TextView)convertView.findViewById(R.id.flock_list_item_location);
             viewHolder.members = (TextView)convertView.findViewById(R.id.flock_list_item_members);
-            viewHolder.privacy = (TextView)convertView.findViewById(R.id.flock_list_item_privacy);
             viewHolder.image = (ImageView)convertView.findViewById(R.id.flock_list_item_image);
             viewHolder.favourited = (TextView) convertView.findViewById(R.id.flock_list_item_fav_textview);
             convertView.setTag(viewHolder);
@@ -70,7 +68,6 @@ public class FlockAdapter extends ArrayAdapter<Flock> {
         }
 
         viewHolder.members.setText("Members: " + Integer.toString(flock.getMembers()));
-        viewHolder.privacy.setText("Privacy: Public");
 
         String imageURL = flock.getImageUri() != null ? flock.getImageUri() : "http://justinhackworth.com/canada-goose-01.jpg";
         Picasso.with(getContext())

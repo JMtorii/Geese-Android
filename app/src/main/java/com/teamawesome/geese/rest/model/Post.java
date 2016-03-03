@@ -30,6 +30,9 @@ public class Post {
     @JsonProperty("score")
     private int score;
 
+    @JsonProperty("userVote")
+    private UserVote userVote;
+
     //TODO: temp thing till we get what the user has voted for back from the server
     public int vote;
 
@@ -45,6 +48,7 @@ public class Post {
         builder.pinned = pinned;
         builder.score = score;
         builder.commentCount = commentCount;
+        builder.userVote = userVote;
     }
 
     public Post() {}
@@ -85,6 +89,10 @@ public class Post {
         return commentCount;
     }
 
+    public UserVote getUserVote() {
+        return userVote;
+    }
+
     public static class Builder {
         private int id;
         private int flockid;
@@ -94,6 +102,7 @@ public class Post {
         private boolean pinned;
         private int score;
         private int commentCount;
+        private UserVote userVote;
 
         public Builder() {}
 
@@ -135,6 +144,11 @@ public class Post {
         public Builder commentCount(int commentCount) {
             this.commentCount = commentCount;
             return  this;
+        }
+
+        public Builder userVote(UserVote userVote) {
+            this.userVote = userVote;
+            return this;
         }
 
         public Post build() {

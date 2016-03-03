@@ -1,8 +1,14 @@
 package com.teamawesome.geese.fragment;
 
+import android.Manifest;
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,12 +16,19 @@ import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Scroller;
+import android.widget.Toast;
 
+import com.amazonaws.mobileconnectors.s3.transferutility.TransferListener;
+import com.amazonaws.mobileconnectors.s3.transferutility.TransferState;
 import com.squareup.okhttp.ResponseBody;
+import com.squareup.picasso.Picasso;
 import com.teamawesome.geese.R;
 import com.teamawesome.geese.activity.MainActivity;
 import com.teamawesome.geese.rest.model.CreatePostRequestBody;
+import com.teamawesome.geese.util.Constants;
+import com.teamawesome.geese.util.ImageUploader;
 import com.teamawesome.geese.util.RestClient;
 
 import java.util.ArrayList;
@@ -28,14 +41,55 @@ import retrofit.Retrofit;
 /**
  * Created by MichaelQ on 2016-01-13.
  */
-public class FlockPostTopicCreateFragment extends Fragment {
+public class FlockPostTopicCreateFragment extends GeeseFragment {
 
+    private static final int PHOTO_SELECTED = 2;
     private EditText mTitleField;
     private EditText mDescriptionField;
+    private ImageView mPostImageView;
     private Button mCreatePostButton;
+    private Button mChooseImageButton;
+    private String mUploadedImageUrlStr = null;
+    private ImageUploader mUploader;
+    private TransferListener mTransferListener;
 
     private List<OnPostCreatedListener> listeners = new ArrayList<>();
     private int mFlockId;
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        /**
+         * Handle updates from uploading the image file
+         */
+        mTransferListener = new TransferListener() {
+            @Override
+            public void onStateChanged(int id, TransferState state) {
+                if (state == TransferState.COMPLETED) {
+                    Toast.makeText(parentActivity.getApplicationContext(),
+                            "Upload successful", Toast.LENGTH_SHORT).show();
+                    mUploadedImageUrlStr = mUploader.getUploadedImageUrl();
+                    refreshPostImage();
+                }
+            }
+
+            @Override
+            public void onProgressChanged(int id, long bytesCurrent, long bytesTotal) {
+//                    int percentage = (int) (bytesCurrent / bytesTotal * 100);
+//                    progress.setProgress(percentage);
+                //Display percentage transfered to user
+            }
+
+            @Override
+            public void onError(int id, Exception ex) {
+                Toast.makeText(parentActivity.getApplicationContext(),
+                        "Upload failed", Toast.LENGTH_SHORT).show();
+            }
+        };
+
+        mUploader = new ImageUploader(parentActivity.getApplicationContext(), mTransferListener);
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -57,7 +111,73 @@ public class FlockPostTopicCreateFragment extends Fragment {
                 createPost();
             }
         });
+        mChooseImageButton = (Button) view.findViewById(R.id.choose_post_image_button);
+        mPostImageView = (ImageView) view.findViewById(R.id.create_post_image);
+
+        setupChooseImageButton();
+        refreshPostImage();
+
         return view;
+    }
+
+    public void refreshPostImage() {
+        if (mUploadedImageUrlStr == null) {
+            mPostImageView.setVisibility(View.GONE);
+            return;
+        }
+        Picasso.with(getContext())
+                .load(mUploadedImageUrlStr)
+                .resize(300, 240)
+                .centerCrop()
+                .into(mPostImageView);
+        mPostImageView.setVisibility(View.VISIBLE);
+    }
+
+    public void openPhotoChooserDialog() {
+        Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+        intent.setType("image/*");
+        startActivityForResult(intent, PHOTO_SELECTED);
+    }
+
+    public void setupChooseImageButton() {
+        mChooseImageButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int permissionCheck = ContextCompat.checkSelfPermission(parentActivity,
+                        Manifest.permission.READ_EXTERNAL_STORAGE);
+                // Here, thisActivity is the current activity
+                if (ContextCompat.checkSelfPermission(parentActivity,
+                        Manifest.permission.READ_EXTERNAL_STORAGE)
+                        != PackageManager.PERMISSION_GRANTED) {
+
+                    // Should we show an explanation?
+                    if (ActivityCompat.shouldShowRequestPermissionRationale(parentActivity,
+                            Manifest.permission.READ_EXTERNAL_STORAGE)) {
+
+                        // Show an expanation to the user *asynchronously* -- don't block
+                        // this thread waiting for the user's response! After the user
+                        // sees the explanation, try again to request the permission.
+
+                    } else {
+
+                        // No explanation needed, we can request the permission.
+
+                        ActivityCompat.requestPermissions(parentActivity,
+                                new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
+                                Constants.MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE);
+
+                        // MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE is an
+                        // app-defined int constant. The callback method gets the
+                        // result of the request.
+                    }
+                }
+                if (ContextCompat.checkSelfPermission(parentActivity,
+                        Manifest.permission.READ_EXTERNAL_STORAGE)
+                        == PackageManager.PERMISSION_GRANTED) {
+                    openPhotoChooserDialog();
+                }
+            }
+        });
     }
 
     public void setFlockId(int flockId) {
@@ -108,6 +228,44 @@ public class FlockPostTopicCreateFragment extends Fragment {
                         Log.e("PostCeate", "Create post failed " + t.getMessage());
                     }
                 });
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode,
+                                           String permissions[], int[] grantResults) {
+        switch (requestCode) {
+            case Constants.MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE: {
+                // If request is cancelled, the result arrays are empty.
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+
+                    // permission was granted, yay!
+                    openPhotoChooserDialog();
+                } else {
+
+                    // permission denied, boo! Disable the
+                    // functionality that depends on this permission.
+                }
+                return;
+            }
+
+            // other 'case' lines to check for other
+            // permissions this app might request
+        }
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == PHOTO_SELECTED && resultCode == Activity.RESULT_OK && null != data) {
+            mUploader.uploadPhotoSelection(data.getData());
+        }
+    }
+
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
     }
 
     public interface OnPostCreatedListener {

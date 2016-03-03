@@ -23,6 +23,28 @@
             android:hint="Description"
             android:id="@+id/flock_post_topic_create_description"/>
 
+        <Button
+            android:id="@+id/choose_post_image_button"
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:layout_marginTop="15dp"
+            android:layout_marginLeft="10dp"
+            android:drawableLeft="@drawable/ic_file_upload_black_24dp"
+            android:drawablePadding="6dp"
+            android:paddingLeft="10dp"
+            android:paddingRight="15dp"
+            android:background="@color/lightGrey"
+            android:text="Upload Image"
+            />
+
+        <ImageView
+            android:id="@+id/create_post_image"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:visibility="gone"
+            />
+
     </LinearLayout>
 
     <Button

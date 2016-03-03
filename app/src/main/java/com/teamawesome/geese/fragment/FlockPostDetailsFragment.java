@@ -1,8 +1,10 @@
 package com.teamawesome.geese.fragment;
 
+import android.graphics.Color;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
+import android.support.design.widget.Snackbar;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -37,12 +39,13 @@ import rx.schedulers.Schedulers;
 /**
  * Created by MichaelQ on 2015-10-11.
  */
-public class FlockPostDetailsFragment extends Fragment {
+public class FlockPostDetailsFragment extends GeeseFragment {
 
     private Post mPostTopic;
     private ArrayList<Comment> mPostComments;
     private FlockPostCommentAdapter mAdapter;
     private List<OnPostUpdatedListener> listeners = new ArrayList<>();
+    private Snackbar snackbar;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -227,6 +230,17 @@ public class FlockPostDetailsFragment extends Fragment {
                     @Override
                     public void onError(Throwable e) {
                         Log.e("PostDetailsFragment", "error: " + e.getMessage());
+
+                        snackbar = Snackbar
+                                .make(parentActivity.findViewById(R.id.flock_post_detail_fragment_layout), "Error Occurred", Snackbar.LENGTH_LONG)
+                                .setActionTextColor(Color.RED);
+
+                        View snackbarView = snackbar.getView();
+                        TextView textView = (TextView) snackbarView.findViewById(android.support.design.R.id.snackbar_text);
+                        textView.setTextColor(Color.WHITE);
+                        textView.setGravity(Gravity.CENTER);
+
+                        snackbar.show();
                     }
 
                     @Override
@@ -264,6 +278,17 @@ public class FlockPostDetailsFragment extends Fragment {
             public void onFailure(Throwable t) {
                 // TODO: better error handling
                 Log.e("PostTopicVote", "Vote Failed" + t.getMessage());
+
+                snackbar = Snackbar
+                        .make(parentActivity.findViewById(R.id.flock_post_detail_fragment_layout), "Error Occurred", Snackbar.LENGTH_LONG)
+                        .setActionTextColor(Color.RED);
+
+                View snackbarView = snackbar.getView();
+                TextView textView = (TextView) snackbarView.findViewById(android.support.design.R.id.snackbar_text);
+                textView.setTextColor(Color.WHITE);
+                textView.setGravity(Gravity.CENTER);
+
+                snackbar.show();
             }
         });
     }

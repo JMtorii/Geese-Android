@@ -33,6 +33,8 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import retrofit.Call;
 import retrofit.Callback;
@@ -91,6 +93,25 @@ public class LoginActivity extends Activity {
                 email = emailText.getText().toString().trim();
                 emailText.setText(email);
                 password = passwordText.getText().toString();
+
+                if (username.isEmpty()) {
+                    Toast.makeText(mContext.getApplicationContext(), "Signup failed: You must provide a login name.", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                String expression = "^[\\w\\.-]+@([\\w\\-]+\\.)+[A-Z]{2,4}$";
+                CharSequence inputStr = email;
+                Pattern pattern = Pattern.compile(expression, Pattern.CASE_INSENSITIVE);
+                Matcher matcher = pattern.matcher(inputStr);
+                if (!matcher.matches()) {
+                    Toast.makeText(mContext.getApplicationContext(), "Signup failed: Not a valid email.", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                if (password.length() < 5) {
+                    Toast.makeText(mContext.getApplicationContext(), "Signup failed: Password not strong enough.", Toast.LENGTH_SHORT).show();
+                    return;
+                }
 
                 HashingAlgorithm ha = new HashingAlgorithm();
                 try {

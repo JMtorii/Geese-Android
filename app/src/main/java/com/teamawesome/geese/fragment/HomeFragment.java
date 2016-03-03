@@ -1,15 +1,19 @@
 package com.teamawesome.geese.fragment;
 
+import android.graphics.Color;
 import android.location.Location;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.teamawesome.geese.R;
 import com.teamawesome.geese.adapter.FlockAdapter;
@@ -38,6 +42,8 @@ public class HomeFragment extends GeeseFragment {
     private SwipeRefreshLayout swipeContainer;
     private ListView listView;
     private View emptyView;
+
+    private Snackbar snackbar;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -139,7 +145,6 @@ public class HomeFragment extends GeeseFragment {
     }
 
     public void getNearbyFlocks() {
-        // TODO use interceptor instead to add token to all REST calls
         if (useDummyData) {
             // fix for when network requests fail
             flockAdapter.clear();
@@ -182,6 +187,17 @@ public class HomeFragment extends GeeseFragment {
                             if (progressDialog.isShowing()) {
                                 progressDialog.dismiss();
                             }
+
+                            snackbar = Snackbar
+                                    .make(swipeContainer, "Error Occurred", Snackbar.LENGTH_LONG)
+                                    .setActionTextColor(Color.RED);
+
+                            View snackbarView = snackbar.getView();
+                            TextView textView = (TextView) snackbarView.findViewById(android.support.design.R.id.snackbar_text);
+                            textView.setTextColor(Color.WHITE);
+                            textView.setGravity(Gravity.CENTER);
+
+                            snackbar.show();
                         }
 
                         @Override
@@ -195,11 +211,11 @@ public class HomeFragment extends GeeseFragment {
                                     emptyView.setPadding(0, 0, 0, 0);
                                 } else {
                                     // TODO hackity hack hack
-                                    emptyView.setVisibility(View.GONE);
-                                    emptyView.setPadding(0, -1*emptyView.getHeight(), 0, 0);
                                     for (Flock flock : flocks) {
                                         flockAdapter.insert(flock, flockAdapter.getCount());
                                     }
+                                    emptyView.setVisibility(View.GONE);
+                                    emptyView.setPadding(0, -1*emptyView.getHeight(), 0, 0);
                                 }
                             }
 

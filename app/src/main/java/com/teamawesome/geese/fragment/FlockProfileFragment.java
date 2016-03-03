@@ -3,8 +3,11 @@ package com.teamawesome.geese.fragment;
 import android.Manifest;
 import android.app.FragmentTransaction;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -51,6 +54,8 @@ public class FlockProfileFragment extends FlockFragment {
     private GoogleMap map;
     private ImageView mMapImageView;
     private Button mJoinFlockButton;
+
+    private Snackbar snackbar;
 
     public static FlockProfileFragment newInstance(int position) {
         FlockProfileFragment f = new FlockProfileFragment();
@@ -217,6 +222,15 @@ public class FlockProfileFragment extends FlockFragment {
                         if (progressDialog.isShowing()) {
                             progressDialog.dismiss();
                         }
+
+                        snackbar = Snackbar
+                                .make(parentActivity.findViewById(R.id.flock_profile_fragment_layout), "Error Occurred", Snackbar.LENGTH_LONG)
+                                .setActionTextColor(Color.RED);
+
+                        View snackbarView = snackbar.getView();
+                        TextView textView = (TextView) snackbarView.findViewById(android.support.design.R.id.snackbar_text);
+                        textView.setTextColor(Color.WHITE);
+                        textView.setGravity(Gravity.CENTER);
                     }
 
                     @Override
@@ -224,23 +238,7 @@ public class FlockProfileFragment extends FlockFragment {
                         Log.i("FlockProfileFragment", "onNext called");
                         mFlock.setFavourited(true);
                         mJoinFlockButton.setText(R.string.profile_unjoin);
-//                        parentActivity.getSupportFragmentManager().popBackStack();
-//
-//                        MainFlockFragment fragment = (MainFlockFragment) getFragmentManager().findFragmentByTag(Constants.FLOCK_FRAGMENT_TAG);
-//                        if (fragment == null) {
-//                            fragment = new MainFlockFragment();
-//                        }
-//                        fragment.setFlock(mFlock);
-//                        parentActivity.switchFragment(
-//                                fragment,
-//                                R.anim.fragment_slide_in_left,
-//                                R.anim.fragment_slide_out_right,
-//                                Constants.FLOCK_FRAGMENT_TAG,
-//                                mFlock.getName(),
-//                                false,
-//                                false,
-//                                true
-//                        );
+
                         if (progressDialog.isShowing()) {
                             progressDialog.dismiss();
                         }
@@ -268,6 +266,15 @@ public class FlockProfileFragment extends FlockFragment {
                         if (progressDialog.isShowing()) {
                             progressDialog.dismiss();
                         }
+
+                        snackbar = Snackbar
+                                .make(parentActivity.findViewById(R.id.flock_profile_fragment_layout), "Error Occurred", Snackbar.LENGTH_LONG)
+                                .setActionTextColor(Color.RED);
+
+                        View snackbarView = snackbar.getView();
+                        TextView textView = (TextView) snackbarView.findViewById(android.support.design.R.id.snackbar_text);
+                        textView.setTextColor(Color.WHITE);
+                        textView.setGravity(Gravity.CENTER);
                     }
 
                     @Override

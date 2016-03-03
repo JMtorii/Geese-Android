@@ -3,23 +3,28 @@
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/whiteBackground">
+
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_above="@+id/button"
         android:layout_alignParentTop="true"
         android:layout_height="wrap_content">
+
         <EditText
             style="@style/EditTextStyle"
             android:singleLine="true"
             android:hint="Title"
             android:id="@+id/flock_post_topic_create_title"/>
+
         <EditText
-            style="@style/EditTextStyle"
+            style="@style/EditTextMultilineStyle"
             android:singleLine="false"
             android:hint="Description"
             android:id="@+id/flock_post_topic_create_description"/>
+
     </LinearLayout>
+
     <Button
         style="@style/ButtonStyle"
         android:text="Create Post"

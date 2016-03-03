@@ -84,6 +84,20 @@
         <item name="android:textColor">@color/black</item>
         <item name="android:textColorHint">@color/grey</item>
     </style>
+
+    <style name="EditTextMultilineStyle">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginTop">4dp</item>
+        <item name="android:layout_marginLeft">10dp</item>
+        <item name="android:layout_marginRight">10dp</item>
+        <item name="android:padding">3dp</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:textColorHint">@color/grey</item>
+        <item name="android:gravity">left|top</item>
+        <item name="android:background">@drawable/bordered_text</item>
+    </style>
+
     <style name="ButtonStyle">
         <item name="android:layout_width">200dp</item>
         <item name="android:layout_height">wrap_content</item>

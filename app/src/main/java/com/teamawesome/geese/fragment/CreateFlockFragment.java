@@ -16,6 +16,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Scroller;
 import android.widget.Toast;
 
 import com.amazonaws.mobileconnectors.s3.transferutility.TransferListener;
@@ -40,14 +41,18 @@ import retrofit.Retrofit;
 public class CreateFlockFragment extends GeeseFragment {
     //private GridView gridView;
     private static final String LOG_TAG = "CreateFlockFragment";
-    private static final int PHOTO_SELECTED = 1;
 
+    private static final int PHOTO_SELECTED = 1;
     private View mView;
     private ImageView mFlockImageView;
     private Button mCreateFlockButton;
     private Button mChooseImageButton;
     private EditText mFlockNameText;
     private String mUploadedImageUrlStr = null;
+    private EditText mFlockDescriptionText;
+    private File mImageFile = null;
+    private URL mUploadedImageUrl = null;
+    private String mRemoteName = null;
 
     private ImageUploader mUploader;
     private TransferListener mTransferListener;
@@ -88,6 +93,11 @@ public class CreateFlockFragment extends GeeseFragment {
         mCreateFlockButton = (Button) view.findViewById(R.id.create_flock_button);
         mChooseImageButton = (Button) view.findViewById(R.id.choose_image_button);
         mFlockNameText = (EditText) view.findViewById(R.id.create_flock_name);
+        mFlockDescriptionText = (EditText) view.findViewById(R.id.create_flock_description);
+        mFlockDescriptionText.setScroller(new Scroller(getContext()));
+        mFlockDescriptionText.setVerticalScrollBarEnabled(true);
+        mFlockDescriptionText.setMinLines(4);
+        mFlockDescriptionText.setMaxLines(4);
         mFlockImageView = (ImageView) view.findViewById(R.id.create_flock_image);
     }
 
@@ -110,19 +120,16 @@ public class CreateFlockFragment extends GeeseFragment {
     }
 
     public void setupFlockImage() {
-        // If the current flock image is null, no image was selected yet
-        if (mUploadedImageUrlStr == null) {
+        if (mUploadedImageUrl == null) {
+            mFlockImageView.setVisibility(View.GONE);
             return;
         }
-
-        // TODO: placeholder and error, also beautify
-        //Loading image from below url into imageView
         Picasso.with(getContext())
-                .load(mUploadedImageUrlStr)
-                //.placeholder(R.drawable.ic_placeholder) // optional
-                //.error(R.drawable.ic_error_fallback) // optional
-                //.resize(250, 200)                        // optional
+                .load(mUploadedImageUrl.toString())
+                .resize(300, 240)
+                .centerCrop()
                 .into(mFlockImageView);
+        mFlockImageView.setVisibility(View.VISIBLE);
     }
 
     public void openPhotoChooserDialog() {
@@ -176,6 +183,7 @@ public class CreateFlockFragment extends GeeseFragment {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
+        String imageFilePath = null;
         if (requestCode == PHOTO_SELECTED && resultCode == Activity.RESULT_OK && null != data) {
             mUploader.uploadPhotoSelection(data.getData());
         }
@@ -185,16 +193,21 @@ public class CreateFlockFragment extends GeeseFragment {
         mCreateFlockButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String flockname = mFlockNameText.getText().toString().trim();
+                String flockName = mFlockNameText.getText().toString().trim();
+                if (flockName.isEmpty()) {
+                    Toast.makeText(getContext().getApplicationContext(), "Flock name required!", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                String flockDescription = mFlockDescriptionText.getText().toString().trim();
 
                 // Use latest location, otherwise default to Waterloo if no location
                 Location location = parentActivity.getLatestLocation();
-                float latitude = location != null ? (float)location.getLatitude() : 43.471086f;
-                float longitude = location != null ? (float)location.getLongitude() : -80.541875f;
+                float latitude = location != null ? (float) location.getLatitude() : 43.471086f;
+                float longitude = location != null ? (float) location.getLongitude() : -80.541875f;
 
                 Flock flock = new Flock.Builder()
-                        .name(flockname)
-                        .description("description")
+                        .name(flockName)
+                        .description(flockDescription)
                         .latitude(latitude)
                         .longitude(longitude)
                         .radius(1.0)

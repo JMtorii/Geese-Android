@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Scroller;
 
 import com.squareup.okhttp.ResponseBody;
 import com.teamawesome.geese.R;
@@ -45,6 +46,10 @@ public class FlockPostTopicCreateFragment extends Fragment {
         view.setClickable(true);
         mTitleField = (EditText)view.findViewById(R.id.flock_post_topic_create_title);
         mDescriptionField = (EditText)view.findViewById(R.id.flock_post_topic_create_description);
+        mDescriptionField.setScroller(new Scroller(getContext()));
+        mDescriptionField.setVerticalScrollBarEnabled(true);
+        mDescriptionField.setMinLines(4);
+        mDescriptionField.setMaxLines(4);
         mCreatePostButton = (Button)view.findViewById(R.id.button);
         mCreatePostButton.setOnClickListener(new View.OnClickListener() {
             @Override

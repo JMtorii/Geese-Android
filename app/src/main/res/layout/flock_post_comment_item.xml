@@ -9,15 +9,26 @@
     <TextView
         android:id="@+id/flock_post_comment"
         android:layout_width="fill_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
-        android:layout_marginLeft="20dp"
         android:layout_marginBottom="5dp"
         android:layout_alignParentLeft="true"
         android:text="Comment"
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:layout_toStartOf="@+id/flock_post_comment_upvote_downvote"
         android:layout_toLeftOf="@+id/flock_post_comment_upvote_downvote"
+        />
+
+    <TextView
+        android:id="@+id/flock_post_comment_metadata"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:textColor="@color/grey"
+        android:layout_marginLeft="20dp"
+        android:layout_marginBottom="5dp"
+        android:layout_below="@id/flock_post_comment"
+        android:text="Created on March 1, 2016 by anon"
         />
 
     <com.teamawesome.geese.view.UpvoteDownvoteView

@@ -46,15 +46,15 @@ public class Post {
     private String authorName;
 
     private Post(Builder builder) {
-        builder.id = id;
-        builder.flockid = flockid;
-        builder.authorid = authorid;
-        builder.title = title;
-        builder.description = description;
-        builder.pinned = pinned;
-        builder.score = score;
-        builder.commentCount = commentCount;
-        builder.userVote = userVote;
+//        builder.id = id;
+//        builder.flockid = flockid;
+//        builder.authorid = authorid;
+//        builder.title = title;
+//        builder.description = description;
+//        builder.pinned = pinned;
+//        builder.score = score;
+//        builder.commentCount = commentCount;
+//        builder.userVote = userVote;
     }
 
     public Post() {}

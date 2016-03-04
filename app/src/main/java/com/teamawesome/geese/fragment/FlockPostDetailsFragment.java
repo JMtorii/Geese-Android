@@ -153,7 +153,7 @@ public class FlockPostDetailsFragment extends GeeseFragment {
         } else {
             description.setVisibility(View.VISIBLE);
         }
-        metadata.setText(String.format(getResources().getString(R.string.comment_metadata), mPostTopic.getCreatedDate(), mPostTopic.getAuthorName()));
+        metadata.setText(String.format(getResources().getString(R.string.post_metadata), mPostTopic.getCreatedDate(), mPostTopic.getAuthorName()));
         comments.setText(String.format(getResources().getString(R.string.comment_count_format), mPostTopic.getCommentCount()));
 
         //uncomment when we have images for posts

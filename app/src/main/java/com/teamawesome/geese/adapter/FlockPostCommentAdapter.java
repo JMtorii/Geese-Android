@@ -30,6 +30,7 @@ public class FlockPostCommentAdapter extends ArrayAdapter<Comment> {
     // View lookup cache
     private static class ViewHolder {
         TextView commentView;
+        TextView metadata;
         UpvoteDownvoteView upvoteDownvoteView;
         int position;
     }
@@ -97,6 +98,7 @@ public class FlockPostCommentAdapter extends ArrayAdapter<Comment> {
             LayoutInflater inflater = LayoutInflater.from(getContext());
             convertView = inflater.inflate(R.layout.flock_post_comment_item, parent, false);
             viewHolder.commentView = (TextView) convertView.findViewById(R.id.flock_post_comment);
+            viewHolder.metadata = (TextView) convertView.findViewById(R.id.flock_post_comment_metadata);
             viewHolder.upvoteDownvoteView = (UpvoteDownvoteView)convertView.findViewById(R.id.flock_post_comment_upvote_downvote);
             viewHolder.upvoteDownvoteView.setUpvoteDownvoteListener(mUpvoteDownvoteListener);
             convertView.setTag(viewHolder);
@@ -107,6 +109,7 @@ public class FlockPostCommentAdapter extends ArrayAdapter<Comment> {
         viewHolder.commentView.setText(comment.getText());
         viewHolder.upvoteDownvoteView.setTag(position);
         viewHolder.upvoteDownvoteView.setVotesText(Integer.toString(comment.getScore()));
+        viewHolder.metadata.setText(comment.getAuthorName());
         if (comment.getUserVote().getValue() == 1) {
             viewHolder.upvoteDownvoteView.setUpVoted();
         } else if (comment.getUserVote().getValue() == -1) {

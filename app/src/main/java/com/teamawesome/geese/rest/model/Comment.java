@@ -27,6 +27,9 @@ public class Comment {
     @JsonProperty("userVote")
     private UserVote userVote;
 
+    @JsonProperty("authorName")
+    private String authorName;
+
     //dummy constructor for jackson
     public Comment() {}
 
@@ -65,6 +68,10 @@ public class Comment {
 
     public UserVote getUserVote() {
         return userVote;
+    }
+
+    public String getAuthorName() {
+        return authorName;
     }
 
     public static class Builder {

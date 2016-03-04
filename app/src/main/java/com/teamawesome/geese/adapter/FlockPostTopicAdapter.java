@@ -124,7 +124,7 @@ public class FlockPostTopicAdapter extends ArrayAdapter<Post> {
         }
 
         Resources resources =  getContext().getResources();
-        viewHolder.metadata.setText(String.format(resources.getString(R.string.comment_metadata), post.getCreatedDate(), post.getAuthorName()));
+        viewHolder.metadata.setText(String.format(resources.getString(R.string.post_metadata), post.getCreatedDate(), post.getAuthorName()));
         viewHolder.comments.setText(String.format(resources.getString(R.string.comment_count_format), post.getCommentCount()));
 
         viewHolder.upvoteDownvoteView.setTag(position);

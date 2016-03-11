@@ -10,6 +10,7 @@ import java.util.List;
 
 import retrofit.Call;
 import retrofit.http.Body;
+import retrofit.http.DELETE;
 import retrofit.http.GET;
 import retrofit.http.POST;
 import retrofit.http.Path;
@@ -39,4 +40,9 @@ public interface PostService {
     @POST("/comment/vote/{commentId}")
     Call<ResponseBody> voteForComment(@Path("commentId") int commentId, @Query("value") int value);
 
+    @DELETE("/post/{postId}")
+    Observable<ResponseBody> deletePost(@Path("postId") int postId);
+
+    @DELETE("/comment/{commentId}")
+    Observable<ResponseBody> deleteComment(@Path("commentId") int commentId);
 }

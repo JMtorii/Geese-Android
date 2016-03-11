@@ -14,6 +14,7 @@ import com.squareup.okhttp.ResponseBody;
 import com.teamawesome.geese.R;
 import com.teamawesome.geese.rest.model.Post;
 import com.teamawesome.geese.rest.model.UserVote;
+import com.teamawesome.geese.util.Constants;
 import com.teamawesome.geese.util.RestClient;
 import com.teamawesome.geese.view.UpvoteDownvoteListener;
 import com.teamawesome.geese.view.UpvoteDownvoteView;
@@ -23,6 +24,10 @@ import java.util.ArrayList;
 import retrofit.Callback;
 import retrofit.Response;
 import retrofit.Retrofit;
+import rx.Observable;
+import rx.Subscriber;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 
 /**
  * Created by MichaelQ on 2015-10-04.
@@ -77,9 +82,15 @@ public class FlockPostTopicAdapter extends ArrayAdapter<Post> {
                 } else {
                     postTopic.setScore(postTopic.getScore() - 2);
                 }
+
+                if (postTopic.getScore() <= Constants.MIN_VOTES) {
+                    deletePost(postTopic.getId());
+                }
+
                 userVote.setValue(-1);
                 v.setDownVoted();
                 voteForPost(postTopic.getId(), -1);
+
             } else {
                 userVote.setValue(0);
                 postTopic.setScore(postTopic.getScore() + 1);
@@ -178,5 +189,31 @@ public class FlockPostTopicAdapter extends ArrayAdapter<Post> {
                 Log.e("PostTopicVote", "Vote Failed" + t.getMessage());
             }
         });
+    }
+
+    private void deletePost(int postId) {
+        Observable<ResponseBody> observable = RestClient.postService.deletePost(postId);
+
+        observable.subscribeOn(Schedulers.newThread())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Subscriber<ResponseBody>() {
+                    @Override
+                    public void onCompleted() {
+                        // nothing to do here
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        Log.e("FlockPostTopicAdapter", "Something happened: " + e.getMessage());
+
+                    }
+
+                    @Override
+                    public void onNext(ResponseBody flocks) {
+                        Log.i("FlockPostTopicAdapter", "onNext called");
+
+
+                    }
+                });
     }
 }

@@ -45,6 +45,8 @@ public final class Constants {
     public static final String SETTINGS_PRIVACY_POLICTY_TAG = "SETTINGS_PRIVACY_POLICTY_TAG";
     public static final String SETTINGS_TERMS_SERVICE_TAG = "SETTINGS_TERMS_SERVICE_TAG";
 
+    public static final int MIN_VOTES = -3;
+
     public static final int MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE = 133;
     public static final String GEESE_SERVER_ADDRESS = "https://geeseapp.com";
 //    public static final String GEESE_SERVER_ADDRESS = "http://10.0.3.2:8080";

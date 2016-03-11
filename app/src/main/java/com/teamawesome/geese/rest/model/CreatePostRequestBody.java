@@ -18,9 +18,13 @@ public class CreatePostRequestBody {
     @JsonProperty("description")
     public String description;
 
-    public CreatePostRequestBody(int flockId, String title, String description) {
+    @JsonProperty("imageUri")
+    public String imageUri;
+
+    public CreatePostRequestBody(int flockId, String title, String description, String imageUri) {
         this.flockId = flockId;
         this.title = title;
         this.description = description;
+        this.imageUri = imageUri;
     }
 }

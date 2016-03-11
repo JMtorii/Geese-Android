@@ -194,7 +194,8 @@ public class FlockPostTopicCreateFragment extends GeeseFragment {
 
     private void createPost() {
         mCreatePostButton.setEnabled(false);
-        CreatePostRequestBody requestBody = new CreatePostRequestBody(mFlockId, mTitleField.getText().toString(), mDescriptionField.getText().toString());
+        CreatePostRequestBody requestBody = new CreatePostRequestBody(mFlockId,
+                mTitleField.getText().toString(), mDescriptionField.getText().toString(), mUploadedImageUrlStr);
         Log.d("stuff", "" + requestBody.flockId + ", " + requestBody.title + ", " + requestBody.description);
         RestClient.postService
                 .savePostForFlock(requestBody)

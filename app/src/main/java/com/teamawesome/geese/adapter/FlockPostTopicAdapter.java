@@ -2,6 +2,7 @@ package com.teamawesome.geese.adapter;
 
 import android.content.Context;
 import android.content.res.Resources;
+import android.graphics.Bitmap;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,6 +16,8 @@ import com.teamawesome.geese.R;
 import com.teamawesome.geese.rest.model.Post;
 import com.teamawesome.geese.rest.model.UserVote;
 import com.teamawesome.geese.util.Constants;
+import com.teamawesome.geese.task.OnImageLoaded;
+import com.teamawesome.geese.task.URLImageLoader;
 import com.teamawesome.geese.util.RestClient;
 import com.teamawesome.geese.view.UpvoteDownvoteListener;
 import com.teamawesome.geese.view.UpvoteDownvoteView;
@@ -151,23 +154,26 @@ public class FlockPostTopicAdapter extends ArrayAdapter<Post> {
         viewHolder.image.setImageDrawable(null);
 
         // uncomment when posts have images
-//        if (post.getImageURL() != null) {
-//            if (post.getImageData() == null) {
-//                URLImageLoader imageLoader = new URLImageLoader(new OnImageLoaded() {
-//                    @Override
-//                    public void onImageLoaded(Bitmap bitmap) {
-//                        post.setImageData(bitmap);
-//                        // check if it is still the same position before setting the image, may have changed
-//                        if (position == viewHolder.position) {
-//                            viewHolder.image.setImageBitmap(bitmap);
-//                        }
-//                    }
-//                });
-//                imageLoader.execute(post.getImageURL());
-//            } else {
-//                viewHolder.image.setImageBitmap(post.getImageData());
-//            }
-//        }
+        Log.e("Post Image loader", "HERE ");
+        if (post.getImageUri() != null) {
+            if (post.getImageData() == null) {
+                Log.e("Post Image loader", "image URI " + post.getImageUri());
+                URLImageLoader imageLoader = new URLImageLoader(new OnImageLoaded() {
+                    @Override
+                    public void onImageLoaded(Bitmap bitmap) {
+                        post.setImageData(bitmap);
+                        // check if it is still the same position before setting the image, may have changed
+                        if (position == viewHolder.position) {
+                            viewHolder.image.setImageBitmap(bitmap);
+                        }
+                    }
+                });
+                imageLoader.execute(post.getImageUri());
+            } else {
+                Log.e("Post Image loader", "null image");
+                viewHolder.image.setImageBitmap(post.getImageData());
+            }
+        }
         return convertView;
     }
 

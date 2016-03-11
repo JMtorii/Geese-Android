@@ -219,6 +219,8 @@ public class FlockPostTopicCreateFragment extends GeeseFragment {
                             // TODO: better error handling
                             mCreatePostButton.setEnabled(true);
                             Log.e("PostCreate", "Create post failed");
+                            Toast.makeText(parentActivity.getApplicationContext(),
+                                    "Failed to create post: is the title too long?", Toast.LENGTH_SHORT).show();
                         }
                     }
 
@@ -227,6 +229,8 @@ public class FlockPostTopicCreateFragment extends GeeseFragment {
                         // TODO: better error handling
                         mCreatePostButton.setEnabled(true);
                         Log.e("PostCeate", "Create post failed " + t.getMessage());
+                        Toast.makeText(parentActivity.getApplicationContext(),
+                                "Failed to create post: is the title too long?", Toast.LENGTH_SHORT).show();
                     }
                 });
     }

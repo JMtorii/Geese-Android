@@ -21,9 +21,6 @@ import com.teamawesome.geese.view.UpvoteDownvoteView;
 
 import java.util.ArrayList;
 
-import retrofit.Callback;
-import retrofit.Response;
-import retrofit.Retrofit;
 import rx.Observable;
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
@@ -135,7 +132,10 @@ public class FlockPostTopicAdapter extends ArrayAdapter<Post> {
         }
 
         Resources resources =  getContext().getResources();
-        viewHolder.metadata.setText(String.format(resources.getString(R.string.post_metadata), post.getCreatedDate(), post.getAuthorName()));
+
+        String authorName = (post.getAuthorName() == null || post.getAuthorName().equals("null")) ? "Unknown" : post.getAuthorName();
+
+        viewHolder.metadata.setText(String.format(resources.getString(R.string.post_metadata), post.getCreatedDate(), authorName));
         viewHolder.comments.setText(String.format(resources.getString(R.string.comment_count_format), post.getCommentCount()));
 
         viewHolder.upvoteDownvoteView.setTag(position);
@@ -172,23 +172,27 @@ public class FlockPostTopicAdapter extends ArrayAdapter<Post> {
     }
 
     private void voteForPost(int postId, int value) {
-        RestClient.postService.voteForPost(postId, value).enqueue(new Callback<ResponseBody>() {
-            @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
-                if (response.isSuccess()) {
-                    Log.d("PostTopicVote", "Vote Success");
-                } else {
-                    // TODO: better error handling
-                    Log.e("PostTopicVote", "Vote Failed " + response.errorBody());
-                }
-            }
+        Observable<ResponseBody> observable = RestClient.postService.voteForPost(postId, value);
 
-            @Override
-            public void onFailure(Throwable t) {
-                // TODO: better error handling
-                Log.e("PostTopicVote", "Vote Failed" + t.getMessage());
-            }
-        });
+        observable.subscribeOn(Schedulers.newThread())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Subscriber<ResponseBody>() {
+                    @Override
+                    public void onCompleted() {
+                        // nothing to do here
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        Log.e("FlockPostTopicAdapter", "Something happened: " + e.getMessage());
+
+                    }
+
+                    @Override
+                    public void onNext(ResponseBody flocks) {
+                        Log.i("FlockPostTopicAdapter", "onNext called");
+                    }
+                });
     }
 
     private void deletePost(int postId) {
@@ -211,8 +215,6 @@ public class FlockPostTopicAdapter extends ArrayAdapter<Post> {
                     @Override
                     public void onNext(ResponseBody flocks) {
                         Log.i("FlockPostTopicAdapter", "onNext called");
-
-
                     }
                 });
     }

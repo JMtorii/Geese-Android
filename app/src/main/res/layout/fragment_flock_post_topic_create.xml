@@ -23,7 +23,7 @@
             android:hint="Description"
             android:id="@+id/flock_post_topic_create_description"/>
 
-        <Button
+        <!--<Button
             android:id="@+id/choose_post_image_button"
             android:layout_width="wrap_content"
             android:layout_height="30dp"
@@ -35,7 +35,7 @@
             android:paddingRight="15dp"
             android:background="@color/lightGrey"
             android:text="Upload Image"
-            />
+            />-->
 
         <ImageView
             android:id="@+id/create_post_image"

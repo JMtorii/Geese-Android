@@ -111,10 +111,10 @@ public class FlockPostTopicCreateFragment extends GeeseFragment {
                 createPost();
             }
         });
-        mChooseImageButton = (Button) view.findViewById(R.id.choose_post_image_button);
+        //mChooseImageButton = (Button) view.findViewById(R.id.choose_post_image_button);
         mPostImageView = (ImageView) view.findViewById(R.id.create_post_image);
 
-        setupChooseImageButton();
+        //setupChooseImageButton();
         refreshPostImage();
 
         return view;
@@ -139,46 +139,46 @@ public class FlockPostTopicCreateFragment extends GeeseFragment {
         startActivityForResult(intent, PHOTO_SELECTED);
     }
 
-    public void setupChooseImageButton() {
-        mChooseImageButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                int permissionCheck = ContextCompat.checkSelfPermission(parentActivity,
-                        Manifest.permission.READ_EXTERNAL_STORAGE);
-                // Here, thisActivity is the current activity
-                if (ContextCompat.checkSelfPermission(parentActivity,
-                        Manifest.permission.READ_EXTERNAL_STORAGE)
-                        != PackageManager.PERMISSION_GRANTED) {
-
-                    // Should we show an explanation?
-                    if (ActivityCompat.shouldShowRequestPermissionRationale(parentActivity,
-                            Manifest.permission.READ_EXTERNAL_STORAGE)) {
-
-                        // Show an expanation to the user *asynchronously* -- don't block
-                        // this thread waiting for the user's response! After the user
-                        // sees the explanation, try again to request the permission.
-
-                    } else {
-
-                        // No explanation needed, we can request the permission.
-
-                        ActivityCompat.requestPermissions(parentActivity,
-                                new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
-                                Constants.MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE);
-
-                        // MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE is an
-                        // app-defined int constant. The callback method gets the
-                        // result of the request.
-                    }
-                }
-                if (ContextCompat.checkSelfPermission(parentActivity,
-                        Manifest.permission.READ_EXTERNAL_STORAGE)
-                        == PackageManager.PERMISSION_GRANTED) {
-                    openPhotoChooserDialog();
-                }
-            }
-        });
-    }
+//    public void setupChooseImageButton() {
+//        mChooseImageButton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                int permissionCheck = ContextCompat.checkSelfPermission(parentActivity,
+//                        Manifest.permission.READ_EXTERNAL_STORAGE);
+//                // Here, thisActivity is the current activity
+//                if (ContextCompat.checkSelfPermission(parentActivity,
+//                        Manifest.permission.READ_EXTERNAL_STORAGE)
+//                        != PackageManager.PERMISSION_GRANTED) {
+//
+//                    // Should we show an explanation?
+//                    if (ActivityCompat.shouldShowRequestPermissionRationale(parentActivity,
+//                            Manifest.permission.READ_EXTERNAL_STORAGE)) {
+//
+//                        // Show an expanation to the user *asynchronously* -- don't block
+//                        // this thread waiting for the user's response! After the user
+//                        // sees the explanation, try again to request the permission.
+//
+//                    } else {
+//
+//                        // No explanation needed, we can request the permission.
+//
+//                        ActivityCompat.requestPermissions(parentActivity,
+//                                new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
+//                                Constants.MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE);
+//
+//                        // MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE is an
+//                        // app-defined int constant. The callback method gets the
+//                        // result of the request.
+//                    }
+//                }
+//                if (ContextCompat.checkSelfPermission(parentActivity,
+//                        Manifest.permission.READ_EXTERNAL_STORAGE)
+//                        == PackageManager.PERMISSION_GRANTED) {
+//                    openPhotoChooserDialog();
+//                }
+//            }
+//        });
+//    }
 
     public void setFlockId(int flockId) {
         mFlockId = flockId;

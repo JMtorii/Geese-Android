@@ -29,9 +29,6 @@ import com.teamawesome.geese.view.UpvoteDownvoteView;
 import java.util.ArrayList;
 import java.util.List;
 
-import retrofit.Callback;
-import retrofit.Response;
-import retrofit.Retrofit;
 import rx.Observable;
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
@@ -123,6 +120,11 @@ public class FlockPostDetailsFragment extends GeeseFragment {
                     } else {
                         mPostTopic.setScore(mPostTopic.getScore() - 2);
                     }
+
+                    if (mPostTopic.getScore() <= Constants.MIN_VOTES) {
+                        deletePost(mPostTopic.getId());
+                    }
+
                     userVote.setValue(-1);
                     v.setDownVoted();
                     voteForPost(mPostTopic.getId(), -1);
@@ -287,34 +289,61 @@ public class FlockPostDetailsFragment extends GeeseFragment {
     }
 
     private void voteForPost(int postId, int value) {
-        RestClient.postService.voteForPost(postId, value).enqueue(new Callback<ResponseBody>() {
-            @Override
-            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
-                if (response.isSuccess()) {
-                    Log.d("PostTopicVote", "Vote Success");
-                } else {
-                    // TODO: better error handling
-                    Log.e("PostTopicVote", "Vote Failed " + response.errorBody());
-                }
-            }
+        Observable<ResponseBody> observable = RestClient.postService.voteForPost(postId, value);
 
-            @Override
-            public void onFailure(Throwable t) {
-                // TODO: better error handling
-                Log.e("PostTopicVote", "Vote Failed" + t.getMessage());
+        observable.subscribeOn(Schedulers.newThread())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Subscriber<ResponseBody>() {
+                    @Override
+                    public void onCompleted() {
+                        // nothing to do here
+                    }
 
-                snackbar = Snackbar
-                        .make(parentActivity.findViewById(R.id.flock_post_detail_fragment_layout), "Error Occurred", Snackbar.LENGTH_LONG)
-                        .setActionTextColor(Color.RED);
+                    @Override
+                    public void onError(Throwable e) {
+                        Log.e("PostDetailsFragment", "Something happened: " + e.getMessage());
 
-                View snackbarView = snackbar.getView();
-                TextView textView = (TextView) snackbarView.findViewById(android.support.design.R.id.snackbar_text);
-                textView.setTextColor(Color.WHITE);
-                textView.setGravity(Gravity.CENTER);
+                        snackbar = Snackbar
+                                .make(parentActivity.findViewById(R.id.flock_post_detail_fragment_layout), "Error Occurred", Snackbar.LENGTH_LONG)
+                                .setActionTextColor(Color.RED);
 
-                snackbar.show();
-            }
-        });
+                        View snackbarView = snackbar.getView();
+                        TextView textView = (TextView) snackbarView.findViewById(android.support.design.R.id.snackbar_text);
+                        textView.setTextColor(Color.WHITE);
+                        textView.setGravity(Gravity.CENTER);
+
+                        snackbar.show();
+                    }
+
+                    @Override
+                    public void onNext(ResponseBody flocks) {
+                        Log.i("PostDetailsFragment", "onNext called");
+                    }
+                });
+    }
+
+    private void deletePost(int postId) {
+        Observable<ResponseBody> observable = RestClient.postService.deletePost(postId);
+
+        observable.subscribeOn(Schedulers.newThread())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Subscriber<ResponseBody>() {
+                    @Override
+                    public void onCompleted() {
+                        // nothing to do here
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        Log.e("PostDetailsFragment", "Something happened: " + e.getMessage());
+
+                    }
+
+                    @Override
+                    public void onNext(ResponseBody flocks) {
+                        Log.i("PostDetailsFragment", "onNext called");
+                    }
+                });
     }
 
     private void notifyListeners() {

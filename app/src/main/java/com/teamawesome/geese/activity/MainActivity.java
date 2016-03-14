@@ -402,6 +402,7 @@ public class MainActivity
                 SessionManager.deleteLoginSession();
                 Intent i = new Intent(this, LoginActivity.class);
                 startActivity(i);
+                finish();
                 break;
             default:        // this should never happen
                 fragment = null;

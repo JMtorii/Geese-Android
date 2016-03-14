@@ -194,8 +194,8 @@ public class FlockPostTopicCreateFragment extends GeeseFragment {
 
     private void createPost() {
         mCreatePostButton.setEnabled(false);
-        CreatePostRequestBody requestBody = new CreatePostRequestBody(mFlockId, mTitleField.getText().toString(), mDescriptionField.getText().toString());
-        Log.d("stuff", "" + requestBody.flockId + ", " + requestBody.title + ", " + requestBody.description);
+        CreatePostRequestBody requestBody = new CreatePostRequestBody(mFlockId, mTitleField.getText().toString(), mDescriptionField.getText().toString(), mUploadedImageUrlStr);
+        Log.d("stuff", "" + requestBody.flockId + ", " + requestBody.title + ", " + requestBody.description + ", " + requestBody.imageUri);
         RestClient.postService
                 .savePostForFlock(requestBody)
                 .enqueue(new Callback<ResponseBody>() {
@@ -218,6 +218,7 @@ public class FlockPostTopicCreateFragment extends GeeseFragment {
                             // TODO: better error handling
                             mCreatePostButton.setEnabled(true);
                             Log.e("PostCreate", "Create post failed");
+                            Log.e("PostCreate", response.raw().toString());
                         }
                     }
 

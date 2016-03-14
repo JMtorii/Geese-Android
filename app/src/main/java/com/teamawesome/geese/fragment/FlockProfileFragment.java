@@ -28,6 +28,7 @@ import com.squareup.picasso.Picasso;
 import com.teamawesome.geese.R;
 import com.teamawesome.geese.activity.MainActivity;
 import com.teamawesome.geese.util.Constants;
+import com.teamawesome.geese.util.DateUtil;
 import com.teamawesome.geese.util.RestClient;
 import com.teamawesome.geese.view.RoundedImageView;
 
@@ -94,7 +95,7 @@ public class FlockProfileFragment extends FlockFragment {
                 .into(mFlockProfileImageView);
 
         mFlockInfoCreationDateTextView = (TextView) v.findViewById(R.id.profile_info_creation_date);
-        mFlockInfoCreationDateTextView.setText("Created on " + mFlock.getCreatedDate());
+        mFlockInfoCreationDateTextView.setText("Created on " + DateUtil.getCreatedDateFromDateArray(mFlock.getCreatedDate()));
 
         mGMapView = (MapView) v.findViewById(R.id.profile_google_map);
         mMapImageView = (ImageView) v.findViewById(R.id.profile_image_map);

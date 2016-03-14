@@ -6,7 +6,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.teamawesome.geese.util.DateUtil;
 
 import java.util.List;
 
@@ -14,7 +13,7 @@ import java.util.List;
  * Created by JMtorii on 15-12-13.
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
-@JsonInclude(JsonInclude.Include.NON_NULL)
+@JsonInclude(JsonInclude.Include.NON_EMPTY)
 public class Flock {
 
     @JsonProperty("id")
@@ -70,6 +69,7 @@ public class Flock {
         this.members = builder.members;
         this.imageUri = builder.imageUri;
         this.mapImage200x200 = builder.mapImage200x200;
+        this.dateArray = null;
 
         // TODO: implement me
 //        this.createdTime = builder.createdTime;
@@ -134,8 +134,8 @@ public class Flock {
 
     public String getImageUri() { return imageUri; }
 
-    public String getCreatedDate() {
-        return DateUtil.getCreatedDateFromDateArray(this.dateArray);
+    public List<Integer> getCreatedDate() {
+        return this.dateArray;
     }
 
     public static class Builder {

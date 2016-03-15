@@ -1,8 +1,6 @@
 package com.teamawesome.geese.adapter;
 
 import android.content.Context;
-import android.location.Address;
-import android.location.Geocoder;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,7 +13,6 @@ import com.teamawesome.geese.R;
 import com.teamawesome.geese.rest.model.Flock;
 
 import java.util.List;
-import java.util.Locale;
 
 /**
  * Created by MichaelQ on 2015-07-19.
@@ -55,17 +52,17 @@ public class FlockAdapter extends ArrayAdapter<Flock> {
         viewHolder.position = position;
         viewHolder.name.setText(flock.getName());
 
-        Geocoder gcd = new Geocoder(getContext(), Locale.getDefault());
-        try {
-            List<Address> addresses = gcd.getFromLocation(flock.getLatitude(), flock.getLongitude(), 1);
-            if (addresses.size() > 0) {
-                viewHolder.location.setText(addresses.get(0).getLocality());
-            } else {
-                viewHolder.location.setVisibility(View.GONE);
-            }
-        } catch (Exception e) {
-            viewHolder.location.setVisibility(View.GONE);
-        }
+//        Geocoder gcd = new Geocoder(getContext(), Locale.getDefault());
+//        try {
+//            List<Address> addresses = gcd.getFromLocation(flock.getLatitude(), flock.getLongitude(), 1);
+//            if (addresses.size() > 0) {
+//                viewHolder.location.setText(addresses.get(0).getLocality());
+//            } else {
+//                viewHolder.location.setVisibility(View.GONE);
+//            }
+//        } catch (Exception e) {
+//            viewHolder.location.setVisibility(View.GONE);
+//        }
 
         viewHolder.members.setText("Members: " + Integer.toString(flock.getMembers()));
 

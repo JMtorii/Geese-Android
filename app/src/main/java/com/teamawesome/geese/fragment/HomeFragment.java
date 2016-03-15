@@ -58,6 +58,8 @@ public class HomeFragment extends GeeseFragment {
         listView = (ListView) view.findViewById(R.id.home_listview);
         swipeContainer = (SwipeRefreshLayout) view.findViewById(R.id.home_swipe_container);
 
+        listView.setScrollingCacheEnabled(false);
+
         swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
